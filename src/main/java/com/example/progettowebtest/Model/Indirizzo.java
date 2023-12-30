@@ -1,4 +1,4 @@
-package com.example.progettowebtest.Model;
+package com.example.progettowebtest.model;
 
 public class Indirizzo {
 
