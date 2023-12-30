@@ -1,4 +1,4 @@
-package com.example.progettowebtest.model;
+package com.example.progettowebtest.Model;
 
 import java.time.LocalDate;
 import java.util.Objects;
