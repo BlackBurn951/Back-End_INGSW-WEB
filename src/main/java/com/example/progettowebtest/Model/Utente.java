@@ -21,4 +21,22 @@ public class Utente extends DatiUtente{
         this.redditoAnnuo = redditoAnnuo;
         this.doc = doc;
     }
+
+    public void addAddress(Indirizzo ind) {
+        if(indirizziUtente.size()>=2)
+            return;
+        indirizziUtente.add(ind);
+    }
+
+    public Indirizzo getResidenza() {
+        if(indirizziUtente.isEmpty())
+            return null;
+        return indirizziUtente.get(0);
+    }
+
+    public Indirizzo getDomicilio() {
+        if(indirizziUtente.size()<2)
+            return null;
+        return indirizziUtente.get(1);
+    }
 }
