@@ -22,6 +22,8 @@ public class Utente extends DatiUtente{
         this.doc = doc;
     }
 
+    public DocumentiIdentita getDoc() {return doc;}
+
     public void addAddress(Indirizzo ind) {
         if(indirizziUtente.size()>=2)
             return;

@@ -1,7 +1,5 @@
 package com.example.progettowebtest.Connection;
 
-import com.example.progettowebtest.DAO.DbDAO;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
