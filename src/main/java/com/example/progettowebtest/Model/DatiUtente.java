@@ -18,4 +18,18 @@ public abstract class DatiUtente {
         this.provNascita = provNascita;
         this.dataNascita = dataNascita;
     }
+
+    public String getNome() {return nome;}
+
+    public String getCognome() {return cognome;}
+
+    public String getCittadinanza() {return cittadinanza;}
+
+    public String getComuneNascita() {return comuneNascita;}
+
+    public char getSesso() {return sesso;}
+
+    public String getProvNascita() {return provNascita;}
+
+    public String getDataNascita() {return dataNascita;}
 }

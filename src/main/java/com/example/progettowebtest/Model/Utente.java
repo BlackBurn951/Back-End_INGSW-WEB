@@ -8,11 +8,11 @@ public class Utente extends DatiUtente{
     private String numTelefono;
     private String occupazione;
     private double redditoAnnuo;
-    private DocumentoIdentita doc;
+    private DocumentiIdentita doc;
     private Vector<Indirizzo> indirizziUtente;
 
     public Utente(String nome, String cognome, String cittadinanza, String comuneNascita, char sesso, String provNascita, String numTelefono, String dataNascita,
-                  String codiceFiscale, String email, String occupazione, double redditoAnnuo, DocumentoIdentita doc) {
+                  String codiceFiscale, String email, String occupazione, double redditoAnnuo, DocumentiIdentita doc) {
         super(nome, cognome, cittadinanza, comuneNascita, sesso, provNascita, dataNascita);
         this.codiceFiscale = codiceFiscale;
         this.email = email;
