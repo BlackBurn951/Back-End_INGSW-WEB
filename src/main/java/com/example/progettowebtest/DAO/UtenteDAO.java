@@ -1,28 +1,13 @@
 package com.example.progettowebtest.DAO;
 
-import java.sql.SQLException;
+import com.example.progettowebtest.Model.Utente;
+
 import java.util.Objects;
 import java.util.Vector;
-import java.sql.*;
 
-public class UtenteDAO implements DbDAO{
-    @Override
-    public Vector<Objects> doRetriveAll() throws SQLException {
-        return null;
-    }
-
-    @Override
-    public Objects doRetriveByKey(Objects id) throws SQLException {
-        return null;
-    }
-
-    @Override
-    public void saveOrUpdate(Objects obj) throws SQLException {
-
-    }
-
-    @Override
-    public void delete(Objects obj) throws SQLException {
-
-    }
+public interface UtenteDAO {
+    Vector<Utente> doRetriveAll();
+    Utente doRetriveByKey(String cf);
+    void saveOrUpdate(Utente ut);
+    void delete(Utente ut);
 }

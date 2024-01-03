@@ -1,16 +1,22 @@
 package com.example.progettowebtest.Connection;
 
-import com.example.progettowebtest.DAO.DbDAO;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class DbConnection {
-    private DriverManager dm= new DriverManager();
-
+    private static Connection con;
     private DbConnection() {}
 
-    public DbConnection getInstance() {
-
+    public static Connection getInstance() {
+        if(con!=null) {
+            try {
+                con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "PassPostGres");
+            }catch (SQLException e) {
+                e.printStackTrace();
+                System.out.println("Eccezione nella conessione!!!");
+            }
+        }
+        return con;
     }
 }
