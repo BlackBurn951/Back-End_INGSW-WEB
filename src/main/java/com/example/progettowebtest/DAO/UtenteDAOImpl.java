@@ -6,6 +6,7 @@ import com.example.progettowebtest.Model.*;
 import java.sql.SQLException;
 import java.util.Vector;
 import java.sql.*;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 public class UtenteDAOImpl implements UtenteDAO {
 
@@ -22,7 +23,6 @@ public class UtenteDAOImpl implements UtenteDAO {
     @Override
     public boolean saveOrUpdate(Utente ut) {
         Indirizzo res, dom;
-        DocumentiIdentita doc;
         boolean result= true;
         try {
             //chimata al doRetriveByKey per capire se fare un update o una insert (funzione private all'interno della classe per
@@ -44,30 +44,32 @@ public class UtenteDAOImpl implements UtenteDAO {
             statement.setString(8, ut.getNumTelefono());
             statement.setDate(9, ut.getDataNascita());
             statement.setString(10, ut.getEmail());
-            //inserimento password
-            doc= ut.getDoc();
-            switch (doc.getClass().getSimpleName()) {
-                case "CartaIdentita":
-                    statement.setString(12, doc.getNumIdentificativo());
-                    statement.setNull(13, java.sql.Types.NVARCHAR );
-                    statement.setNull(14, java.sql.Types.NVARCHAR );
-                    break;
+            statement.setString(11, ut.getPassword()); ;
 
-                case "Patente":
-                    statement.setNull(12, java.sql.Types.NVARCHAR );
-                    statement.setString(13, doc.getNumIdentificativo());
-                    statement.setNull(14, java.sql.Types.NVARCHAR );
-                    break;
+            inserisciDocumento(statement, ut.getDoc());
 
-                case "Passaporto":
-                    statement.setNull(12, java.sql.Types.NVARCHAR );
-                    statement.setNull(13, java.sql.Types.NVARCHAR );
-                    statement.setString(14, doc.getNumIdentificativo());
-                    break;
-            }
             res= ut.getResidenza();
-            //chiamata a funzione privata che fa l'aggiunta dell'indirizzo
+            statement.setString(17, res.getNomeVia());
+            statement.setString(18, res.getNumCivico());
+            statement.setInt(19, res.getComune().getIdComune());
+            statement.setInt(21, res.getTipologiaVia().getIdVia());
+
             dom= ut.getDomicilio();
+            if(dom!=null) {
+                statement.setString(15, dom.getNomeVia());
+                statement.setString(16, dom.getNumCivico());
+                statement.setInt(20, dom.getComune().getIdComune());
+                statement.setInt(22, dom.getTipologiaVia().getIdVia());
+            }
+            else {
+                statement.setNull(15, Types.NULL);
+                statement.setNull(16, Types.NULL);
+                statement.setNull(20, Types.NULL);
+                statement.setNull(22, Types.NULL);
+            }
+
+            statement.setString(23, ut.getOccupazione());
+            statement.setDouble(24, ut.getRedditoAnnuo());
 
         }catch (SQLException e) {
             e.printStackTrace();
@@ -78,6 +80,31 @@ public class UtenteDAOImpl implements UtenteDAO {
 
     @Override
     public boolean delete(Utente ut){
+        return true;
+    }
 
+
+
+    //Metodi di servizio
+    private void inserisciDocumento(PreparedStatement statement, DocumentiIdentita doc) throws SQLException{
+        switch (doc.getClass().getSimpleName()) {
+            case "CartaIdentita":
+                statement.setString(12, doc.getNumIdentificativo());
+                statement.setNull(13, Types.NULL);
+                statement.setNull(14, Types.NULL);
+                break;
+
+            case "Patente":
+                statement.setNull(12, Types.NULL);
+                statement.setString(13, doc.getNumIdentificativo());
+                statement.setNull(14, Types.NULL);
+                break;
+
+            case "Passaporto":
+                statement.setNull(12, Types.NULL);
+                statement.setNull(13, Types.NULL);
+                statement.setString(14, doc.getNumIdentificativo());
+                break;
+        }
     }
 }

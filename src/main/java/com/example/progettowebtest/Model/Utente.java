@@ -5,6 +5,7 @@ import java.util.Vector;
 public class Utente extends DatiUtente{
     private String codiceFiscale;
     private String email;
+    private String password;
     private String numTelefono;
     private String occupazione;
     private double redditoAnnuo;
@@ -12,10 +13,11 @@ public class Utente extends DatiUtente{
     private Vector<Indirizzo> indirizziUtente;
 
     public Utente(String nome, String cognome, String cittadinanza, String comuneNascita, String sesso, String provNascita, String numTelefono, String dataNascita,
-                  String codiceFiscale, String email, String occupazione, double redditoAnnuo, DocumentiIdentita doc) {
+                  String codiceFiscale, String email, String password, String occupazione, double redditoAnnuo, DocumentiIdentita doc) {
         super(nome, cognome, cittadinanza, comuneNascita, sesso, provNascita, dataNascita);
         this.codiceFiscale = codiceFiscale;
         this.email = email;
+        this.password= password;
         this.numTelefono=numTelefono;
         this.occupazione = occupazione;
         this.redditoAnnuo = redditoAnnuo;
@@ -25,12 +27,14 @@ public class Utente extends DatiUtente{
     //Getters dei parametri unici dell'utente
     public String getCodiceFiscale() {return codiceFiscale;}
     public String getEmail() {return email;}
+    public String getPassword() {return password;} //BCrypt.hashpw(ut.getPassword(), BCrypt.gensalt(12))
     public String getNumTelefono() {return numTelefono;}
     public String getOccupazione() {return occupazione;}
     public double getRedditoAnnuo() {return redditoAnnuo;}
     public DocumentiIdentita getDoc() {return doc;}
 
-
+        // 15 16 20 22 dom
+        // 17 18 19 21 res
     //Gestione indirizzi
     public void addAddress(Indirizzo ind) {
         if(indirizziUtente.size()>=2)
