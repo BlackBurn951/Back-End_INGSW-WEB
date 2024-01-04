@@ -28,7 +28,7 @@ public class UtenteDAOImpl implements UtenteDAO {
             //chimata al doRetriveByKey per capire se fare un update o una insert (funzione private all'interno della classe per
             //l'update)
 
-            String query= "insert into utente (cf, nome, cognome, cittadinanza, comune_di_nascita, sesso, provincia_di_nascita, num_telefono, data_di_nascita, " +
+            String query= "insert into utente(cf, nome, cognome, cittadinanza, comune_di_nascita, sesso, provincia_di_nascita, num_telefono, data_di_nascita, " +
                     "email, password, num_identificativo_ci, num_patente, num_passaporto, nome_via_domicilio, num_civico_domicilio, nome_via_residenza, " +
                     "num_civico_residenza, id_comune_residenza, id_comune_domicilio, id_via_residenza, id_via_domicilio, occupazione, reditto_annuo) " +
                     "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -70,6 +70,8 @@ public class UtenteDAOImpl implements UtenteDAO {
 
             statement.setString(23, ut.getOccupazione());
             statement.setDouble(24, ut.getRedditoAnnuo());
+
+            statement.executeUpdate();
 
         }catch (SQLException e) {
             e.printStackTrace();
