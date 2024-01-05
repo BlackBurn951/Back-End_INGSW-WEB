@@ -1,37 +1,55 @@
 package com.example.progettowebtest.OtpMail;
 
 public class EmailData {
-    private String destinatario;
-    private String oggetto;
-    private String testo;
+    private String sender;
+    private String to;
+    private String subject;
+    private String messageText;
+    private String userId;
 
-    public EmailData(String destinatario, String oggetto, String testo) {
-        this.destinatario = destinatario;
-        this.oggetto = oggetto;
-        this.testo = testo;
+    public String getTo() {
+        return to;
     }
 
-    public String getDestinatario() {
-        return destinatario;
+    public void setTo(String to) {
+        this.to = to;
     }
 
-    public void setDestinatario(String destinatario) {
-        this.destinatario = destinatario;
+    public String getSubject() {
+        return subject;
     }
 
-    public String getOggetto() {
-        return oggetto;
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
-    public void setOggetto(String oggetto) {
-        this.oggetto = oggetto;
+    public String getMessageText() {
+        return messageText;
     }
 
-    public String getTesto() {
-        return testo;
+    public void setMessageText(String messageText) {
+        this.messageText = messageText;
     }
 
-    public void setTesto(String testo) {
-        this.testo = testo;
+    public String getUserId() {
+        return userId;
     }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+
+    public EmailData() {
+    }
+
+    public String getSender() {
+        return sender;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
+
+
 }
