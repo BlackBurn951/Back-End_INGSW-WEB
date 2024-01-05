@@ -1,10 +1,19 @@
 package com.example.progettowebtest.OtpMail;
 
 public class EmailData {
+    private String nomeCognome;
     private String sender;
     private String to;
     private String subject;
-    private String messageText;
+
+    public String getNomeCognome() {
+        return nomeCognome;
+    }
+
+    public void setNomeCognome(String nomeCognome) {
+        this.nomeCognome = nomeCognome;
+    }
+
     private String userId;
 
     public String getTo() {
@@ -21,14 +30,6 @@ public class EmailData {
 
     public void setSubject(String subject) {
         this.subject = subject;
-    }
-
-    public String getMessageText() {
-        return messageText;
-    }
-
-    public void setMessageText(String messageText) {
-        this.messageText = messageText;
     }
 
     public String getUserId() {

@@ -58,13 +58,33 @@ public class SendMessage {
 
     @PostMapping("/sendEmail")
     public void sendEmail(@RequestBody EmailData emailData) {
+        String nomeCognome = emailData.getNomeCognome();
+        String htmlContent = "<p style=\"text-align: left;\">&nbsp;</p>\n" +
+                "<p>&nbsp;</p>\n" +
+                "<table border=\"10\" width=\"690\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\">\n" +
+                "    <tbody>\n" +
+                "    <tr>\n" +
+                "        <td style=\"background-color: #91defa; padding: 20px; text-align: center;\">\n" +
+                "            <h1 style=\"color: #333333;\">Verifica la tua identit&agrave;</h1>\n" +
+                "            <p style=\"text-align: left;\">Gentile " + nomeCognome + "</p>\n" +
+                "            <p style=\"text-align: left;\">Inserisci questo codice sul sito della Banca Caesar Magnus per verificare la tua identit&agrave;</p>\n" +
+                "            <p><strong>Codice OTP:</strong></p>\n" +
+                "            <p>&nbsp;</p>\n" +
+                "            <p style=\"text-align: left;\">&nbsp;</p>\n" +
+                "            <p style=\"text-align: center;\">Questo codice scadr&agrave; tra 10 minuti.</p>\n" +
+                "            <p style=\"text-align: left;\">Se non riconosci l'indirizzo caesar.magnus.info@gmail.com, puoi ignorare questa email.</p>\n" +
+                "            <p style=\"text-align: left;\">Ti preghiamo di non rispondere a questa email.</p>\n" +
+                "        </td>\n" +
+                "    </tr>\n" +
+                "    </tbody>\n" +
+                "</table>\n";
         try {
             NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
             GsonFactory jsonFactory = GsonFactory.getDefaultInstance();
             Gmail service = new Gmail.Builder(httpTransport, jsonFactory, getCredentials(httpTransport))
                     .setApplicationName("Banca Caesar Magnus")
                     .build();
-            Message message = createMessage(emailData.getSender(), emailData.getTo(), emailData.getSubject(), emailData.getMessageText());
+            Message message = createMessage(emailData.getSender(), emailData.getTo(), emailData.getSubject(), htmlContent);
             sendMessage(service, emailData.getUserId(), message);
         } catch (IOException | GeneralSecurityException e) {
             e.printStackTrace();
@@ -85,11 +105,13 @@ public class SendMessage {
     }
 
     public static Message createMessage(String sender, String to, String subject, String messageText) throws MessagingException, IOException {
+
+
         javax.mail.internet.MimeMessage email = new javax.mail.internet.MimeMessage(Session.getDefaultInstance(new Properties(), null));
         email.setFrom(new InternetAddress(sender));
         email.addRecipient(javax.mail.Message.RecipientType.TO, new InternetAddress(to));
         email.setSubject(subject);
-        email.setText(messageText);
+        email.setText(messageText, "text/html");
 
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         email.writeTo(buffer);
