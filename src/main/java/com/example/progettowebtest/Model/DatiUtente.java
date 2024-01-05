@@ -1,22 +1,24 @@
 package com.example.progettowebtest.Model;
 
+import java.sql.Date;
+
 public abstract class DatiUtente {
     private String nome;
     private String cognome;
     private String cittadinanza;
     private String comuneNascita;
-    private char sesso;
+    private String sesso;
     private String provNascita;
-    private String dataNascita;
+    private Date dataNascita;
 
-    protected DatiUtente(String nome, String cognome, String cittadinanza, String comuneNascita, char sesso, String provNascita, String dataNascita) {
+    protected DatiUtente(String nome, String cognome, String cittadinanza, String comuneNascita, String sesso, String provNascita, String dataNascita) {
         this.nome = nome;
         this.cognome = cognome;
         this.cittadinanza = cittadinanza;
         this.comuneNascita = comuneNascita;
         this.sesso = sesso;
         this.provNascita = provNascita;
-        this.dataNascita = dataNascita;
+        this.dataNascita= Date.valueOf(dataNascita);
     }
 
     public String getNome() {return nome;}
@@ -27,9 +29,9 @@ public abstract class DatiUtente {
 
     public String getComuneNascita() {return comuneNascita;}
 
-    public char getSesso() {return sesso;}
+    public String getSesso() {return sesso;}
 
     public String getProvNascita() {return provNascita;}
 
-    public String getDataNascita() {return dataNascita;}
+    public Date getDataNascita() {return dataNascita;}
 }

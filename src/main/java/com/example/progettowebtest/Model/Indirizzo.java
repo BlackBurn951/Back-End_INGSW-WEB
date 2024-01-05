@@ -1,22 +1,20 @@
 package com.example.progettowebtest.Model;
 
 public class Indirizzo {
-    private String tipoVia;
+    private TipoVia tipologiaVia;
     private String nomeVia;
     private String numCivico;
-    private String comune;
-    private String cap;
-    private String provincia;
-    private String regione;
+    private DatiComune comune;
 
-    public Indirizzo(String tipoVia, String nomeVia, String numCivico, String comune, String cap,
-                     String provincia, String regione) {
-        this.tipoVia = tipoVia;
+    public Indirizzo(TipoVia tipologiaVia, String nomeVia, String numCivico, DatiComune comune) {
+        this.tipologiaVia = tipologiaVia;
         this.nomeVia = nomeVia;
         this.numCivico = numCivico;
         this.comune = comune;
-        this.cap = cap;
-        this.provincia = provincia;
-        this.regione = regione;
     }
+
+    public TipoVia getTipologiaVia() {return tipologiaVia;}
+    public String getNomeVia() {return nomeVia;}
+    public String getNumCivico() {return numCivico;}
+    public DatiComune getComune() {return comune;}
 }

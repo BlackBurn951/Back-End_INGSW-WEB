@@ -6,7 +6,7 @@ public abstract class DocumentiIdentita extends DatiUtente{
     private String dataScadenza;
     private String entitaRilascio;
 
-    protected DocumentiIdentita(String nome, String cognome, String cittadinanza, String comuneNascita, char sesso, String provNascita,
+    protected DocumentiIdentita(String nome, String cognome, String cittadinanza, String comuneNascita, String sesso, String provNascita,
                              String dataNascita, String numIdentificativo, String dataEmissione, String dataScadenza, String entitaRilascio) {
         super(nome, cognome, cittadinanza, comuneNascita, sesso, provNascita, dataNascita);
         this.numIdentificativo = numIdentificativo;
