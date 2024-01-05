@@ -33,8 +33,7 @@ public class Utente extends DatiUtente{
     public double getRedditoAnnuo() {return redditoAnnuo;}
     public DocumentiIdentita getDoc() {return doc;}
 
-        // 15 16 20 22 dom
-        // 17 18 19 21 res
+
     //Gestione indirizzi
     public void addAddress(Indirizzo ind) {
         if(indirizziUtente.size()>=2)

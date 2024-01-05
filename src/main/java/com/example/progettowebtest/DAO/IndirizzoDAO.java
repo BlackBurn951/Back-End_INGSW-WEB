@@ -7,7 +7,7 @@ import java.util.Vector;
 
 public interface IndirizzoDAO {
     Vector<Indirizzo> doRetriveAll();
-    Indirizzo doRetriveByKey(String nomeVia, String numCivico, int idComune, int idVia);
+    Indirizzo doRetriveByKey(String nomeVia, String numCivico, String comune, String tipologia);
     boolean saveOrUpdate(Indirizzo ind);
     boolean delete(Indirizzo ind);
 }
