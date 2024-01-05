@@ -70,7 +70,7 @@ public class UtenteDAOImpl implements UtenteDAO {
 
             statement.setString(23, ut.getOccupazione());
             statement.setDouble(24, ut.getRedditoAnnuo());
-
+          
             statement.executeUpdate();
 
         }catch (SQLException e) {
