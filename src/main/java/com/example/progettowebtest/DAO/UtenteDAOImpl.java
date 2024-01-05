@@ -17,7 +17,20 @@ public class UtenteDAOImpl implements UtenteDAO {
 
     @Override
     public Utente doRetriveByKey(String cf){
-        return null;
+        Utente result= null;
+
+        try{
+            String query= "select * from utente where cf= "+cf;
+            PreparedStatement statement= DbConnection.getInstance().prepareStatement(query);
+            ResultSet queryResult= statement.executeQuery();
+
+            if(!queryResult.wasNull())
+                //result= new Utente(queryResult.getString("nome"), queryResult.getString("cognome"));
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     @Override
