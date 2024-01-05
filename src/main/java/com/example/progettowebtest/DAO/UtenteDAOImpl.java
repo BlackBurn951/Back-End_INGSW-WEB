@@ -24,7 +24,7 @@ public class UtenteDAOImpl implements UtenteDAO {
             PreparedStatement statement= DbConnection.getInstance().prepareStatement(query);
             ResultSet queryResult= statement.executeQuery();
 
-            if(!queryResult.wasNull())
+            if(!queryResult.wasNull());
                 //result= new Utente(queryResult.getString("nome"), queryResult.getString("cognome"));
 
         }catch (SQLException e) {

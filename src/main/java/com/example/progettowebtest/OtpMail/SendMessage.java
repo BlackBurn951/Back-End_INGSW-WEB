@@ -7,13 +7,18 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 
+import com.google.api.client.googleapis.json.GoogleJsonError;
+import com.google.api.client.googleapis.json.GoogleJsonResponseException;
+import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.util.Base64;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.GmailScopes;
+import com.google.api.services.gmail.model.Draft;
 import com.google.api.services.gmail.model.Message;
 
 import java.io.*;
@@ -22,14 +27,23 @@ import java.security.GeneralSecurityException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
+
+import javax.mail.BodyPart;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import static com.example.progettowebtest.OtpMail.OTPGenerator.generateOTP;
 
 
 @RestController
@@ -40,8 +54,10 @@ public class SendMessage {
 
     private static final List<String> SCOPES = Collections.singletonList(GmailScopes.GMAIL_SEND);
 
+    public static String generatedOTP;
 
-    private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT)
+
+    static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT)
             throws IOException {
         InputStream in = SendMessage.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
@@ -59,6 +75,7 @@ public class SendMessage {
     @PostMapping("/sendEmail")
     public void sendEmail(@RequestBody EmailData emailData) {
         String nomeCognome = emailData.getNomeCognome();
+        generatedOTP = generateOTP();
         String htmlContent = "<p style=\"text-align: left;\">&nbsp;</p>\n" +
                 "<p>&nbsp;</p>\n" +
                 "<table border=\"10\" width=\"690\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\">\n" +
@@ -68,8 +85,8 @@ public class SendMessage {
                 "            <h1 style=\"color: #333333;\">Verifica la tua identit&agrave;</h1>\n" +
                 "            <p style=\"text-align: left;\">Gentile " + nomeCognome + "</p>\n" +
                 "            <p style=\"text-align: left;\">Inserisci questo codice sul sito della Banca Caesar Magnus per verificare la tua identit&agrave;</p>\n" +
-                "            <p><strong>Codice OTP:</strong></p>\n" +
-                "            <p>&nbsp;</p>\n" +
+                "            <h2><strong>Codice OTP:</strong></h2>\n" +
+                "            <h3>" + generatedOTP + "</h3>\n" +
                 "            <p style=\"text-align: left;\">&nbsp;</p>\n" +
                 "            <p style=\"text-align: center;\">Questo codice scadr&agrave; tra 10 minuti.</p>\n" +
                 "            <p style=\"text-align: left;\">Se non riconosci l'indirizzo caesar.magnus.info@gmail.com, puoi ignorare questa email.</p>\n" +
@@ -105,22 +122,26 @@ public class SendMessage {
     }
 
     public static Message createMessage(String sender, String to, String subject, String messageText) throws MessagingException, IOException {
-
-
-        javax.mail.internet.MimeMessage email = new javax.mail.internet.MimeMessage(Session.getDefaultInstance(new Properties(), null));
+        MimeMessage email = new MimeMessage(Session.getDefaultInstance(new Properties(), null));
         email.setFrom(new InternetAddress(sender));
         email.addRecipient(javax.mail.Message.RecipientType.TO, new InternetAddress(to));
         email.setSubject(subject);
-        email.setText(messageText, "text/html");
 
+        Multipart multipart = new MimeMultipart();
+
+        BodyPart htmlPart = new MimeBodyPart();
+        htmlPart.setContent(messageText, "text/html; charset=utf-8");
+        multipart.addBodyPart(htmlPart);
+        email.setContent(multipart);
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         email.writeTo(buffer);
-
         byte[] bytes = buffer.toByteArray();
         String encodedEmail = com.google.api.client.util.Base64.encodeBase64URLSafeString(bytes);
 
         Message message = new Message();
         message.setRaw(encodedEmail);
+
         return message;
     }
+
 }
