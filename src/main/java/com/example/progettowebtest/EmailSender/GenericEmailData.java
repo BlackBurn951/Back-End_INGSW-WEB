@@ -1,11 +1,17 @@
 package com.example.progettowebtest.EmailSender;
 
-public class EmailData {
+public class GenericEmailData {
     private String nomeCognome;
     private String sender;
     private String to;
     private String subject;
     private String userId;
+    private boolean allegato;
+
+    public boolean isAllegato() {
+        return allegato;
+    }
+
 
     public String getNomeCognome() {
         return nomeCognome;

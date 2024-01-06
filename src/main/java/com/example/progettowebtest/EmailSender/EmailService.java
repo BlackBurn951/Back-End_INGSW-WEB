@@ -48,7 +48,7 @@ public class EmailService {
 
     static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT)
             throws IOException {
-        InputStream in = SendEmailOtpController.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
+        InputStream in = SendEmailController.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
         assert in != null;
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
 
