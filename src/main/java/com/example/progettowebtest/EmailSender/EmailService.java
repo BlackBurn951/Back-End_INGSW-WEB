@@ -1,4 +1,4 @@
-package com.example.progettowebtest.OtpMail;
+package com.example.progettowebtest.EmailSender;
 
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
@@ -6,10 +6,6 @@ import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-
-import com.google.api.client.googleapis.json.GoogleJsonError;
-import com.google.api.client.googleapis.json.GoogleJsonResponseException;
-import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
@@ -18,16 +14,11 @@ import com.google.api.client.util.Base64;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.GmailScopes;
-import com.google.api.services.gmail.model.Draft;
 import com.google.api.services.gmail.model.Message;
+import org.apache.pdfbox.pdmodel.PDDocument;
 
-import java.io.*;
-import java.nio.file.Paths;
-import java.security.GeneralSecurityException;
-import java.util.Collections;
-import java.util.List;
-import java.util.Properties;
-
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
 import javax.mail.BodyPart;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
@@ -36,30 +27,29 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.mail.util.ByteArrayDataSource;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.file.Paths;
+import java.security.GeneralSecurityException;
+import java.util.Collections;
+import java.util.List;
+import java.util.Properties;
 
+public class EmailService {
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import static com.example.progettowebtest.OtpMail.OTPGenerator.generateOTP;
-
-
-@RestController
-@CrossOrigin(origins = "*")
-public class SendMessage {
     private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 
     private static final List<String> SCOPES = Collections.singletonList(GmailScopes.GMAIL_SEND);
 
-    public static String generatedOTP;
-
 
     static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT)
             throws IOException {
-        InputStream in = SendMessage.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
+        InputStream in = SendEmailOtpController.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
+        assert in != null;
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
 
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
@@ -72,53 +62,56 @@ public class SendMessage {
     }
 
 
-    @PostMapping("/sendEmail")
-    public void sendEmail(@RequestBody EmailData emailData) {
-        String nomeCognome = emailData.getNomeCognome();
-        generatedOTP = generateOTP();
-        String htmlContent = "<p style=\"text-align: left;\">&nbsp;</p>\n" +
-                "<p>&nbsp;</p>\n" +
-                "<table border=\"10\" width=\"690\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\">\n" +
-                "    <tbody>\n" +
-                "    <tr>\n" +
-                "        <td style=\"background-color: #91defa; padding: 20px; text-align: center;\">\n" +
-                "            <h1 style=\"color: #333333;\">Verifica la tua identit&agrave;</h1>\n" +
-                "            <p style=\"text-align: left;\">Gentile " + nomeCognome + "</p>\n" +
-                "            <p style=\"text-align: left;\">Inserisci questo codice sul sito della Banca Caesar Magnus per verificare la tua identit&agrave;</p>\n" +
-                "            <h2><strong>Codice OTP:</strong></h2>\n" +
-                "            <h3>" + generatedOTP + "</h3>\n" +
-                "            <p style=\"text-align: left;\">&nbsp;</p>\n" +
-                "            <p style=\"text-align: center;\">Questo codice scadr&agrave; tra 10 minuti.</p>\n" +
-                "            <p style=\"text-align: left;\">Se non riconosci l'indirizzo caesar.magnus.info@gmail.com, puoi ignorare questa email.</p>\n" +
-                "            <p style=\"text-align: left;\">Ti preghiamo di non rispondere a questa email.</p>\n" +
-                "        </td>\n" +
-                "    </tr>\n" +
-                "    </tbody>\n" +
-                "</table>\n";
-        try {
-            NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-            GsonFactory jsonFactory = GsonFactory.getDefaultInstance();
-            Gmail service = new Gmail.Builder(httpTransport, jsonFactory, getCredentials(httpTransport))
-                    .setApplicationName("Banca Caesar Magnus")
-                    .build();
-            Message message = createMessage(emailData.getSender(), emailData.getTo(), emailData.getSubject(), htmlContent);
-            sendMessage(service, emailData.getUserId(), message);
-        } catch (IOException | GeneralSecurityException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public static void sendMessage(Gmail service, String userId, Message emailContent) throws IOException {
-        com.google.api.services.gmail.model.Message sentMessage = null;
+        com.google.api.services.gmail.model.Message sentMessage;
         try {
             sentMessage = service.users().messages().send(userId, emailContent).execute();
             System.out.println("Message Id: " + sentMessage.getId());
         } catch (Exception e) {
             System.out.println("An error occurred: " + e);
         }
+    }
+
+    public static Gmail getService() throws GeneralSecurityException, IOException {
+        NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+        GsonFactory jsonFactory = GsonFactory.getDefaultInstance();
+        return new Gmail.Builder(httpTransport, jsonFactory, getCredentials(httpTransport))
+                .setApplicationName("Banca Caesar Magnus")
+                .build();
+    }
+
+    static Message createMessageWithAttachment(String htmlContent, String sender, String to, String subject, PDDocument file) throws MessagingException, IOException {
+        Properties props = new Properties();
+        Session session = Session.getDefaultInstance(props, null);
+        MimeMessage email = new MimeMessage(session);
+        email.setFrom(new InternetAddress(sender));
+        email.addRecipient(javax.mail.Message.RecipientType.TO, new InternetAddress(to));
+        email.setSubject(subject);
+
+        MimeBodyPart mimeBodyPart = new MimeBodyPart();
+        mimeBodyPart.setContent(htmlContent, "text/html");
+
+        Multipart multipart = new MimeMultipart();
+        multipart.addBodyPart(mimeBodyPart);
+
+        mimeBodyPart = new MimeBodyPart();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        file.save(byteArrayOutputStream);
+        byte[] bytes = byteArrayOutputStream.toByteArray();
+        DataSource source = new ByteArrayDataSource(bytes, "application/pdf");
+        mimeBodyPart.setDataHandler(new DataHandler(source));
+        mimeBodyPart.setFileName("Documento apertura conto.pdf");
+        multipart.addBodyPart(mimeBodyPart);
+        email.setContent(multipart);
+
+        Message message = new Message();
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        email.writeTo(buffer);
+        byte[] rawMessageBytes = buffer.toByteArray();
+        String encodedEmail = Base64.encodeBase64URLSafeString(rawMessageBytes);
+        message.setRaw(encodedEmail);
+
+        return message;
     }
 
     public static Message createMessage(String sender, String to, String subject, String messageText) throws MessagingException, IOException {
