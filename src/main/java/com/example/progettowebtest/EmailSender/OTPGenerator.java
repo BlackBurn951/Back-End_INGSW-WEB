@@ -1,4 +1,4 @@
-package com.example.progettowebtest.OtpMail;
+package com.example.progettowebtest.EmailSender;
 
 import java.security.SecureRandom;
 
