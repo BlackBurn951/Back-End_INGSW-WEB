@@ -1,6 +1,16 @@
 package com.example.progettowebtest.ClassiRequest;
 
-public class DatiRegistrazione extends DatiAnagrafici{
+public class DatiRegistrazione {
+    private String cf;
+    private String nome;
+    private String cognome;
+    private String cellulare;
+    private String email;
+    private String dataNascita;
+    private String sesso;
+    private String comune;
+    private String prov;
+    private String cittadinanza;
     private String tipoStradaRes;
     private String nomeStradaRes;
     private String numCivicoRes;
@@ -27,213 +37,148 @@ public class DatiRegistrazione extends DatiAnagrafici{
     private String comuneNascitaDoc;
     private String provNascitaDoc;
     private String sessoDoc;
-    public DatiRegistrazione() {}
 
-    public String getTipoStradaRes() {
-        return tipoStradaRes;
-    }
 
-    public String getNomeStradaRes() {
-        return nomeStradaRes;
-    }
+    public String getTipoStradaRes() {return tipoStradaRes;}
 
-    public String getNumCivicoRes() {
-        return numCivicoRes;
-    }
+    public String getNomeStradaRes() {return nomeStradaRes;}
 
-    public String getCittaRes() {
-        return cittaRes;
-    }
+    public String getNumCivicoRes() {return numCivicoRes;}
 
-    public String getCapRes() {
-        return capRes;
-    }
+    public String getCittaRes() {return cittaRes;}
 
-    public String getProvinciaRes() {
-        return provinciaRes;
-    }
+    public String getCapRes() {return capRes;}
 
-    public String getRegioneRes() {
-        return regioneRes;
-    }
+    public String getProvinciaRes() {return provinciaRes;}
 
-    public String getTipoStradaDom() {
-        return tipoStradaDom;
-    }
+    public String getRegioneRes() {return regioneRes;}
 
-    public String getNomeStradaDom() {
-        return nomeStradaDom;
-    }
+    public String getTipoStradaDom() {return tipoStradaDom;}
 
-    public String getNumCivicoDom() {
-        return numCivicoDom;
-    }
+    public String getNomeStradaDom() {return nomeStradaDom;}
 
-    public String getCittaDom() {
-        return cittaDom;
-    }
+    public String getNumCivicoDom() {return numCivicoDom;}
 
-    public String getCapDom() {
-        return capDom;
-    }
+    public String getCittaDom() {return cittaDom;}
 
-    public String getProvinciaDom() {
-        return provinciaDom;
-    }
+    public String getCapDom() {return capDom;}
 
-    public String getRegioneDom() {
-        return regioneDom;
-    }
+    public String getProvinciaDom() {return provinciaDom;}
 
-    public String getTipoDoc() {
-        return tipoDoc;
-    }
+    public String getRegioneDom() {return regioneDom;}
 
-    public String getIdDoc() {
-        return idDoc;
-    }
+    public String getTipoDoc() {return tipoDoc;}
 
-    public String getComuneAutorita() {
-        return comuneAutorita;
-    }
+    public String getIdDoc() {return idDoc;}
 
-    public String getNazionalita() {
-        return nazionalita;
-    }
+    public String getComuneAutorita() {return comuneAutorita;}
 
-    public String getNomeDocumento() {
-        return nomeDocumento;
-    }
+    public String getNazionalita() {return nazionalita;}
 
-    public String getCognomeDocumento() {
-        return cognomeDocumento;
-    }
+    public String getNomeDocumento() {return nomeDocumento;}
 
-    public String getDataNascitaDocumento() {
-        return dataNascitaDocumento;
-    }
+    public String getCognomeDocumento() {return cognomeDocumento;}
 
-    public String getDataNascitaEmissione() {
-        return dataNascitaEmissione;
-    }
+    public String getDataNascitaDocumento() {return dataNascitaDocumento;}
 
-    public String getDataScadenza() {
-        return dataScadenza;
-    }
+    public String getDataNascitaEmissione() {return dataNascitaEmissione;}
 
-    public String getComuneNascitaDoc() {
-        return comuneNascitaDoc;
-    }
+    public String getDataScadenza() {return dataScadenza;}
 
-    public String getProvNascitaDoc() {
-        return provNascitaDoc;
-    }
+    public String getComuneNascitaDoc() {return comuneNascitaDoc;}
 
-    public String getSessoDoc() {
-        return sessoDoc;
-    }
+    public String getProvNascitaDoc() {return provNascitaDoc;}
 
-    public void setTipoStradaRes(String tipoStradaRes) {
-        this.tipoStradaRes = tipoStradaRes;
-    }
+    public String getSessoDoc() {return sessoDoc;}
 
-    public void setNomeStradaRes(String nomeStradaRes) {
-        this.nomeStradaRes = nomeStradaRes;
-    }
+    public void setTipoStradaRes(String tipoStradaRes) {this.tipoStradaRes = tipoStradaRes;}
 
-    public void setNumCivicoRes(String numCivicoRes) {
-        this.numCivicoRes = numCivicoRes;
-    }
+    public void setNomeStradaRes(String nomeStradaRes) {this.nomeStradaRes = nomeStradaRes;}
 
-    public void setCittaRes(String cittaRes) {
-        this.cittaRes = cittaRes;
-    }
+    public void setNumCivicoRes(String numCivicoRes) {this.numCivicoRes = numCivicoRes;}
 
-    public void setCapRes(String capRes) {
-        this.capRes = capRes;
-    }
+    public void setCittaRes(String cittaRes) {this.cittaRes = cittaRes;}
 
-    public void setProvinciaRes(String provinciaRes) {
-        this.provinciaRes = provinciaRes;
-    }
+    public void setCapRes(String capRes) {this.capRes = capRes;}
 
-    public void setRegioneRes(String regioneRes) {
-        this.regioneRes = regioneRes;
-    }
+    public void setProvinciaRes(String provinciaRes) {this.provinciaRes = provinciaRes;}
 
-    public void setTipoStradaDom(String tipoStradaDom) {
-        this.tipoStradaDom = tipoStradaDom;
-    }
+    public void setRegioneRes(String regioneRes) {this.regioneRes = regioneRes;}
 
-    public void setNomeStradaDom(String nomeStradaDom) {
-        this.nomeStradaDom = nomeStradaDom;
-    }
+    public void setTipoStradaDom(String tipoStradaDom) {this.tipoStradaDom = tipoStradaDom;}
 
-    public void setNumCivicoDom(String numCivicoDom) {
-        this.numCivicoDom = numCivicoDom;
-    }
+    public void setNomeStradaDom(String nomeStradaDom) {this.nomeStradaDom = nomeStradaDom;}
 
-    public void setCittaDom(String cittaDom) {
-        this.cittaDom = cittaDom;
-    }
+    public void setNumCivicoDom(String numCivicoDom) {this.numCivicoDom = numCivicoDom;}
 
-    public void setCapDom(String capDom) {
-        this.capDom = capDom;
-    }
+    public void setCittaDom(String cittaDom) {this.cittaDom = cittaDom;}
 
-    public void setProvinciaDom(String provinciaDom) {
-        this.provinciaDom = provinciaDom;
-    }
+    public void setCapDom(String capDom) {this.capDom = capDom;}
 
-    public void setRegioneDom(String regioneDom) {
-        this.regioneDom = regioneDom;
-    }
+    public void setProvinciaDom(String provinciaDom) {this.provinciaDom = provinciaDom;}
 
-    public void setTipoDoc(String tipoDoc) {
-        this.tipoDoc = tipoDoc;
-    }
+    public void setRegioneDom(String regioneDom) {this.regioneDom = regioneDom;}
 
-    public void setIdDoc(String idDoc) {
-        this.idDoc = idDoc;
-    }
+    public void setTipoDoc(String tipoDoc) {this.tipoDoc = tipoDoc;}
 
-    public void setComuneAutorita(String comuneAutorita) {
-        this.comuneAutorita = comuneAutorita;
-    }
+    public void setIdDoc(String idDoc) {this.idDoc = idDoc;}
 
-    public void setNazionalita(String nazionalita) {
-        this.nazionalita = nazionalita;
-    }
+    public void setComuneAutorita(String comuneAutorita) {this.comuneAutorita = comuneAutorita;}
 
-    public void setNomeDocumento(String nomeDocumento) {
-        this.nomeDocumento = nomeDocumento;
-    }
+    public void setNazionalita(String nazionalita) {this.nazionalita = nazionalita;}
 
-    public void setCognomeDocumento(String cognomeDocumento) {
-        this.cognomeDocumento = cognomeDocumento;
-    }
+    public void setNomeDocumento(String nomeDocumento) {this.nomeDocumento = nomeDocumento;}
 
-    public void setDataNascitaDocumento(String dataNascitaDocumento) {
-        this.dataNascitaDocumento = dataNascitaDocumento;
-    }
+    public void setCognomeDocumento(String cognomeDocumento) {this.cognomeDocumento = cognomeDocumento;}
 
-    public void setDataNascitaEmissione(String dataNascitaEmissione) {
-        this.dataNascitaEmissione = dataNascitaEmissione;
-    }
+    public void setDataNascitaDocumento(String dataNascitaDocumento) {this.dataNascitaDocumento = dataNascitaDocumento;}
 
-    public void setDataScadenza(String dataScadenza) {
-        this.dataScadenza = dataScadenza;
-    }
+    public void setDataNascitaEmissione(String dataNascitaEmissione) {this.dataNascitaEmissione = dataNascitaEmissione;}
 
-    public void setComuneNascitaDoc(String comuneNascitaDoc) {
-        this.comuneNascitaDoc = comuneNascitaDoc;
-    }
+    public void setDataScadenza(String dataScadenza) {this.dataScadenza = dataScadenza;}
 
-    public void setProvNascitaDoc(String provNascitaDoc) {
-        this.provNascitaDoc = provNascitaDoc;
-    }
+    public void setComuneNascitaDoc(String comuneNascitaDoc) {this.comuneNascitaDoc = comuneNascitaDoc;}
 
-    public void setSessoDoc(String sessoDoc) {
-        this.sessoDoc = sessoDoc;
-    }
+    public void setProvNascitaDoc(String provNascitaDoc) {this.provNascitaDoc = provNascitaDoc;}
+
+    public void setSessoDoc(String sessoDoc) {this.sessoDoc = sessoDoc;}
+
+    public void setCf(String cf) {this.cf = cf;}
+
+    public void setNome(String nome) {this.nome = nome;}
+
+    public void setCognome(String cognome) {this.cognome = cognome;}
+
+    public void setCellulare(String cellulare) {this.cellulare = cellulare;}
+
+    public void setEmail(String email) {this.email = email;}
+
+    public void setDataNascita(String dataNascita) {this.dataNascita = dataNascita;}
+
+    public void setSesso(String sesso) {this.sesso = sesso;}
+
+    public void setComune(String comune) {this.comune = comune;}
+
+    public void setProv(String prov) {this.prov = prov;}
+    public void setCittadinanza(String cittadinanza) {this.cittadinanza = cittadinanza;}
+
+    public String getCf() {return cf;}
+
+    public String getNome() {return nome;}
+
+    public String getCognome() {return cognome;}
+
+    public String getCellulare() {return cellulare;}
+
+    public String getEmail() {return email;}
+
+    public String getDataNascita() {return dataNascita;}
+
+    public String getSesso() {return sesso;}
+
+    public String getComune() {return comune;}
+
+    public String getProv() {return prov;}
+
+    public String getCittadinanza() {return cittadinanza;}
 }
