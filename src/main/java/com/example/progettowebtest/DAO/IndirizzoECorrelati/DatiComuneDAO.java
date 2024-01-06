@@ -1,8 +1,7 @@
-package com.example.progettowebtest.DAO;
+package com.example.progettowebtest.DAO.IndirizzoECorrelati;
 
 import com.example.progettowebtest.Model.ColonneDatiComune;
 import com.example.progettowebtest.Model.DatiComune;
-import com.example.progettowebtest.Model.Indirizzo;
 
 import java.util.Vector;
 

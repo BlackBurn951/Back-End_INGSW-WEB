@@ -1,14 +1,19 @@
-package com.example.progettowebtest.DAO;
+package com.example.progettowebtest.DAO.UtenteEDocumenti;
 
 import com.example.progettowebtest.Connection.DbConnection;
+import com.example.progettowebtest.DAO.IndirizzoECorrelati.IndirizzoDAOImpl;
+import com.example.progettowebtest.DAO.IndirizzoECorrelati.TipoViaDAOImpl;
 import com.example.progettowebtest.Model.*;
 
 import java.sql.SQLException;
 import java.util.Vector;
 import java.sql.*;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 
 public class UtenteDAOImpl implements UtenteDAO {
+    private static IndirizzoDAOImpl indirizzoDAO = new IndirizzoDAOImpl();
+    private static TipoViaDAOImpl viaDAO = new TipoViaDAOImpl();
+
+    //private static DocumentiIdentita documentiIdentitaDAO = new DocumentiIdentita();
 
     @Override
     public Vector<Utente> doRetriveAll(){
@@ -18,14 +23,25 @@ public class UtenteDAOImpl implements UtenteDAO {
     @Override
     public Utente doRetriveByKey(String cf){
         Utente result= null;
-
+        //documenti id
+        String docId, patente, passaporto = "";
         try{
             String query= "select * from utente where cf= "+cf;
             PreparedStatement statement= DbConnection.getInstance().prepareStatement(query);
             ResultSet queryResult= statement.executeQuery();
 
-            if(!queryResult.wasNull())
-                //result= new Utente(queryResult.getString("nome"), queryResult.getString("cognome"));
+            if(!queryResult.wasNull()){
+                docId = queryResult.getString("num_identificativo_ci");
+                patente = queryResult.getString("num_patente");
+                passaporto = queryResult.getString("num_passaporto");
+
+                if(docId != null){
+                    CartaIdentita cartaIdentita = new CartaIdentita()
+                }
+                if(patente != null){}
+                if(passaporto != null){}
+            }
+
 
         }catch (SQLException e) {
             e.printStackTrace();

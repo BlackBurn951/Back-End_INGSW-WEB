@@ -1,8 +1,7 @@
-package com.example.progettowebtest.DAO;
+package com.example.progettowebtest.DAO.UtenteEDocumenti;
 
 import com.example.progettowebtest.Model.Utente;
 
-import java.util.Objects;
 import java.util.Vector;
 
 public interface UtenteDAO {
