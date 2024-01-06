@@ -1,7 +1,7 @@
 package com.example.progettowebtest.EmailSender;
 
 
-public class EmailDataWithAttachment extends EmailData {
+public class ExtendedEmailData extends GenericEmailData {
     String dataDiNascita;
     String indirizzo;
     String numeroTelefono;
