@@ -33,13 +33,18 @@ public class UtenteDAOImpl implements UtenteDAO {
 
             if(!queryResult.wasNull()) {
                 throw new RuntimeException("Utente presente nel db!!!");
-                /*
+
                 docId= queryResult.getString("num_identificativo_ci");
                 patente= queryResult.getString("num_patente");
                 passaporto= queryResult.getString("num_passaporto");
 
-                if(docId!=null)
-                    CartaIdentita doc= new CartaIdentita()
+                if(docId!=null) {
+
+                } else if (patente!=null) {
+
+                } else if (passaporto!=null) {
+
+                }
                 result= new Utente(queryResult.getString("nome"),
                 queryResult.getString("cognome"), queryResult.getString("cittadinanza"),
                 queryResult.getString("comune_di_nascita"),queryResult.getString("sesso"),
@@ -47,7 +52,7 @@ public class UtenteDAOImpl implements UtenteDAO {
                 queryResult.getDate("data_di_nascita").toString(), queryResult.getString("cf"),
                 queryResult.getString("email"), queryResult.getString("password"),
                 queryResult.getString("occupazione"), queryResult.getDouble("reddito_annuo"), );
-                */
+
             }
 
 
