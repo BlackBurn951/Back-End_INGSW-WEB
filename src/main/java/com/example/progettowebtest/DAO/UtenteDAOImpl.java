@@ -10,6 +10,12 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 
 public class UtenteDAOImpl implements UtenteDAO {
 
+    private static UtenteDAOImpl instance= new UtenteDAOImpl();
+
+    private UtenteDAOImpl() {}
+
+    public static UtenteDAOImpl getInstance() {return instance;}
+
     @Override
     public Vector<Utente> doRetriveAll(){
         return null;
@@ -18,14 +24,37 @@ public class UtenteDAOImpl implements UtenteDAO {
     @Override
     public Utente doRetriveByKey(String cf){
         Utente result= null;
-
+        String docId= "", patente= "", passaporto= "";
         try{
             String query= "select * from utente where cf= "+cf;
             PreparedStatement statement= DbConnection.getInstance().prepareStatement(query);
             ResultSet queryResult= statement.executeQuery();
 
-            if(!queryResult.wasNull())
-                //result= new Utente(queryResult.getString("nome"), queryResult.getString("cognome"));
+
+            if(!queryResult.wasNull()) {
+                throw new RuntimeException("Utente presente nel db!!!");
+
+                docId= queryResult.getString("num_identificativo_ci");
+                patente= queryResult.getString("num_patente");
+                passaporto= queryResult.getString("num_passaporto");
+
+                if(docId!=null) {
+
+                } else if (patente!=null) {
+
+                } else if (passaporto!=null) {
+
+                }
+                result= new Utente(queryResult.getString("nome"),
+                queryResult.getString("cognome"), queryResult.getString("cittadinanza"),
+                queryResult.getString("comune_di_nascita"),queryResult.getString("sesso"),
+                queryResult.getString("provincia_di_nascita"), queryResult.getString("num_telefono"),
+                queryResult.getDate("data_di_nascita").toString(), queryResult.getString("cf"),
+                queryResult.getString("email"), queryResult.getString("password"),
+                queryResult.getString("occupazione"), queryResult.getDouble("reddito_annuo"), );
+
+            }
+
 
         }catch (SQLException e) {
             e.printStackTrace();

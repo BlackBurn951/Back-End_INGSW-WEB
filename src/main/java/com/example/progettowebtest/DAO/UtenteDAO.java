@@ -8,6 +8,7 @@ import java.util.Vector;
 public interface UtenteDAO {
     Vector<Utente> doRetriveAll();
     Utente doRetriveByKey(String cf);
+    //Utente doRetriveByAttribute(String cf);
     boolean saveOrUpdate(Utente ut);
     boolean delete(Utente ut);
 }
