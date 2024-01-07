@@ -8,18 +8,23 @@ import java.util.Vector;
 import java.sql.*;
 
 public class UtenteDAOImpl implements UtenteDAO {
-    private static UtenteDAOImpl instance= new UtenteDAOImpl();
+    private static UtenteDAOImpl instance;
     private CartaIdentitaDAO cartaIdentitaDAO= CartaIdentitaDAOImpl.getInstance();
     private PatenteDAO patenteDAO= PatenteDAOImpl.getInstance();
     private PassaportoDAO passaportoDAO= PassaportoDAOImpl.getInstance();
     private IndirizzoDAO indirizzoDAO= IndirizzoDAOImpl.getInstance();
 
     private UtenteDAOImpl() {}
-    public static UtenteDAOImpl getInstance() {return instance;}
+    public static UtenteDAOImpl getInstance() {
+        if(instance==null)
+            instance= new UtenteDAOImpl();
+        return instance;
+    }
+
 
     @Override
     public Vector<Utente> doRetriveAll() {
-        Vector<Utente> userList = new Vector<>();
+        Vector<Utente> resultList = new Vector<>();
 
         try {
             String query = "SELECT * FROM utente";
@@ -28,28 +33,22 @@ public class UtenteDAOImpl implements UtenteDAO {
 
             while (queryResult.next()) {
                 Utente user = createUtente(queryResult);
-                userList.add(user);
+                resultList.add(user);
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return userList;
+        return resultList;
     }
-
-
-
-
 
     @Override
     public Utente doRetriveByKey(String id, IdentificativiUtente col){
         Utente result= null;
-
-        String docId, patente, passaporto;
-        DocumentiIdentita doc= null;
-
         String query;
+
         try{
-            if(col== IdentificativiUtente.CF)
+            if(col==IdentificativiUtente.CF)
                 query= "select * from utente where cf= "+id;
             else
                 query= "select * from utente where email= "+id;
@@ -72,9 +71,6 @@ public class UtenteDAOImpl implements UtenteDAO {
         boolean result= true;
 
         try {
-            //chimata al doRetriveByKey per capire se fare un update o una insert (funzione private all'interno della classe per
-            //l'update)
-
             String query = "INSERT INTO utente(cf, nome, cognome, cittadinanza, comune_di_nascita, sesso, provincia_di_nascita, num_telefono, data_di_nascita, " +
                     "email, password, num_identificativo_ci, num_patente, num_passaporto, nome_via_domicilio, num_civico_domicilio, nome_via_residenza, " +
                     "num_civico_residenza, id_comune_residenza, id_comune_domicilio, id_via_residenza, id_via_domicilio, occupazione, reditto_annuo) " +
@@ -136,16 +132,16 @@ public class UtenteDAOImpl implements UtenteDAO {
     @Override
     public boolean delete(Utente ut) {
         boolean result = false;
+
         try {
-            String query = "DELETE FROM utente WHERE cf=?";
+            String query = "DELETE FROM utente WHERE cf= "+ut.getCodiceFiscale();
             PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
-            statement.setString(1, ut.getCodiceFiscale());
 
-            int rowsAffected = statement.executeUpdate();
+            int tupleCancellate = statement.executeUpdate();
 
-            if (rowsAffected > 0) {
+            if (tupleCancellate > 0)
                 result = true;
-            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
