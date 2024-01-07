@@ -11,6 +11,14 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 public class DatiComuneDAOImpl implements DatiComuneDAO{
+    private static DatiComuneDAOImpl instance;
+    private DatiComuneDAOImpl() {}
+    public static DatiComuneDAOImpl getInstance() {
+        if(instance==null)
+            instance= new DatiComuneDAOImpl();
+        return instance;
+    }
+
     @Override
     public Vector<DatiComune> doRetriveAll() {
         return null;
@@ -19,13 +27,15 @@ public class DatiComuneDAOImpl implements DatiComuneDAO{
     @Override
     public DatiComune doRetriveByKey(int idComune) {
         DatiComune result= null;
+
         try{
             String query= "select * from dati_comune where id_comune= "+ idComune;
             PreparedStatement statement= DbConnection.getInstance().prepareStatement(query);
             ResultSet queryResult= statement.executeQuery();
 
-            result= new DatiComune(queryResult.getInt("id_comune"), queryResult.getString("nome_comune"),
-                    queryResult.getString("cap"), queryResult.getString("provincia"), queryResult.getString("regione"));
+            if(!queryResult.wasNull())
+                result= new DatiComune(queryResult.getInt("id_comune"), queryResult.getString("nome_comune"),
+                        queryResult.getString("cap"), queryResult.getString("provincia"), queryResult.getString("regione"));
 
         }catch (SQLException e) {
             e.printStackTrace();

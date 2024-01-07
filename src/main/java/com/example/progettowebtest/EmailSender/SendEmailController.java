@@ -3,6 +3,7 @@ import com.google.api.services.gmail.model.Message;
 import java.io.*;
 import java.security.GeneralSecurityException;
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,7 +21,7 @@ public class SendEmailController {
 
 
     @PostMapping("/sendEmail")
-    public void sendEmail(@RequestBody ExtendedEmailData extendedEmailData) {
+    public void sendEmail(HttpServletRequest request, HttpServletRequest response, @RequestBody ExtendedEmailData extendedEmailData) {
         String nomeCognome = extendedEmailData.getNomeCognome();
         generatedOTP = generateOTP();
 

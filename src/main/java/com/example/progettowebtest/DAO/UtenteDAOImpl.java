@@ -9,11 +9,13 @@ import java.sql.*;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 public class UtenteDAOImpl implements UtenteDAO {
-
     private static UtenteDAOImpl instance= new UtenteDAOImpl();
+    private CartaIdentitaDAO cartaIdentitaDAO= CartaIdentitaDAOImpl.getInstance();
+    private PatenteDAO patenteDAO= PatenteDAOImpl.getInstance();
+    private PassaportoDAO passaportoDAO= PassaportoDAOImpl.getInstance();
+    private IndirizzoDAO indirizzoDAO= IndirizzoDAOImpl.getInstance();
 
     private UtenteDAOImpl() {}
-
     public static UtenteDAOImpl getInstance() {return instance;}
 
     @Override
@@ -22,39 +24,53 @@ public class UtenteDAOImpl implements UtenteDAO {
     }
 
     @Override
-    public Utente doRetriveByKey(String cf){
+    public Utente doRetriveByKey(String id, IdentificativiUtente col){
         Utente result= null;
-        String docId= "", patente= "", passaporto= "";
+
+        String docId, patente, passaporto;
+        DocumentiIdentita doc= null;
+
+        String query;
         try{
-            String query= "select * from utente where cf= "+cf;
+            if(col== IdentificativiUtente.CF)
+                query= "select * from utente where cf= "+id;
+            else
+                query= "select * from utente where email= "+id;
+
             PreparedStatement statement= DbConnection.getInstance().prepareStatement(query);
             ResultSet queryResult= statement.executeQuery();
 
-
             if(!queryResult.wasNull()) {
-                throw new RuntimeException("Utente presente nel db!!!");
+                docId = queryResult.getString("num_identificativo_ci");
+                patente = queryResult.getString("num_patente");
+                passaporto = queryResult.getString("num_passaporto");
 
-                docId= queryResult.getString("num_identificativo_ci");
-                patente= queryResult.getString("num_patente");
-                passaporto= queryResult.getString("num_passaporto");
+                if (docId != null)
+                    doc = cartaIdentitaDAO.doRetriveByKey(docId);
+                else if (patente != null)
+                    doc = patenteDAO.doRetriveByKey(patente);
+                else if (passaporto != null)
+                    doc = passaportoDAO.doRetriveByKey(passaporto);
 
-                if(docId!=null) {
+                result = new Utente(queryResult.getString("nome"), queryResult.getString("cognome"), queryResult.getString("cittadinanza"), queryResult.getString("comune_di_nascita"),
+                        queryResult.getString("sesso"), queryResult.getString("provincia_di_nascita"), queryResult.getString("num_telefono"), queryResult.getDate("data_di_nascita").toString(),
+                        queryResult.getString("cf"), queryResult.getString("email"), queryResult.getString("password"), queryResult.getString("occupazione"),
+                        queryResult.getDouble("reddito_annuo"), doc);
 
-                } else if (patente!=null) {
+                Indirizzo res = indirizzoDAO.doRetriveByKey(queryResult.getString("nome_via_residenza"), queryResult.getString("num_civico_residenza"), queryResult.getInt("id_comune_residenza"),
+                        queryResult.getInt("id_via_residenza")), dom;
 
-                } else if (passaporto!=null) {
-
+                String nomeVia = queryResult.getString("nome_via_domicilio"), numCivico = queryResult.getString("num_civico_domicilio");
+                int idComune= queryResult.getInt("id_comune_domicilio"), idTipo= queryResult.getInt("id_via_domicilio");
+                if(nomeVia!= null) {
+                    dom= indirizzoDAO.doRetriveByKey(nomeVia, numCivico, idComune, idTipo);
+                    result.addAddress(res);
+                    result.addAddress(dom);
                 }
-                result= new Utente(queryResult.getString("nome"),
-                queryResult.getString("cognome"), queryResult.getString("cittadinanza"),
-                queryResult.getString("comune_di_nascita"),queryResult.getString("sesso"),
-                queryResult.getString("provincia_di_nascita"), queryResult.getString("num_telefono"),
-                queryResult.getDate("data_di_nascita").toString(), queryResult.getString("cf"),
-                queryResult.getString("email"), queryResult.getString("password"),
-                queryResult.getString("occupazione"), queryResult.getDouble("reddito_annuo"), );
+                else
+                    result.addAddress(res);
 
             }
-
 
         }catch (SQLException e) {
             e.printStackTrace();
@@ -66,6 +82,7 @@ public class UtenteDAOImpl implements UtenteDAO {
     public boolean saveOrUpdate(Utente ut) {
         Indirizzo res, dom;
         boolean result= true;
+
         try {
             //chimata al doRetriveByKey per capire se fare un update o una insert (funzione private all'interno della classe per
             //l'update)
