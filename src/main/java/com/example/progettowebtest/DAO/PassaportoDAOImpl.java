@@ -10,6 +10,14 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 public class PassaportoDAOImpl implements PassaportoDAO{
+    private static PassaportoDAOImpl instance;
+    private PassaportoDAOImpl() {}
+    public static PassaportoDAOImpl getInstance() {
+        if(instance==null)
+            instance= new PassaportoDAOImpl();
+        return instance;
+    }
+
     @Override
     public Vector<Passaporto> doRetriveAll() {
         return null;
@@ -19,14 +27,16 @@ public class PassaportoDAOImpl implements PassaportoDAO{
     public Passaporto doRetriveByKey(String numIdentificativo) {
         Passaporto result = null;
         try{
-            String query = "select * from passaporto where num_identificativo= "+ numIdentificativo;
+            String query = "select * from passaporto where num_passaporto= "+ numIdentificativo;
             PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
             ResultSet queryResult = statement.executeQuery();
 
-            result = new Passaporto(queryResult.getString("nome"), queryResult.getString("cognome"), queryResult.getString("nazionalità"),
-                    queryResult.getString("comune_di_nascita"), queryResult.getString("sesso"), queryResult.getString("provincia_di_nascita"),
-                    queryResult.getDate("data_di_nascita").toString(), queryResult.getString("num_passaporto"), queryResult.getDate("data_di_emissione").toString(),
-                    queryResult.getDate("data_di_scadenza").toString(), queryResult.getString("comune_di_rilascio"));
+            if(!queryResult.wasNull())
+                result = new Passaporto(queryResult.getString("nome"), queryResult.getString("cognome"), queryResult.getString("nazionalità"),
+                        queryResult.getString("comune_di_nascita"), queryResult.getString("sesso"), queryResult.getString("provincia_di_nascita"),
+                        queryResult.getDate("data_di_nascita").toString(), queryResult.getString("num_passaporto"), queryResult.getDate("data_di_emissione").toString(),
+                        queryResult.getDate("data_di_scadenza").toString(), queryResult.getString("comune_di_rilascio"));
+
         }catch (SQLException e){
             e.printStackTrace();
         }

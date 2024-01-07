@@ -2,7 +2,9 @@ package com.example.progettowebtest.Servlet;
 
 import com.example.progettowebtest.ClassiRequest.DatiControlloUtente;
 import com.example.progettowebtest.ClassiRequest.DatiRegistrazione;
+import com.example.progettowebtest.DAO.UtenteDAO;
 import com.example.progettowebtest.DAO.UtenteDAOImpl;
+import com.example.progettowebtest.Model.IdentificativiUtente;
 import com.example.progettowebtest.Model.Utente;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,9 +19,11 @@ import java.io.IOException;
 
 @RestController
 public class RegistrazioneServlet extends HttpServlet {
+    private UtenteDAO utenteDAO= UtenteDAOImpl.getInstance();
+
     @PostMapping("/emailCheck")
     public void emailCheck(HttpServletRequest request, HttpServletResponse response, @RequestBody DatiControlloUtente dati) {
-        Utente ut= UtenteDAOImpl.getInstance().doRetriveByKey(dati.getCf());
+        Utente ut= utenteDAO.doRetriveByKey(dati.getEmail(), IdentificativiUtente.EMAIL);
         String addres;
         if(ut==null) {
             response.setStatus(200);
