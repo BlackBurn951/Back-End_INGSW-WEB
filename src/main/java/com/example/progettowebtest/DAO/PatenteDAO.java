@@ -1,6 +1,6 @@
 package com.example.progettowebtest.DAO;
 
-import com.example.progettowebtest.Model.CartaIdentita;
+
 import com.example.progettowebtest.Model.Patente;
 
 import java.util.Vector;
