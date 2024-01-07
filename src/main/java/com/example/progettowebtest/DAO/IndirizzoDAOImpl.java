@@ -12,29 +12,41 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 public class IndirizzoDAOImpl implements IndirizzoDAO{
+    private static IndirizzoDAOImpl instance;
+    private DatiComuneDAO comuneDAO= DatiComuneDAOImpl.getInstance();
+    private TipoViaDAO tipoViaDAO= TipoViaDAOImpl.getInstance();
+
+    private IndirizzoDAOImpl() {}
+    public static IndirizzoDAOImpl getInstance() {
+        if(instance==null)
+            instance= new IndirizzoDAOImpl();
+        return instance;
+    }
+
     @Override
     public Vector<Indirizzo> doRetriveAll() {
         return null;
     }
 
     @Override
-    public Indirizzo doRetriveByKey(String nomeVia, String numCivico, String comune, String tipologia) {
+    public Indirizzo doRetriveByKey(String nomeVia, String numCivico, int comune, int tipologia) {
         Indirizzo result= null;
 
-        DatiComuneDAOImpl comuneDAO= new DatiComuneDAOImpl();
-        TipoViaDAOImpl viaDAO= new TipoViaDAOImpl();
-        DatiComune comuneIns= comuneDAO.doRetriveByAttribute(comune, ColonneDatiComune.NOME_COMUNE);;
-        TipoVia tipo= viaDAO.doRetriveByAttribute(tipologia);;
+        DatiComune comuneIns= comuneDAO.doRetriveByKey(comune);
+        TipoVia tipo= tipoViaDAO.doRetriveByKey(tipologia);
 
-        try{
-            String query= "select * from indirizzo where nome_via= "+ nomeVia+" and num_civico= "+ numCivico+ " and id_comune= "+ comuneIns.getIdComune()+" and id_via= "+tipo.getIdVia();
-            PreparedStatement statement= DbConnection.getInstance().prepareStatement(query);
-            ResultSet queryResult= statement.executeQuery();
+        if(comuneIns!=null && tipo!=null) {
+            try {
+                String query = "select * from indirizzo where nome_via= " + nomeVia + " and num_civico= " + numCivico + " and id_comune= " + comuneIns.getIdComune() + " and id_via= " + tipo.getIdVia();
+                PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+                ResultSet queryResult = statement.executeQuery();
 
-            result= new Indirizzo(tipo, queryResult.getString("nome_via"), queryResult.getString("num_civico"), comuneIns);
+                if (!queryResult.wasNull())
+                    result = new Indirizzo(tipo, queryResult.getString("nome_via"), queryResult.getString("num_civico"), comuneIns);
 
-        }catch (SQLException e) {
-            e.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return result;
     }
@@ -54,6 +66,7 @@ public class IndirizzoDAOImpl implements IndirizzoDAO{
             statement.setInt(4, ind.getTipologiaVia().getIdVia());
 
             statement.executeUpdate();
+
         }catch (SQLException e) {
             e.printStackTrace();
         }

@@ -10,6 +10,14 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 public class PatenteDAOImpl implements PatenteDAO{
+    private static PatenteDAOImpl instance;
+    public PatenteDAOImpl() {}
+    public static PatenteDAOImpl getInstance() {
+        if(instance==null)
+            instance= new PatenteDAOImpl();
+        return instance;
+    }
+
     @Override
     public Vector<Patente> doRetriveAll() {
         return null;
@@ -19,14 +27,16 @@ public class PatenteDAOImpl implements PatenteDAO{
     public Patente doRetriveByKey(String numIdentificativo) {
         Patente result = null;
         try{
-            String query = "select * from patente where num_identificativo= "+ numIdentificativo;
+            String query = "select * from patente where num_patente= "+ numIdentificativo;
             PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
             ResultSet queryResult = statement.executeQuery();
 
-            result = new Patente(queryResult.getString("nome"), queryResult.getString("cognome"), queryResult.getString("nazionalità"),
-                    queryResult.getString("comune_di_nascita"), queryResult.getString("sesso"), queryResult.getString("provincia_di_nascita"),
-                    queryResult.getDate("data_di_nascita").toString(), queryResult.getString("num_identificativo"), queryResult.getDate("data_di_emissione").toString(),
-                    queryResult.getDate("data_di_scadenza").toString(), queryResult.getString("comune_di_rilascio"));
+            if(!queryResult.wasNull())
+                result = new Patente(queryResult.getString("nome"), queryResult.getString("cognome"), "Italiana",
+                        queryResult.getString("comune_di_nascita"), queryResult.getString("sesso"), queryResult.getString("provincia_di_nascita"),
+                        queryResult.getDate("data_di_nascita").toString(), queryResult.getString("num_patente"), queryResult.getDate("data_di_emissione").toString(),
+                        queryResult.getDate("data_di_scadenza").toString(), queryResult.getString("autorità_emittente"));
+
         }catch (SQLException e){
             e.printStackTrace();
         }

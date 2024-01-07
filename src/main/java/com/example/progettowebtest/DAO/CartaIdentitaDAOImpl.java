@@ -9,6 +9,13 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 public class CartaIdentitaDAOImpl implements CartaIdentitaDAO{
+    private static CartaIdentitaDAOImpl instance;
+    private CartaIdentitaDAOImpl() {}
+    public static CartaIdentitaDAOImpl getInstance() {
+        if(instance==null)
+            instance= new CartaIdentitaDAOImpl();
+        return instance;
+    }
 
     @Override
     public Vector<CartaIdentita> doRetriveAll() {
@@ -23,10 +30,12 @@ public class CartaIdentitaDAOImpl implements CartaIdentitaDAO{
             PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
             ResultSet queryResult = statement.executeQuery();
 
-            result = new CartaIdentita(queryResult.getString("nome"), queryResult.getString("cognome"), queryResult.getString("nazionalità"),
-                    queryResult.getString("comune_di_nascita"), queryResult.getString("sesso"), queryResult.getString("provincia_di_nascita"),
-                    queryResult.getDate("data_di_nascita").toString(), queryResult.getString("num_identificativo"), queryResult.getDate("data_di_emissione").toString(),
-                    queryResult.getDate("data_di_scadenza").toString(), queryResult.getString("comune_di_rilascio"));
+            if(!queryResult.wasNull())
+                result = new CartaIdentita(queryResult.getString("nome"), queryResult.getString("cognome"), queryResult.getString("nazionalità"),
+                        queryResult.getString("comune_di_nascita"), queryResult.getString("sesso"), queryResult.getString("provincia_di_nascita"),
+                        queryResult.getDate("data_di_nascita").toString(), queryResult.getString("num_identificativo"), queryResult.getDate("data_di_emissione").toString(),
+                        queryResult.getDate("data_di_scadenza").toString(), queryResult.getString("comune_di_rilascio"));
+
         }catch (SQLException e){
             e.printStackTrace();
         }
