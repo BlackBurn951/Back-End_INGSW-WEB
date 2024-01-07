@@ -57,37 +57,8 @@ public class UtenteDAOImpl implements UtenteDAO {
             PreparedStatement statement= DbConnection.getInstance().prepareStatement(query);
             ResultSet queryResult= statement.executeQuery();
 
-            if(!queryResult.wasNull()) {
-                docId = queryResult.getString("num_identificativo_ci");
-                patente = queryResult.getString("num_patente");
-                passaporto = queryResult.getString("num_passaporto");
-
-                if (docId != null)
-                    doc = cartaIdentitaDAO.doRetriveByKey(docId);
-                else if (patente != null)
-                    doc = patenteDAO.doRetriveByKey(patente);
-                else if (passaporto != null)
-                    doc = passaportoDAO.doRetriveByKey(passaporto);
-
-                result = new Utente(queryResult.getString("nome"), queryResult.getString("cognome"), queryResult.getString("cittadinanza"), queryResult.getString("comune_di_nascita"),
-                        queryResult.getString("sesso"), queryResult.getString("provincia_di_nascita"), queryResult.getString("num_telefono"), queryResult.getDate("data_di_nascita").toString(),
-                        queryResult.getString("cf"), queryResult.getString("email"), queryResult.getString("password"), queryResult.getString("occupazione"),
-                        queryResult.getDouble("reddito_annuo"), doc);
-
-                Indirizzo res = indirizzoDAO.doRetriveByKey(queryResult.getString("nome_via_residenza"), queryResult.getString("num_civico_residenza"), queryResult.getInt("id_comune_residenza"),
-                        queryResult.getInt("id_via_residenza")), dom;
-
-                String nomeVia = queryResult.getString("nome_via_domicilio"), numCivico = queryResult.getString("num_civico_domicilio");
-                int idComune= queryResult.getInt("id_comune_domicilio"), idTipo= queryResult.getInt("id_via_domicilio");
-                if(nomeVia!= null) {
-                    dom= indirizzoDAO.doRetriveByKey(nomeVia, numCivico, idComune, idTipo);
-                    result.addAddress(res);
-                    result.addAddress(dom);
-                }
-                else
-                    result.addAddress(res);
-
-            }
+            if(!queryResult.wasNull())
+                result= createUtente(queryResult);
 
         }catch (SQLException e) {
             e.printStackTrace();
@@ -204,5 +175,43 @@ public class UtenteDAOImpl implements UtenteDAO {
                 statement.setString(14, doc.getNumIdentificativo());
                 break;
         }
+    }
+
+    private Utente createUtente(ResultSet query) throws SQLException{
+        Utente result;
+
+        String docId, patente, passaporto;
+        DocumentiIdentita doc= null;
+
+        docId = query.getString("num_identificativo_ci");
+        patente = query.getString("num_patente");
+        passaporto = query.getString("num_passaporto");
+
+        if (docId != null)
+            doc = cartaIdentitaDAO.doRetriveByKey(docId);
+        else if (patente != null)
+            doc = patenteDAO.doRetriveByKey(patente);
+        else if (passaporto != null)
+            doc = passaportoDAO.doRetriveByKey(passaporto);
+
+        result = new Utente(query.getString("nome"), query.getString("cognome"), query.getString("cittadinanza"), query.getString("comune_di_nascita"),
+                query.getString("sesso"), query.getString("provincia_di_nascita"), query.getString("num_telefono"), query.getDate("data_di_nascita").toString(),
+                query.getString("cf"), query.getString("email"), query.getString("password"), query.getString("occupazione"),
+                query.getDouble("reddito_annuo"), doc);
+
+        Indirizzo res = indirizzoDAO.doRetriveByKey(query.getString("nome_via_residenza"), query.getString("num_civico_residenza"), query.getInt("id_comune_residenza"),
+                query.getInt("id_via_residenza")), dom;
+
+        String nomeVia = query.getString("nome_via_domicilio"), numCivico = query.getString("num_civico_domicilio");
+        int idComune= query.getInt("id_comune_domicilio"), idTipo= query.getInt("id_via_domicilio");
+        if(nomeVia!= null) {
+            dom= indirizzoDAO.doRetriveByKey(nomeVia, numCivico, idComune, idTipo);
+            result.addAddress(res);
+            result.addAddress(dom);
+        }
+        else
+            result.addAddress(res);
+
+        return result;
     }
 }
