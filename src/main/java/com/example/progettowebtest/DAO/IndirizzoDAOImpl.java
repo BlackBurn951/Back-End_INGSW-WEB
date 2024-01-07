@@ -25,7 +25,28 @@ public class IndirizzoDAOImpl implements IndirizzoDAO{
 
     @Override
     public Vector<Indirizzo> doRetriveAll() {
-        return null;
+        Vector<Indirizzo> result = new Vector<>();
+
+        try {
+            String query = "SELECT * FROM indirizzo";
+            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+            ResultSet queryResult = statement.executeQuery();
+
+            while (queryResult.next()) {
+                int idComune = queryResult.getInt("id_comune");
+                int idTipoVia = queryResult.getInt("id_via");
+
+                DatiComune comuneIns = comuneDAO.doRetriveByKey(idComune);
+                TipoVia tipo = tipoViaDAO.doRetriveByKey(idTipoVia);
+
+                Indirizzo indirizzo = new Indirizzo(tipo, queryResult.getString("nome_via"), queryResult.getString("num_civico"), comuneIns);
+                result.add(indirizzo);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
     @Override
@@ -75,6 +96,25 @@ public class IndirizzoDAOImpl implements IndirizzoDAO{
 
     @Override
     public boolean delete(Indirizzo ind) {
-        return false;
+        boolean result = false;
+
+        try {
+            String query = "DELETE FROM indirizzo WHERE nome_via = ? AND num_civico = ? AND id_comune = ? AND id_via = ?";
+            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+
+            statement.setString(1, ind.getNomeVia());
+            statement.setString(2, ind.getNumCivico());
+            statement.setInt(3, ind.getComune().getIdComune());
+            statement.setInt(4, ind.getTipologiaVia().getIdVia());
+
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                result = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 }

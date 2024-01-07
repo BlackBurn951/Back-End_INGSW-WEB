@@ -6,7 +6,6 @@ import com.example.progettowebtest.Model.*;
 import java.sql.SQLException;
 import java.util.Vector;
 import java.sql.*;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 
 public class UtenteDAOImpl implements UtenteDAO {
     private static UtenteDAOImpl instance= new UtenteDAOImpl();
@@ -19,9 +18,27 @@ public class UtenteDAOImpl implements UtenteDAO {
     public static UtenteDAOImpl getInstance() {return instance;}
 
     @Override
-    public Vector<Utente> doRetriveAll(){
-        return null;
+    public Vector<Utente> doRetriveAll() {
+        Vector<Utente> userList = new Vector<>();
+
+        try {
+            String query = "SELECT * FROM utente";
+            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+            ResultSet queryResult = statement.executeQuery();
+
+            while (queryResult.next()) {
+                Utente user = createUtente(queryResult);
+                userList.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userList;
     }
+
+
+
+
 
     @Override
     public Utente doRetriveByKey(String id, IdentificativiUtente col){
@@ -87,10 +104,16 @@ public class UtenteDAOImpl implements UtenteDAO {
             //chimata al doRetriveByKey per capire se fare un update o una insert (funzione private all'interno della classe per
             //l'update)
 
-            String query= "insert into utente(cf, nome, cognome, cittadinanza, comune_di_nascita, sesso, provincia_di_nascita, num_telefono, data_di_nascita, " +
+            String query = "INSERT INTO utente(cf, nome, cognome, cittadinanza, comune_di_nascita, sesso, provincia_di_nascita, num_telefono, data_di_nascita, " +
                     "email, password, num_identificativo_ci, num_patente, num_passaporto, nome_via_domicilio, num_civico_domicilio, nome_via_residenza, " +
                     "num_civico_residenza, id_comune_residenza, id_comune_domicilio, id_via_residenza, id_via_domicilio, occupazione, reditto_annuo) " +
-                    "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                    "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" +
+                    "ON CONFLICT (cf) DO UPDATE SET nome=EXCLUDED.nome, cognome=EXCLUDED.cognome, cittadinanza=EXCLUDED.cittadinanza, comune_di_nascita=EXCLUDED.comune_di_nascita, sesso=EXCLUDED.sesso, " +
+                    "provincia_di_nascita=EXCLUDED.provincia_di_nascita, num_telefono=EXCLUDED.num_telefono, data_di_nascita=EXCLUDED.data_di_nascita, email=EXCLUDED.email, password=EXCLUDED.password, " +
+                    "num_identificativo_ci=EXCLUDED.num_identificativo_ci, num_patente=EXCLUDED.num_patente, num_passaporto=EXCLUDED.num_passaporto, nome_via_domicilio=EXCLUDED.nome_via_domicilio, " +
+                    "num_civico_domicilio=EXCLUDED.num_civico_domicilio, nome_via_residenza=EXCLUDED.nome_via_residenza, num_civico_residenza=EXCLUDED.num_civico_residenza, id_comune_residenza=EXCLUDED.id_comune_residenza, " +
+                    "id_comune_domicilio=EXCLUDED.id_comune_domicilio, id_via_residenza=EXCLUDED.id_via_residenza, id_via_domicilio=EXCLUDED.id_via_domicilio, occupazione=EXCLUDED.occupazione, reddito_annuo=EXCLUDED.reddito_annuo ";
+
             PreparedStatement statement= DbConnection.getInstance().prepareStatement(query);
 
             statement.setString(1, ut.getCodiceFiscale());
@@ -140,8 +163,22 @@ public class UtenteDAOImpl implements UtenteDAO {
     }
 
     @Override
-    public boolean delete(Utente ut){
-        return true;
+    public boolean delete(Utente ut) {
+        boolean result = false;
+        try {
+            String query = "DELETE FROM utente WHERE cf=?";
+            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+            statement.setString(1, ut.getCodiceFiscale());
+
+            int rowsAffected = statement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                result = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
 

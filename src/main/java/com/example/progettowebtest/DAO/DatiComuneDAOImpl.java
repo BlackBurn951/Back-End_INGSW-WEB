@@ -21,8 +21,26 @@ public class DatiComuneDAOImpl implements DatiComuneDAO{
 
     @Override
     public Vector<DatiComune> doRetriveAll() {
-        return null;
+        Vector<DatiComune> result = new Vector<>();
+        try {
+            String query = "select * from dati_comune";
+            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+            ResultSet queryResult = statement.executeQuery();
+
+            while (queryResult.next()) {
+                DatiComune data = new DatiComune(queryResult.getInt("id_comune"),
+                        queryResult.getString("nome_comune"),
+                        queryResult.getString("cap"),
+                        queryResult.getString("provincia"),
+                        queryResult.getString("regione"));
+                result.add(data);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
+
 
     @Override
     public DatiComune doRetriveByKey(int idComune) {
@@ -68,11 +86,47 @@ public class DatiComuneDAOImpl implements DatiComuneDAO{
 
     @Override
     public boolean saveOrUpdate(DatiComune comune) {
-        return false;
+        boolean result = false;
+        try {
+            String query = "INSERT INTO dati_comune (nome_comune, cap, provincia, regione) VALUES (?, ?, ?, ?)" +
+                    " ON CONFLICT (id_comune) DO UPDATE SET " +
+                    "nome_comune=EXCLUDED.nome_comune, cap=EXCLUDED.cap, provincia=EXCLUDED.provincia, regione=EXCLUDED.regione";
+
+            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+
+            statement.setString(1, comune.getNomeComune());
+            statement.setString(2, comune.getCap());
+            statement.setString(3, comune.getProvincia());
+            statement.setString(4, comune.getRegione());
+
+            int rowsAffected = statement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                result = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     @Override
     public boolean delete(DatiComune comune) {
-        return false;
+        boolean result = false;
+        try {
+            String query = "DELETE FROM dati_comune WHERE id_comune=?";
+            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+            statement.setInt(1, comune.getIdComune());
+
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                result = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
+
+
 }
