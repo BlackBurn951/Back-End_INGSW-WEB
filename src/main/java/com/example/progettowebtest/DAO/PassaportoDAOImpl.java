@@ -20,37 +20,32 @@ public class PassaportoDAOImpl implements PassaportoDAO{
 
     @Override
     public Vector<Passaporto> doRetriveAll() {
-        Vector<Passaporto> result = new Vector<>();
+        Vector<Passaporto> resultList = new Vector<>();
+
         try {
             String query = "SELECT * FROM passaporto";
             PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
             ResultSet queryResult = statement.executeQuery();
 
             while (queryResult.next()) {
-                Passaporto passaporto = new Passaporto(
-                        queryResult.getString("nome"),
-                        queryResult.getString("cognome"),
-                        queryResult.getString("nazionalità"),
-                        queryResult.getString("comune_di_nascita"),
-                        queryResult.getString("sesso"),
-                        queryResult.getString("provincia_di_nascita"),
-                        queryResult.getDate("data_di_nascita").toString(),
-                        queryResult.getString("num_passaporto"),
-                        queryResult.getDate("data_di_emissione").toString(),
-                        queryResult.getDate("data_di_scadenza").toString(),
-                        queryResult.getString("comune_di_rilascio")
-                );
-                result.add(passaporto);
+                Passaporto passaporto = new Passaporto(queryResult.getString("nome"), queryResult.getString("cognome"),
+                        queryResult.getString("nazionalità"), queryResult.getString("comune_di_nascita"), queryResult.getString("sesso"),
+                        queryResult.getString("provincia_di_nascita"), queryResult.getDate("data_di_nascita").toString(),
+                        queryResult.getString("num_passaporto"), queryResult.getDate("data_di_emissione").toString(),
+                        queryResult.getDate("data_di_scadenza").toString(), queryResult.getString("comune_di_rilascio"));
+                resultList.add(passaporto);
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return result;
+        return resultList;
     }
 
     @Override
     public Passaporto doRetriveByKey(String numIdentificativo) {
         Passaporto result = null;
+
         try{
             String query = "select * from passaporto where num_passaporto= "+ numIdentificativo;
             PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
@@ -70,16 +65,14 @@ public class PassaportoDAOImpl implements PassaportoDAO{
 
     @Override
     public boolean saveOrUpdate(Passaporto passa) {
-        boolean result = false;
+        boolean result = true;
+
         try {
-            String query = "INSERT INTO passaporto (nome, cognome, nazionalità, comune_di_nascita, sesso, provincia_di_nascita, data_di_nascita, num_passaporto, data_di_emissione, data_di_scadenza, comune_di_rilascio) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) " +
-                    "ON CONFLICT (num_passaporto) DO UPDATE SET " +
-                    "nome = EXCLUDED.nome, cognome = EXCLUDED.cognome, nazionalità = EXCLUDED.nazionalità, " +
-                    "comune_di_nascita = EXCLUDED.comune_di_nascita, sesso = EXCLUDED.sesso, " +
-                    "provincia_di_nascita = EXCLUDED.provincia_di_nascita, data_di_nascita = EXCLUDED.data_di_nascita, " +
-                    "data_di_emissione = EXCLUDED.data_di_emissione, data_di_scadenza = EXCLUDED.data_di_scadenza, " +
-                    "comune_di_rilascio = EXCLUDED.comune_di_rilascio";
+            String query = "INSERT INTO passaporto (nome, cognome, nazionalità, comune_di_nascita, sesso, provincia_di_nascita, data_di_nascita, num_passaporto, " +
+                    "data_di_emissione, data_di_scadenza, comune_di_rilascio) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT (num_passaporto) DO UPDATE SET " +
+                    "nome = EXCLUDED.nome, cognome = EXCLUDED.cognome, nazionalità = EXCLUDED.nazionalità, comune_di_nascita = EXCLUDED.comune_di_nascita, sesso = EXCLUDED.sesso, " +
+                    "provincia_di_nascita = EXCLUDED.provincia_di_nascita, data_di_nascita = EXCLUDED.data_di_nascita, data_di_emissione = EXCLUDED.data_di_emissione, " +
+                    "data_di_scadenza = EXCLUDED.data_di_scadenza, comune_di_rilascio = EXCLUDED.comune_di_rilascio";
             PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
 
             statement.setString(1, passa.getNome());
@@ -94,13 +87,11 @@ public class PassaportoDAOImpl implements PassaportoDAO{
             statement.setDate(10, passa.getDataScadenza());
             statement.setString(11, passa.getEntitaRilascio());
 
-            int rowsAffected = statement.executeUpdate();
+            statement.executeUpdate();
 
-            if (rowsAffected > 0) {
-                result = true;
-            }
         } catch (SQLException e) {
             e.printStackTrace();
+            result= false;
         }
         return result;
     }
@@ -108,15 +99,14 @@ public class PassaportoDAOImpl implements PassaportoDAO{
     @Override
     public boolean delete(Passaporto passa) {
         boolean result = false;
-        try {
-            String query = "DELETE FROM passaporto WHERE num_passaporto = ?";
-            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
-            statement.setString(1, passa.getNumIdentificativo());
 
-            int rowsAffected = statement.executeUpdate();
-            if (rowsAffected > 0) {
+        try {
+            String query = "DELETE FROM passaporto WHERE num_passaporto = "+ passa.getNumIdentificativo();
+            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+
+            if (statement.executeUpdate()>0)
                 result = true;
-            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
