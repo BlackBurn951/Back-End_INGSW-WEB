@@ -1,47 +1,25 @@
 package com.example.progettowebtest.Model;
 
-public class Deposito {
-
+public class Deposito extends Transazione{
     private int idDeposito;
-
     private double importo;
     private String casuale;
     private Mezzo mezzo;
+    private Carta cartaEsecuzione;
 
-    private CartaCredito cartaCredito;
-
-    private CartaDebito cartaDebito;
-
-    public Deposito(int idDeposito, double importo, String casuale, Mezzo mezzo, CartaCredito cartaCredito, CartaDebito cartaDebito) {
+    public Deposito(String dataTransazione, double costoTransazione, String esito, int idDeposito,
+                    double importo, String casuale, Mezzo mezzo, Carta cartaEsecuzione) {
+        super(dataTransazione, costoTransazione, esito);
         this.idDeposito = idDeposito;
         this.importo = importo;
         this.casuale = casuale;
         this.mezzo = mezzo;
-        this.cartaCredito = cartaCredito;
-        this.cartaDebito = cartaDebito;
+        this.cartaEsecuzione = cartaEsecuzione;
     }
 
-    public int getIdDeposito() {
-        return idDeposito;
-    }
-
-    public double getImporto() {
-        return importo;
-    }
-
-    public String getCasuale() {
-        return casuale;
-    }
-
-    public Mezzo getMezzo() {
-        return mezzo;
-    }
-
-    public CartaCredito getCartaCredito() {
-        return cartaCredito;
-    }
-
-    public CartaDebito getCartaDebito() {
-        return cartaDebito;
-    }
+    public int getIdDeposito() {return idDeposito;}
+    public double getImporto() {return importo;}
+    public String getCasuale() {return casuale;}
+    public Mezzo getMezzo() {return mezzo;}
+    public Carta getCartaEsecuzione() {return cartaEsecuzione;}
 }
