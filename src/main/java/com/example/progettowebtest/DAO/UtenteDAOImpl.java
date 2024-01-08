@@ -6,33 +6,49 @@ import com.example.progettowebtest.Model.*;
 import java.sql.SQLException;
 import java.util.Vector;
 import java.sql.*;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 
 public class UtenteDAOImpl implements UtenteDAO {
-    private static UtenteDAOImpl instance= new UtenteDAOImpl();
+    private static UtenteDAOImpl instance;
     private CartaIdentitaDAO cartaIdentitaDAO= CartaIdentitaDAOImpl.getInstance();
     private PatenteDAO patenteDAO= PatenteDAOImpl.getInstance();
     private PassaportoDAO passaportoDAO= PassaportoDAOImpl.getInstance();
     private IndirizzoDAO indirizzoDAO= IndirizzoDAOImpl.getInstance();
 
     private UtenteDAOImpl() {}
-    public static UtenteDAOImpl getInstance() {return instance;}
+    public static UtenteDAOImpl getInstance() {
+        if(instance==null)
+            instance= new UtenteDAOImpl();
+        return instance;
+    }
+
 
     @Override
-    public Vector<Utente> doRetriveAll(){
-        return null;
+    public Vector<Utente> doRetriveAll() {
+        Vector<Utente> resultList = new Vector<>();
+
+        try {
+            String query = "SELECT * FROM utente";
+            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+            ResultSet queryResult = statement.executeQuery();
+
+            while (queryResult.next()) {
+                Utente user = createUtente(queryResult);
+                resultList.add(user);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return resultList;
     }
 
     @Override
     public Utente doRetriveByKey(String id, IdentificativiUtente col){
         Utente result= null;
-
-        String docId, patente, passaporto;
-        DocumentiIdentita doc= null;
-
         String query;
+
         try{
-            if(col== IdentificativiUtente.CF)
+            if(col==IdentificativiUtente.CF)
                 query= "select * from utente where cf= "+id;
             else
                 query= "select * from utente where email= "+id;
@@ -40,37 +56,8 @@ public class UtenteDAOImpl implements UtenteDAO {
             PreparedStatement statement= DbConnection.getInstance().prepareStatement(query);
             ResultSet queryResult= statement.executeQuery();
 
-            if(!queryResult.wasNull()) {
-                docId = queryResult.getString("num_identificativo_ci");
-                patente = queryResult.getString("num_patente");
-                passaporto = queryResult.getString("num_passaporto");
-
-                if (docId != null)
-                    doc = cartaIdentitaDAO.doRetriveByKey(docId);
-                else if (patente != null)
-                    doc = patenteDAO.doRetriveByKey(patente);
-                else if (passaporto != null)
-                    doc = passaportoDAO.doRetriveByKey(passaporto);
-
-                result = new Utente(queryResult.getString("nome"), queryResult.getString("cognome"), queryResult.getString("cittadinanza"), queryResult.getString("comune_di_nascita"),
-                        queryResult.getString("sesso"), queryResult.getString("provincia_di_nascita"), queryResult.getString("num_telefono"), queryResult.getDate("data_di_nascita").toString(),
-                        queryResult.getString("cf"), queryResult.getString("email"), queryResult.getString("password"), queryResult.getString("occupazione"),
-                        queryResult.getDouble("reddito_annuo"), doc);
-
-                Indirizzo res = indirizzoDAO.doRetriveByKey(queryResult.getString("nome_via_residenza"), queryResult.getString("num_civico_residenza"), queryResult.getInt("id_comune_residenza"),
-                        queryResult.getInt("id_via_residenza")), dom;
-
-                String nomeVia = queryResult.getString("nome_via_domicilio"), numCivico = queryResult.getString("num_civico_domicilio");
-                int idComune= queryResult.getInt("id_comune_domicilio"), idTipo= queryResult.getInt("id_via_domicilio");
-                if(nomeVia!= null) {
-                    dom= indirizzoDAO.doRetriveByKey(nomeVia, numCivico, idComune, idTipo);
-                    result.addAddress(res);
-                    result.addAddress(dom);
-                }
-                else
-                    result.addAddress(res);
-
-            }
+            if(!queryResult.wasNull())
+                result= createUtente(queryResult);
 
         }catch (SQLException e) {
             e.printStackTrace();
@@ -84,13 +71,16 @@ public class UtenteDAOImpl implements UtenteDAO {
         boolean result= true;
 
         try {
-            //chimata al doRetriveByKey per capire se fare un update o una insert (funzione private all'interno della classe per
-            //l'update)
-
-            String query= "insert into utente(cf, nome, cognome, cittadinanza, comune_di_nascita, sesso, provincia_di_nascita, num_telefono, data_di_nascita, " +
+            String query = "INSERT INTO utente(cf, nome, cognome, cittadinanza, comune_di_nascita, sesso, provincia_di_nascita, num_telefono, data_di_nascita, " +
                     "email, password, num_identificativo_ci, num_patente, num_passaporto, nome_via_domicilio, num_civico_domicilio, nome_via_residenza, " +
                     "num_civico_residenza, id_comune_residenza, id_comune_domicilio, id_via_residenza, id_via_domicilio, occupazione, reditto_annuo) " +
-                    "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                    "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" +
+                    "ON CONFLICT (cf) DO UPDATE SET nome=EXCLUDED.nome, cognome=EXCLUDED.cognome, cittadinanza=EXCLUDED.cittadinanza, comune_di_nascita=EXCLUDED.comune_di_nascita, sesso=EXCLUDED.sesso, " +
+                    "provincia_di_nascita=EXCLUDED.provincia_di_nascita, num_telefono=EXCLUDED.num_telefono, data_di_nascita=EXCLUDED.data_di_nascita, email=EXCLUDED.email, password=EXCLUDED.password, " +
+                    "num_identificativo_ci=EXCLUDED.num_identificativo_ci, num_patente=EXCLUDED.num_patente, num_passaporto=EXCLUDED.num_passaporto, nome_via_domicilio=EXCLUDED.nome_via_domicilio, " +
+                    "num_civico_domicilio=EXCLUDED.num_civico_domicilio, nome_via_residenza=EXCLUDED.nome_via_residenza, num_civico_residenza=EXCLUDED.num_civico_residenza, id_comune_residenza=EXCLUDED.id_comune_residenza, " +
+                    "id_comune_domicilio=EXCLUDED.id_comune_domicilio, id_via_residenza=EXCLUDED.id_via_residenza, id_via_domicilio=EXCLUDED.id_via_domicilio, occupazione=EXCLUDED.occupazione, reddito_annuo=EXCLUDED.reddito_annuo ";
+
             PreparedStatement statement= DbConnection.getInstance().prepareStatement(query);
 
             statement.setString(1, ut.getCodiceFiscale());
@@ -140,8 +130,22 @@ public class UtenteDAOImpl implements UtenteDAO {
     }
 
     @Override
-    public boolean delete(Utente ut){
-        return true;
+    public boolean delete(Utente ut) {
+        boolean result = false;
+
+        try {
+            String query = "DELETE FROM utente WHERE cf= "+ut.getCodiceFiscale();
+            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+
+            int tupleCancellate = statement.executeUpdate();
+
+            if (tupleCancellate > 0)
+                result = true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
 
@@ -167,5 +171,43 @@ public class UtenteDAOImpl implements UtenteDAO {
                 statement.setString(14, doc.getNumIdentificativo());
                 break;
         }
+    }
+
+    private Utente createUtente(ResultSet query) throws SQLException{
+        Utente result;
+
+        String docId, patente, passaporto;
+        DocumentiIdentita doc= null;
+
+        docId = query.getString("num_identificativo_ci");
+        patente = query.getString("num_patente");
+        passaporto = query.getString("num_passaporto");
+
+        if (docId != null)
+            doc = cartaIdentitaDAO.doRetriveByKey(docId);
+        else if (patente != null)
+            doc = patenteDAO.doRetriveByKey(patente);
+        else if (passaporto != null)
+            doc = passaportoDAO.doRetriveByKey(passaporto);
+
+        result = new Utente(query.getString("nome"), query.getString("cognome"), query.getString("cittadinanza"), query.getString("comune_di_nascita"),
+                query.getString("sesso"), query.getString("provincia_di_nascita"), query.getString("num_telefono"), query.getDate("data_di_nascita").toString(),
+                query.getString("cf"), query.getString("email"), query.getString("password"), query.getString("occupazione"),
+                query.getDouble("reddito_annuo"), doc);
+
+        Indirizzo res = indirizzoDAO.doRetriveByKey(query.getString("nome_via_residenza"), query.getString("num_civico_residenza"), query.getInt("id_comune_residenza"),
+                query.getInt("id_via_residenza")), dom;
+
+        String nomeVia = query.getString("nome_via_domicilio"), numCivico = query.getString("num_civico_domicilio");
+        int idComune= query.getInt("id_comune_domicilio"), idTipo= query.getInt("id_via_domicilio");
+        if(nomeVia!= null) {
+            dom= indirizzoDAO.doRetriveByKey(nomeVia, numCivico, idComune, idTipo);
+            result.addAddress(res);
+            result.addAddress(dom);
+        }
+        else
+            result.addAddress(res);
+
+        return result;
     }
 }

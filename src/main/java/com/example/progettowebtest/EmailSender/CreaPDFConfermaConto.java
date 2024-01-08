@@ -6,8 +6,8 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
-
 import java.io.IOException;
+
 public class CreaPDFConfermaConto {
 
     private static final float VERTICAL_OFFSET = 25f;

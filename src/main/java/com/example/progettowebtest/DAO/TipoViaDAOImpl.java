@@ -19,7 +19,21 @@ public class TipoViaDAOImpl implements TipoViaDAO{
 
     @Override
     public Vector<TipoVia> doRetriveAll() {
-        return null;
+        Vector<TipoVia> resultList = new Vector<>();
+
+        try {
+            String query = "SELECT * FROM tipo_via";
+            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+            ResultSet queryResult = statement.executeQuery();
+
+            while (queryResult.next()) {
+                TipoVia tipoVia = new TipoVia(queryResult.getInt("id_via"), queryResult.getString("tipologia"));
+                resultList.add(tipoVia);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return resultList;
     }
 
     @Override
@@ -43,6 +57,7 @@ public class TipoViaDAOImpl implements TipoViaDAO{
     @Override
     public TipoVia doRetriveByAttribute(String tipo) {
         TipoVia result= null;
+
         try{
             String query= "select * from tipo_via where tipologia= "+ tipo;
             PreparedStatement statement= DbConnection.getInstance().prepareStatement(query);
@@ -58,11 +73,35 @@ public class TipoViaDAOImpl implements TipoViaDAO{
 
     @Override
     public boolean saveOrUpdate(TipoVia tipo) {
-        return false;
+        boolean result = true;
+
+        try {
+            String query = "INSERT INTO tipo_via (tipologia) VALUES (?) ON CONFLICT (tipologia) DO NOTHING";
+
+            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+            statement.setString(1, tipo.getTipoVia());
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            result= false;
+        }
+        return result;
     }
 
     @Override
     public boolean delete(TipoVia tipo) {
-        return false;
+        boolean result = false;
+
+        try {
+            String query = "DELETE FROM tipo_via WHERE id_via = "+ tipo.getIdVia();
+            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+
+            if (statement.executeUpdate()>0)
+                result = true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }

@@ -81,9 +81,7 @@ public class EmailService {
     }
 
     static Message createMessageWithAttachment(String htmlContent, String sender, String to, String subject, PDDocument file) throws MessagingException, IOException {
-        Properties props = new Properties();
-        Session session = Session.getDefaultInstance(props, null);
-        MimeMessage email = new MimeMessage(session);
+        MimeMessage email = new MimeMessage(Session.getDefaultInstance(new Properties(), null));
         email.setFrom(new InternetAddress(sender));
         email.addRecipient(javax.mail.Message.RecipientType.TO, new InternetAddress(to));
         email.setSubject(subject);

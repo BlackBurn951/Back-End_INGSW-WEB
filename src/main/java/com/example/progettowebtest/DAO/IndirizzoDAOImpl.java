@@ -25,7 +25,29 @@ public class IndirizzoDAOImpl implements IndirizzoDAO{
 
     @Override
     public Vector<Indirizzo> doRetriveAll() {
-        return null;
+        Vector<Indirizzo> resultList = new Vector<>();
+        int idComune, idTipoVia;
+
+        try {
+            String query = "SELECT * FROM indirizzo";
+            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+            ResultSet queryResult = statement.executeQuery();
+
+            while (queryResult.next()) {
+                idComune = queryResult.getInt("id_comune");
+                idTipoVia = queryResult.getInt("id_via");
+
+                DatiComune comuneIns = comuneDAO.doRetriveByKey(idComune);
+                TipoVia tipo = tipoViaDAO.doRetriveByKey(idTipoVia);
+
+                Indirizzo indirizzo = new Indirizzo(tipo, queryResult.getString("nome_via"), queryResult.getString("num_civico"), comuneIns);
+                resultList.add(indirizzo);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return resultList;
     }
 
     @Override
@@ -56,8 +78,7 @@ public class IndirizzoDAOImpl implements IndirizzoDAO{
         boolean result= true;
 
         try {
-            //Controllo che l'indirizzo sia esistente per fare l'update
-            String query= "insert into indirizzo(nome_via, num_civico, id_comune, id_via) values(?,?,?,?)";
+            String query= "insert into indirizzo(nome_via, num_civico, id_comune, id_via) values(?,?,?,?) ON CONFLICT (nome_via, num_civico, id_comune, id_via) DO NOTHING";
             PreparedStatement statement= DbConnection.getInstance().prepareStatement(query);
 
             statement.setString(1, ind.getNomeVia());
@@ -69,12 +90,26 @@ public class IndirizzoDAOImpl implements IndirizzoDAO{
 
         }catch (SQLException e) {
             e.printStackTrace();
+            result= false;
         }
         return result;
     }
 
     @Override
     public boolean delete(Indirizzo ind) {
-        return false;
+        boolean result = false;
+
+        try {
+            String query = "DELETE FROM indirizzo WHERE nome_via = "+ind.getNomeVia()+" AND num_civico = "+ind.getNumCivico()+" AND " +
+                    "id_comune = "+ind.getComune().getIdComune()+" AND id_via = "+ind.getTipologiaVia().getIdVia();
+            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+
+            if (statement.executeUpdate()>0)
+                result = true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }
