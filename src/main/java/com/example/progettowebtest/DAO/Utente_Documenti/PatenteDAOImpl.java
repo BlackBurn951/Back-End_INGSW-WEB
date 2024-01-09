@@ -1,5 +1,6 @@
 package com.example.progettowebtest.DAO.Utente_Documenti;
 
+import com.example.progettowebtest.Connection.DbConn;
 import com.example.progettowebtest.Connection.DbConnection;
 import com.example.progettowebtest.Model.Patente;
 
@@ -23,7 +24,7 @@ public class PatenteDAOImpl implements PatenteDAO{
 
         try {
             String query = "SELECT * FROM patente";
-            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
             ResultSet queryResult = statement.executeQuery();
 
             while (queryResult.next()) {
@@ -46,7 +47,7 @@ public class PatenteDAOImpl implements PatenteDAO{
 
         try{
             String query = "select * from patente where num_patente= "+ numIdentificativo;
-            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
             ResultSet queryResult = statement.executeQuery();
 
             if(!queryResult.wasNull())
@@ -71,7 +72,7 @@ public class PatenteDAOImpl implements PatenteDAO{
                     "nome = EXCLUDED.nome, cognome = EXCLUDED.cognome, comune_di_nascita = EXCLUDED.comune_di_nascita, sesso = EXCLUDED.sesso, provincia_di_nascita = EXCLUDED.provincia_di_nascita, " +
                     "data_di_nascita = EXCLUDED.data_di_nascita, data_di_emissione = EXCLUDED.data_di_emissione, data_di_scadenza = EXCLUDED.data_di_scadenza, autorità_emittente = EXCLUDED.autorità_emittente";
 
-            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
 
             statement.setString(1, pat.getNumIdentificativo());
             statement.setString(2, pat.getNome());
@@ -98,7 +99,7 @@ public class PatenteDAOImpl implements PatenteDAO{
 
         try {
             String query = "DELETE FROM patente WHERE num_patente = "+ pat.getNumIdentificativo();
-            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
 
             if (statement.executeUpdate()>0)
                 result = true;
