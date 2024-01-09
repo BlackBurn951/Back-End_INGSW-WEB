@@ -1,4 +1,4 @@
-package com.example.progettowebtest.DAO;
+package com.example.progettowebtest.DAO.Carte;
 
 import com.example.progettowebtest.Model.CartaCredito;
 
