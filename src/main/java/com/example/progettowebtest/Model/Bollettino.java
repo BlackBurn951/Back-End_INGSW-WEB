@@ -1,6 +1,6 @@
 package com.example.progettowebtest.Model;
 
-public class Bollettino extends Transazione{
+public class Bollettino extends DatiTransazione {
     private int idBollettino;
     private double importo;
     private String causale;

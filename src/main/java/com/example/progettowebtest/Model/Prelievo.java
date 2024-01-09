@@ -1,6 +1,6 @@
 package com.example.progettowebtest.Model;
 
-public class Prelievo extends Transazione{
+public class Prelievo extends DatiTransazione {
     private int idPrelievo;
     private double importo;
     private String casuale;
