@@ -70,10 +70,10 @@ public class DatiComuneDAOImpl implements DatiComuneDAO{
         String query= "";
         try{
             switch (val) {
-                case NOME_COMUNE ->  query= "select * from dati_comune where nome_comune= "+ att;
+                case NOME_COMUNE -> query= "select * from dati_comune where nome_comune= "+ att;
                 case CAP -> query= "select * from dati_comune where cap= "+ att;
-                case PROVINCIA ->  query= "select * from dati_comune where provincia= "+ att;
-                case REGIONE ->     query= "select * from dati_comune where regione= "+ att;
+                case PROVINCIA -> query= "select * from dati_comune where provincia= "+ att;
+                case REGIONE -> query= "select * from dati_comune where regione= "+ att;
             }
             PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
 
