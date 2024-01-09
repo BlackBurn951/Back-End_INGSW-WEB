@@ -3,7 +3,7 @@ package com.example.progettowebtest.Model;
 import java.sql.Date;
 
 public class TransazioneProxy implements Transazione {
-    private String id;
+    private int id;
     private Date dataTransazione;
     private double importo;
     private String causale;
@@ -12,7 +12,7 @@ public class TransazioneProxy implements Transazione {
     private TipoTransazione tipo;
 
 
-    public TransazioneProxy(String id, Date dataTransazione, double importo, String causale, TipoTransazione tipo) {
+    public TransazioneProxy(int id, Date dataTransazione, double importo, String causale, TipoTransazione tipo) {
         this.id = id;
         this.dataTransazione = dataTransazione;
         this.importo = importo;
@@ -20,6 +20,10 @@ public class TransazioneProxy implements Transazione {
         this.tipo= tipo;
     }
 
+
+    //Metodi gestibili dal PROXY
+    @Override
+    public int getId() {return id;}
     @Override
     public Date getDataTransazione() {return dataTransazione;}
     @Override
@@ -28,6 +32,8 @@ public class TransazioneProxy implements Transazione {
     public String getCausale() {return causale;}
 
 
+
+    //Metodi gestibili da TUTTE le transazioni
     @Override
     public double getCostoTransazione() {
         if(transazioneReale==null)
@@ -42,59 +48,97 @@ public class TransazioneProxy implements Transazione {
         return transazioneReale.getEsito();
     }
 
+
+
+    //Metodi gestibili solo dai BONIFICI
     @Override
     public String getNomeBeneficiario() {
         if(transazioneReale==null && (isType(TipoTransazione.BONIFICOSEPA) || isType(TipoTransazione.BONIFICOINTER)))
             instanzaTransazione();
         else if (transazioneReale!=null && (isType(TipoTransazione.BONIFICOSEPA) || isType(TipoTransazione.BONIFICOINTER)))
             return transazioneReale.getCognomeBeneficiario();
-        else
-            return;
+        return "ERRORE";
     }
 
     @Override
     public String getCognomeBeneficiario() {
-        return null;
-    }
-
-    @Override
-    public int getId() {
-        return 0;
+        if(transazioneReale==null && (isType(TipoTransazione.BONIFICOSEPA) || isType(TipoTransazione.BONIFICOINTER)))
+            instanzaTransazione();
+        else if (transazioneReale!=null && (isType(TipoTransazione.BONIFICOSEPA) || isType(TipoTransazione.BONIFICOINTER)))
+            return transazioneReale.getCognomeBeneficiario();
+        return "ERRORE";
     }
 
     @Override
     public String getIbanDestinatario() {
-        return null;
-    }
-
-    @Override
-    public String getNumCcDest() {
-        return null;
-    }
-
-    @Override
-    public TipologiaBollettino getTipoBol() {
-        return null;
+        if(transazioneReale==null && (isType(TipoTransazione.BONIFICOSEPA) || isType(TipoTransazione.BONIFICOINTER)))
+            instanzaTransazione();
+        else if (transazioneReale!=null && (isType(TipoTransazione.BONIFICOSEPA) || isType(TipoTransazione.BONIFICOINTER)))
+            return transazioneReale.getCognomeBeneficiario();
+        return "ERRORE";
     }
 
     @Override
     public String getValutaPagamento() {
-        return null;
+        if(transazioneReale==null && (isType(TipoTransazione.BONIFICOINTER)))
+            instanzaTransazione();
+        else if (transazioneReale!=null && (isType(TipoTransazione.BONIFICOINTER)))
+            return transazioneReale.getNumCcDest();
+        return "ERRORE";
     }
 
     @Override
     public String getPaeseDestinatario() {
-        return null;
+        if(transazioneReale==null && (isType(TipoTransazione.BONIFICOINTER)))
+            instanzaTransazione();
+        else if (transazioneReale!=null && (isType(TipoTransazione.BONIFICOINTER)))
+            return transazioneReale.getNumCcDest();
+        return "ERRORE";
+    }
+
+
+
+    //Metodi gestibili solo dai BOLLETTINI
+    @Override
+    public String getNumCcDest() {
+        if(transazioneReale==null && (isType(TipoTransazione.BOLLETTINO)))
+            instanzaTransazione();
+        else if (transazioneReale!=null && (isType(TipoTransazione.BOLLETTINO)))
+            return transazioneReale.getNumCcDest();
+        return "ERRORE";
     }
 
     @Override
+    public TipologiaBollettino getTipoBol() {
+        TipologiaBollettino result= null;
+        if(transazioneReale==null && (isType(TipoTransazione.BOLLETTINO)))
+            instanzaTransazione();
+        else if (transazioneReale!=null && (isType(TipoTransazione.BOLLETTINO)))
+            return transazioneReale.getTipoBol();
+        return result;
+    }
+
+
+
+    //Metodi gestibili solo dai PRELIEVI e DEPOSITI
+    @Override
     public Mezzo getMezzo() {
-        return null;
+        Mezzo result= null;
+        if(transazioneReale==null && (isType(TipoTransazione.DEPOSITO) || isType(TipoTransazione.PRELIEVO)))
+            instanzaTransazione();
+        else if (transazioneReale!=null && (isType(TipoTransazione.DEPOSITO) || isType(TipoTransazione.PRELIEVO)))
+            return transazioneReale.getMezzo();
+        return result;
     }
 
     @Override
     public Carta getCartaEsecuzione() {
-        return null;
+        Carta result= null;
+        if(transazioneReale==null && (isType(TipoTransazione.DEPOSITO) || isType(TipoTransazione.PRELIEVO)))
+            instanzaTransazione();
+        else if (transazioneReale!=null && (isType(TipoTransazione.DEPOSITO) || isType(TipoTransazione.PRELIEVO)))
+            return transazioneReale.getCartaEsecuzione();
+        return result;
     }
 
 
@@ -114,7 +158,5 @@ public class TransazioneProxy implements Transazione {
         }
     }
 
-    private boolean isType(TipoTransazione types) {
-        return tipo==types;
-    }
+    private boolean isType(TipoTransazione types) {return tipo==types;}
 }

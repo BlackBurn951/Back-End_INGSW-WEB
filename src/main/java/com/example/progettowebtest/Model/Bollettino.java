@@ -1,6 +1,6 @@
 package com.example.progettowebtest.Model;
 
-public class Bollettino extends DatiTransazione {
+public class Bollettino extends DatiTransazione implements Transazione{
     private int idBollettino;
     private double importo;
     private String causale;
@@ -17,9 +17,41 @@ public class Bollettino extends DatiTransazione {
         this.tipoBol = tipoBol;
     }
 
-    public int getIdBollettino() {return idBollettino;}
     public double getImporto() {return importo;}
     public String getCausale() {return causale;}
     public String getNumCcDest() {return numCcDest;}
     public TipologiaBollettino getTipoBol() {return tipoBol;}
+
+
+
+    //Metodi implementati per il proxy
+    @Override
+    public int getId() {return idBollettino;}
+
+    @Override
+    public String getNomeBeneficiario() {return "ERRORE";}
+
+    @Override
+    public String getCognomeBeneficiario() {return "ERRORE";}
+
+    @Override
+    public String getIbanDestinatario() {return "ERRORE";}
+
+    @Override
+    public String getValutaPagamento() {return "ERRORE";}
+
+    @Override
+    public String getPaeseDestinatario() {return "ERRORE";}
+
+    @Override
+    public Mezzo getMezzo() {
+        Mezzo result= null;
+        return result;
+    }
+
+    @Override
+    public Carta getCartaEsecuzione() {
+        Carta result= null;
+        return result;
+    }
 }
