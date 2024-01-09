@@ -3,16 +3,19 @@ package com.example.progettowebtest.DAO;
 import com.example.progettowebtest.Connection.DbConnection;
 import com.example.progettowebtest.Model.*;
 
+import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.Vector;
 import java.sql.*;
 
 public class UtenteDAOImpl implements UtenteDAO {
+
+    private static DataSource dataSource;
     private static UtenteDAOImpl instance;
     private CartaIdentitaDAO cartaIdentitaDAO= CartaIdentitaDAOImpl.getInstance();
     private PatenteDAO patenteDAO= PatenteDAOImpl.getInstance();
     private PassaportoDAO passaportoDAO= PassaportoDAOImpl.getInstance();
-    private IndirizzoDAO indirizzoDAO= IndirizzoDAOImpl.getInstance();
+    private IndirizzoDAO indirizzoDAO= IndirizzoDAOImpl.getInstance(dataSource);
 
     private UtenteDAOImpl() {}
     public static UtenteDAOImpl getInstance() {

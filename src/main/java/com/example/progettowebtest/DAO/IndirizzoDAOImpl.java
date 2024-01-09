@@ -5,7 +5,9 @@ import com.example.progettowebtest.Model.ColonneDatiComune;
 import com.example.progettowebtest.Model.DatiComune;
 import com.example.progettowebtest.Model.Indirizzo;
 import com.example.progettowebtest.Model.TipoVia;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,10 +18,17 @@ public class IndirizzoDAOImpl implements IndirizzoDAO{
     private DatiComuneDAO comuneDAO= DatiComuneDAOImpl.getInstance();
     private TipoViaDAO tipoViaDAO= TipoViaDAOImpl.getInstance();
 
-    private IndirizzoDAOImpl() {}
-    public static IndirizzoDAOImpl getInstance() {
-        if(instance==null)
-            instance= new IndirizzoDAOImpl();
+
+    private static DataSource dataSource;
+
+    public IndirizzoDAOImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+
+    public static synchronized IndirizzoDAOImpl getInstance(DataSource dataSource) {
+        if (instance == null)
+            instance = new IndirizzoDAOImpl(dataSource);
         return instance;
     }
 
@@ -30,7 +39,7 @@ public class IndirizzoDAOImpl implements IndirizzoDAO{
 
         try {
             String query = "SELECT * FROM indirizzo";
-            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+            PreparedStatement statement = dataSource.getConnection().prepareStatement(query);
             ResultSet queryResult = statement.executeQuery();
 
             while (queryResult.next()) {
