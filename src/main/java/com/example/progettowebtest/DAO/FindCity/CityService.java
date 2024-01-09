@@ -1,20 +1,19 @@
 package com.example.progettowebtest.DAO.FindCity;
 
+import com.example.progettowebtest.DAO.Indirizzo.DatiComuneDAOImpl;
+import com.example.progettowebtest.Model.ColonneDatiComune;
+import com.example.progettowebtest.Model.DatiComune;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Vector;
 
 @Service
 public class CityService {
 
-    private final CityRepository cityRepository;
-
-    public CityService(CityRepository cityRepository) {
-        this.cityRepository = cityRepository;
-    }
 
     public List<String> findCitiesByQuery(String query) {
-        // Implementa la logica per trovare le città nel database che corrispondono alla query
-        return cityRepository.findCityNamesByPartialName(query);
+
+        return DatiComuneDAOImpl.getInstance().restituisciCitta(query);
     }
 }

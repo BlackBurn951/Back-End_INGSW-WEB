@@ -31,7 +31,12 @@ public class DatabaseConfig {
         dataSource.setUrl(dataSourceUrl);
         dataSource.setUsername(dataSourceUsername);
         dataSource.setPassword(dataSourcePassword);
+
+        DbConn.setDataSource(dataSource);
+
         return dataSource;
     }
+
+
 
 }

@@ -1,5 +1,6 @@
 package com.example.progettowebtest.DAO.Utente_Documenti;
 
+import com.example.progettowebtest.Connection.DbConn;
 import com.example.progettowebtest.Connection.DbConnection;
 import com.example.progettowebtest.Model.CartaIdentita;
 
@@ -23,7 +24,7 @@ public class CartaIdentitaDAOImpl implements CartaIdentitaDAO{
 
         try {
             String query = "SELECT * FROM carta_di_identità";
-            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
             ResultSet queryResult = statement.executeQuery();
 
             while (queryResult.next()) {
@@ -47,7 +48,7 @@ public class CartaIdentitaDAOImpl implements CartaIdentitaDAO{
 
         try{
             String query = "select * from carta_di_identità where num_identificativo= "+ numIdentificativo;
-            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
             ResultSet queryResult = statement.executeQuery();
 
             if(!queryResult.wasNull())
@@ -71,7 +72,7 @@ public class CartaIdentitaDAOImpl implements CartaIdentitaDAO{
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT (num_identificativo) DO UPDATE SET nome = EXCLUDED.nome, cognome = EXCLUDED.cognome, nazionalità = EXCLUDED.nazionalità, " +
                     "comune_di_nascita = EXCLUDED.comune_di_nascita, sesso = EXCLUDED.sesso, provincia_di_nascita = EXCLUDED.provincia_di_nascita, data_di_nascita = EXCLUDED.data_di_nascita, " +
                     "data_di_emissione = EXCLUDED.data_di_emissione, data_di_scadenza = EXCLUDED.data_di_scadenza, comune_di_rilascio = EXCLUDED.comune_di_rilascio";
-            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
 
             statement.setString(1, cd.getNumIdentificativo());
             statement.setString(2, cd.getNome());
@@ -100,7 +101,7 @@ public class CartaIdentitaDAOImpl implements CartaIdentitaDAO{
 
         try {
             String query = "DELETE FROM carta_di_identità WHERE num_identificativo = "+cd.getNumIdentificativo() ;
-            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
 
             if(statement.executeUpdate()>0)
                 result= true;

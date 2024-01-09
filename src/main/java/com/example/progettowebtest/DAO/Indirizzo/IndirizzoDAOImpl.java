@@ -1,10 +1,10 @@
 package com.example.progettowebtest.DAO.Indirizzo;
 
+import com.example.progettowebtest.Connection.DbConn;
 import com.example.progettowebtest.Connection.DbConnection;
 import com.example.progettowebtest.Model.DatiComune;
 import com.example.progettowebtest.Model.Indirizzo;
 import com.example.progettowebtest.Model.TipoVia;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
@@ -18,16 +18,12 @@ public class IndirizzoDAOImpl implements IndirizzoDAO{
     private TipoViaDAO tipoViaDAO= TipoViaDAOImpl.getInstance();
 
 
-    private static DataSource dataSource;
-
-    public IndirizzoDAOImpl(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
+    public IndirizzoDAOImpl(){}
 
 
-    public static synchronized IndirizzoDAOImpl getInstance(DataSource dataSource) {
+    public static IndirizzoDAOImpl getInstance() {
         if (instance == null)
-            instance = new IndirizzoDAOImpl(dataSource);
+            instance = new IndirizzoDAOImpl();
         return instance;
     }
 
@@ -38,7 +34,7 @@ public class IndirizzoDAOImpl implements IndirizzoDAO{
 
         try {
             String query = "SELECT * FROM indirizzo";
-            PreparedStatement statement = dataSource.getConnection().prepareStatement(query);
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
             ResultSet queryResult = statement.executeQuery();
 
             while (queryResult.next()) {
@@ -68,7 +64,7 @@ public class IndirizzoDAOImpl implements IndirizzoDAO{
         if(comuneIns!=null && tipo!=null) {
             try {
                 String query = "select * from indirizzo where nome_via= " + nomeVia + " and num_civico= " + numCivico + " and id_comune= " + comuneIns.getIdComune() + " and id_via= " + tipo.getIdVia();
-                PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+                PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
                 ResultSet queryResult = statement.executeQuery();
 
                 if (!queryResult.wasNull())
@@ -87,7 +83,7 @@ public class IndirizzoDAOImpl implements IndirizzoDAO{
 
         try {
             String query= "insert into indirizzo(nome_via, num_civico, id_comune, id_via) values(?,?,?,?) ON CONFLICT (nome_via, num_civico, id_comune, id_via) DO NOTHING";
-            PreparedStatement statement= DbConnection.getInstance().prepareStatement(query);
+            PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
 
             statement.setString(1, ind.getNomeVia());
             statement.setString(2, ind.getNumCivico());
@@ -110,7 +106,7 @@ public class IndirizzoDAOImpl implements IndirizzoDAO{
         try {
             String query = "DELETE FROM indirizzo WHERE nome_via = "+ind.getNomeVia()+" AND num_civico = "+ind.getNumCivico()+" AND " +
                     "id_comune = "+ind.getComune().getIdComune()+" AND id_via = "+ind.getTipologiaVia().getIdVia();
-            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
 
             if (statement.executeUpdate()>0)
                 result = true;
