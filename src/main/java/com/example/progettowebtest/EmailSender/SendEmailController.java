@@ -15,7 +15,7 @@ import static com.example.progettowebtest.EmailSender.OTPGenerator.generateOTP;
 
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:4200")
 public class SendEmailController {
     public static String generatedOTP;
 
