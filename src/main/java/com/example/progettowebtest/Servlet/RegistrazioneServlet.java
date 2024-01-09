@@ -1,9 +1,8 @@
 package com.example.progettowebtest.Servlet;
 
 import com.example.progettowebtest.ClassiRequest.DatiControlloUtente;
-import com.example.progettowebtest.ClassiRequest.DatiRegistrazione;
-import com.example.progettowebtest.DAO.UtenteDAO;
-import com.example.progettowebtest.DAO.UtenteDAOImpl;
+import com.example.progettowebtest.DAO.Utente_Documenti.UtenteDAO;
+import com.example.progettowebtest.DAO.Utente_Documenti.UtenteDAOImpl;
 import com.example.progettowebtest.Model.IdentificativiUtente;
 import com.example.progettowebtest.Model.Utente;
 import org.springframework.web.bind.annotation.PostMapping;

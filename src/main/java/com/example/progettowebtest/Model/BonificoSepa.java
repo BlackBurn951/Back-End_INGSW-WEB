@@ -1,6 +1,6 @@
 package com.example.progettowebtest.Model;
 
-public class BonificoSepa extends Transazione{
+public class BonificoSepa extends DatiTransazione {
     private int idSepa;
     private String nomeBeneficiario;
     private String cognomeBeneficiario;
