@@ -1,5 +1,6 @@
 package com.example.progettowebtest.DAO.Utente_Documenti;
 
+import com.example.progettowebtest.Connection.DbConn;
 import com.example.progettowebtest.Connection.DbConnection;
 import com.example.progettowebtest.Model.Passaporto;
 
@@ -23,7 +24,7 @@ public class PassaportoDAOImpl implements PassaportoDAO{
 
         try {
             String query = "SELECT * FROM passaporto";
-            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
             ResultSet queryResult = statement.executeQuery();
 
             while (queryResult.next()) {
@@ -47,7 +48,7 @@ public class PassaportoDAOImpl implements PassaportoDAO{
 
         try{
             String query = "select * from passaporto where num_passaporto= "+ numIdentificativo;
-            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
             ResultSet queryResult = statement.executeQuery();
 
             if(!queryResult.wasNull())
@@ -72,7 +73,7 @@ public class PassaportoDAOImpl implements PassaportoDAO{
                     "nome = EXCLUDED.nome, cognome = EXCLUDED.cognome, nazionalità = EXCLUDED.nazionalità, comune_di_nascita = EXCLUDED.comune_di_nascita, sesso = EXCLUDED.sesso, " +
                     "provincia_di_nascita = EXCLUDED.provincia_di_nascita, data_di_nascita = EXCLUDED.data_di_nascita, data_di_emissione = EXCLUDED.data_di_emissione, " +
                     "data_di_scadenza = EXCLUDED.data_di_scadenza, comune_di_rilascio = EXCLUDED.comune_di_rilascio";
-            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
 
             statement.setString(1, passa.getNome());
             statement.setString(2, passa.getCognome());
@@ -101,7 +102,7 @@ public class PassaportoDAOImpl implements PassaportoDAO{
 
         try {
             String query = "DELETE FROM passaporto WHERE num_passaporto = "+ passa.getNumIdentificativo();
-            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
 
             if (statement.executeUpdate()>0)
                 result = true;

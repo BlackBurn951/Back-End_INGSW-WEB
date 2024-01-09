@@ -1,5 +1,6 @@
 package com.example.progettowebtest.DAO.Indirizzo;
 
+import com.example.progettowebtest.Connection.DbConn;
 import com.example.progettowebtest.Connection.DbConnection;
 import com.example.progettowebtest.Model.TipoVia;
 
@@ -23,7 +24,7 @@ public class TipoViaDAOImpl implements TipoViaDAO{
 
         try {
             String query = "SELECT * FROM tipo_via";
-            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
             ResultSet queryResult = statement.executeQuery();
 
             while (queryResult.next()) {
@@ -42,7 +43,7 @@ public class TipoViaDAOImpl implements TipoViaDAO{
 
         try{
             String query= "select * from tipo_via where id_via= "+ idVia;
-            PreparedStatement statement= DbConnection.getInstance().prepareStatement(query);
+            PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
             ResultSet queryResult= statement.executeQuery();
 
             if(!queryResult.wasNull())
@@ -60,7 +61,7 @@ public class TipoViaDAOImpl implements TipoViaDAO{
 
         try{
             String query= "select * from tipo_via where tipologia= "+ tipo;
-            PreparedStatement statement= DbConnection.getInstance().prepareStatement(query);
+            PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
             ResultSet queryResult= statement.executeQuery();
 
             result= new TipoVia(queryResult.getInt("id_via"), queryResult.getString("tipologia"));
@@ -78,7 +79,7 @@ public class TipoViaDAOImpl implements TipoViaDAO{
         try {
             String query = "INSERT INTO tipo_via (tipologia) VALUES (?) ON CONFLICT (tipologia) DO NOTHING";
 
-            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
             statement.setString(1, tipo.getTipoVia());
 
         } catch (SQLException e) {
@@ -94,7 +95,7 @@ public class TipoViaDAOImpl implements TipoViaDAO{
 
         try {
             String query = "DELETE FROM tipo_via WHERE id_via = "+ tipo.getIdVia();
-            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
 
             if (statement.executeUpdate()>0)
                 result = true;

@@ -1,12 +1,16 @@
 package com.example.progettowebtest.DAO.Indirizzo;
 
+import com.example.progettowebtest.Connection.DatabaseConfig;
+import com.example.progettowebtest.Connection.DbConn;
 import com.example.progettowebtest.Connection.DbConnection;
 import com.example.progettowebtest.Model.ColonneDatiComune;
 import com.example.progettowebtest.Model.DatiComune;
 
+import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Vector;
 
 public class DatiComuneDAOImpl implements DatiComuneDAO{
@@ -24,7 +28,7 @@ public class DatiComuneDAOImpl implements DatiComuneDAO{
 
         try {
             String query = "select * from dati_comune";
-            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
             ResultSet queryResult = statement.executeQuery();
 
             while (queryResult.next()) {
@@ -46,7 +50,7 @@ public class DatiComuneDAOImpl implements DatiComuneDAO{
 
         try{
             String query= "select * from dati_comune where id_comune= "+ idComune;
-            PreparedStatement statement= DbConnection.getInstance().prepareStatement(query);
+            PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
             ResultSet queryResult= statement.executeQuery();
 
             if(!queryResult.wasNull())
@@ -60,8 +64,9 @@ public class DatiComuneDAOImpl implements DatiComuneDAO{
     }
 
     @Override
-    public DatiComune doRetriveByAttribute(String att, ColonneDatiComune val) {
-        DatiComune result= null;
+    public Vector<DatiComune> doRetriveByAttribute(String att, ColonneDatiComune val) {
+        Vector<DatiComune> result = new Vector<>();
+
         String query= "";
         try{
             switch (val) {
@@ -70,13 +75,31 @@ public class DatiComuneDAOImpl implements DatiComuneDAO{
                 case PROVINCIA -> query= "select * from dati_comune where provincia= "+ att;
                 case REGIONE -> query= "select * from dati_comune where regione= "+ att;
             }
-            PreparedStatement statement= DbConnection.getInstance().prepareStatement(query);
+            PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
+
+            ResultSet queryResult= statement.executeQuery();
+            while(queryResult.next()) {
+                result.add(new DatiComune(queryResult.getInt("id_comune"), queryResult.getString("nome_comune"),
+                        queryResult.getString("cap"), queryResult.getString("provincia"), queryResult.getString("regione")));
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public List<String> restituisciCitta(String citta) {
+        Vector<String> result= new Vector<>();
+        String query = "SELECT nome_comune FROM dati_comune WHERE LOWER(nome_comune) LIKE LOWER('" + citta + "') || '%' LIMIT 20";
+
+        try{
+            PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
             ResultSet queryResult= statement.executeQuery();
 
-            result= new DatiComune(queryResult.getInt("id_comune"), queryResult.getString("nome_comune"),
-                    queryResult.getString("cap"), queryResult.getString("provincia"), queryResult.getString("regione"));
-
-        }catch (SQLException e) {
+            while(queryResult.next()) {
+                result.add(queryResult.getString("nome_comune"));
+            }
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return result;
@@ -89,7 +112,7 @@ public class DatiComuneDAOImpl implements DatiComuneDAO{
         try {
             String query = "INSERT INTO dati_comune (nome_comune, cap, provincia, regione) VALUES (?, ?, ?, ?)" +
                     " ON CONFLICT (nome_comune, cap, provincia, regione) DO NOTHING";
-            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
 
             statement.setString(1, comune.getNomeComune());
             statement.setString(2, comune.getCap());
@@ -111,7 +134,7 @@ public class DatiComuneDAOImpl implements DatiComuneDAO{
 
         try {
             String query = "DELETE FROM dati_comune WHERE id_comune= "+comune.getIdComune();
-            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
 
             if (statement.executeUpdate()>0)
                 result = true;
@@ -121,4 +144,5 @@ public class DatiComuneDAOImpl implements DatiComuneDAO{
         }
         return result;
     }
+
 }

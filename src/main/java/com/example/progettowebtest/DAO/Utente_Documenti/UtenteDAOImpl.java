@@ -1,15 +1,18 @@
 package com.example.progettowebtest.DAO.Utente_Documenti;
 
+import com.example.progettowebtest.Connection.DbConn;
 import com.example.progettowebtest.Connection.DbConnection;
 import com.example.progettowebtest.DAO.Indirizzo.IndirizzoDAO;
 import com.example.progettowebtest.DAO.Indirizzo.IndirizzoDAOImpl;
 import com.example.progettowebtest.Model.*;
 
+import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.Vector;
 import java.sql.*;
 
 public class UtenteDAOImpl implements UtenteDAO {
+
     private static UtenteDAOImpl instance;
     private CartaIdentitaDAO cartaIdentitaDAO= CartaIdentitaDAOImpl.getInstance();
     private PatenteDAO patenteDAO= PatenteDAOImpl.getInstance();
@@ -30,7 +33,7 @@ public class UtenteDAOImpl implements UtenteDAO {
 
         try {
             String query = "SELECT * FROM utente";
-            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
             ResultSet queryResult = statement.executeQuery();
 
             while (queryResult.next()) {
@@ -55,7 +58,7 @@ public class UtenteDAOImpl implements UtenteDAO {
             else
                 query= "select * from utente where email= "+id;
 
-            PreparedStatement statement= DbConnection.getInstance().prepareStatement(query);
+            PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
             ResultSet queryResult= statement.executeQuery();
 
             if(!queryResult.wasNull())
@@ -83,7 +86,7 @@ public class UtenteDAOImpl implements UtenteDAO {
                     "num_civico_domicilio=EXCLUDED.num_civico_domicilio, nome_via_residenza=EXCLUDED.nome_via_residenza, num_civico_residenza=EXCLUDED.num_civico_residenza, id_comune_residenza=EXCLUDED.id_comune_residenza, " +
                     "id_comune_domicilio=EXCLUDED.id_comune_domicilio, id_via_residenza=EXCLUDED.id_via_residenza, id_via_domicilio=EXCLUDED.id_via_domicilio, occupazione=EXCLUDED.occupazione, reddito_annuo=EXCLUDED.reddito_annuo ";
 
-            PreparedStatement statement= DbConnection.getInstance().prepareStatement(query);
+            PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
 
             statement.setString(1, ut.getCodiceFiscale());
             statement.setString(2, ut.getNome());
@@ -137,7 +140,7 @@ public class UtenteDAOImpl implements UtenteDAO {
 
         try {
             String query = "DELETE FROM utente WHERE cf= "+ut.getCodiceFiscale();
-            PreparedStatement statement = DbConnection.getInstance().prepareStatement(query);
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
 
             int tupleCancellate = statement.executeUpdate();
 
