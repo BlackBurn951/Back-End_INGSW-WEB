@@ -1,4 +1,4 @@
-package com.example.progettowebtest.DAO;
+package com.example.progettowebtest.DAO.Transazioni;
 
 
 import com.example.progettowebtest.Model.BonificoSepa;

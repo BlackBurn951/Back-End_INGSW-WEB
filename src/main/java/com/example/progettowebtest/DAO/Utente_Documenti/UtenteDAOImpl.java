@@ -1,8 +1,8 @@
 package com.example.progettowebtest.DAO.Utente_Documenti;
 
 import com.example.progettowebtest.Connection.DbConnection;
-import com.example.progettowebtest.DAO.IndirizzoDAO;
-import com.example.progettowebtest.DAO.IndirizzoDAOImpl;
+import com.example.progettowebtest.DAO.Indirizzo.IndirizzoDAO;
+import com.example.progettowebtest.DAO.Indirizzo.IndirizzoDAOImpl;
 import com.example.progettowebtest.Model.*;
 
 import java.sql.SQLException;
