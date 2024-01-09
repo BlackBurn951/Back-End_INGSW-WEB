@@ -1,7 +1,6 @@
-package com.example.progettowebtest.DAO;
+package com.example.progettowebtest.DAO.Indirizzo;
 
 import com.example.progettowebtest.Connection.DbConnection;
-import com.example.progettowebtest.Model.ColonneDatiComune;
 import com.example.progettowebtest.Model.DatiComune;
 import com.example.progettowebtest.Model.Indirizzo;
 import com.example.progettowebtest.Model.TipoVia;
