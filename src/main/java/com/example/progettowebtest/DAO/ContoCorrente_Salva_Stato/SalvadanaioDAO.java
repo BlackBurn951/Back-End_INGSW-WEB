@@ -1,6 +1,6 @@
 package com.example.progettowebtest.DAO.ContoCorrente_Salva_Stato;
 
-import com.example.progettowebtest.Model.Salvadanaio;
+import com.example.progettowebtest.Model.ContoCorrente.Salvadanaio;
 
 import java.util.Vector;
 

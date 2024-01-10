@@ -1,7 +1,7 @@
 package com.example.progettowebtest.DAO.Transazioni;
 
 
-import com.example.progettowebtest.Model.BonificoInter;
+import com.example.progettowebtest.Model.Transazioni.BonificoInter;
 
 import java.util.Vector;
 

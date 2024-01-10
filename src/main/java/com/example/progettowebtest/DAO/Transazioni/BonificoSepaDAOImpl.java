@@ -1,6 +1,6 @@
 package com.example.progettowebtest.DAO.Transazioni;
 
-import com.example.progettowebtest.Model.BonificoSepa;
+import com.example.progettowebtest.Model.Transazioni.BonificoSepa;
 
 import java.util.Vector;
 

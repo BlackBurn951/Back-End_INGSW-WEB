@@ -1,4 +1,4 @@
-package com.example.progettowebtest.Model;
+package com.example.progettowebtest.Model.Utente_Documenti;
 
 import java.sql.Date;
 

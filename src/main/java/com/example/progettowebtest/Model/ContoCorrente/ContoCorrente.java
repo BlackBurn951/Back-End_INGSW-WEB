@@ -1,4 +1,9 @@
-package com.example.progettowebtest.Model;
+package com.example.progettowebtest.Model.ContoCorrente;
+
+import com.example.progettowebtest.Model.Indirizzo.Indirizzo;
+import com.example.progettowebtest.Model.Stato;
+import com.example.progettowebtest.Model.Proxy.Transazione;
+import com.example.progettowebtest.Model.Utente_Documenti.Utente;
 
 import java.sql.Date;
 import java.util.Vector;
