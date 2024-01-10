@@ -3,16 +3,14 @@ package com.example.progettowebtest.Model;
 public class Deposito extends DatiTransazione implements Transazione{
     private int idDeposito;
     private double importo;
-    private String casuale;
     private Mezzo mezzo;
     private Carta cartaEsecuzione;
 
     public Deposito(String dataTransazione, double costoTransazione, String esito, int idDeposito,
-                    double importo, String casuale, Mezzo mezzo, Carta cartaEsecuzione) {
+                    double importo, Mezzo mezzo, Carta cartaEsecuzione) {
         super(dataTransazione, costoTransazione, esito);
         this.idDeposito = idDeposito;
         this.importo = importo;
-        this.casuale = casuale;
         this.mezzo = mezzo;
         this.cartaEsecuzione = cartaEsecuzione;
     }
@@ -28,7 +26,7 @@ public class Deposito extends DatiTransazione implements Transazione{
     public int getId() {return idDeposito;}
 
     @Override
-    public String getCausale() {return casuale;}
+    public String getCausale() {return "ERRORE";}
 
     @Override
     public String getNomeBeneficiario() {return "ERRORE";}
