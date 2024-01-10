@@ -7,9 +7,9 @@ public class Salvadanaio {
     private double saldoAttuale;
     private double obiettivo;
     private String nomeObiettivo;
-    private ContoCorrenteDAO contoRiferimento;
+    private ContoCorrente contoRiferimento;
 
-    public Salvadanaio(int idSalvadanaio, double saldoAttuale, double obiettivo, String nomeObiettivo, ContoCorrenteDAO contoRiferimento) {
+    public Salvadanaio(int idSalvadanaio, double saldoAttuale, double obiettivo, String nomeObiettivo, ContoCorrente contoRiferimento) {
         this.idSalvadanaio = idSalvadanaio;
         this.saldoAttuale = saldoAttuale;
         this.obiettivo = obiettivo;
@@ -29,7 +29,7 @@ public class Salvadanaio {
     public String getNomeObiettivo() {
         return nomeObiettivo;
     }
-    public ContoCorrenteDAO getContoRiferimento() {
+    public ContoCorrente getContoRiferimento() {
         return contoRiferimento;
     }
 }

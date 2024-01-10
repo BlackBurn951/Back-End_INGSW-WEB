@@ -25,10 +25,6 @@ public class OttieniCittaController {
         result.add(datiCitta.get(0).getProvincia());
         result.add(datiCitta.get(0).getRegione());
 
-        for(String res: result){
-            System.out.println(res);
-        }
-
         return result;
     }
 }
