@@ -1,8 +1,7 @@
 package com.example.progettowebtest.DAO.Indirizzo;
 
 import com.example.progettowebtest.Connection.DbConn;
-import com.example.progettowebtest.Model.ColonneDatiComune;
-import com.example.progettowebtest.Model.DatiComune;
+import com.example.progettowebtest.Model.Indirizzo.*;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -63,29 +62,18 @@ public class DatiComuneDAOImpl implements DatiComuneDAO{
     @Override
     public Vector<DatiComune> doRetriveByAttribute(String att, ColonneDatiComune val) {
         Vector<DatiComune> result = new Vector<>();
-        System.out.println("ATT   :"+att);
-        try{
-            String query = "SELECT * FROM dati_comune WHERE ";
-            switch (val) {
-                case NOME_COMUNE:
-                    query += "nome_comune = ?";
-                    break;
-                case CAP:
-                    query += "cap = ?";
-                    break;
-                case PROVINCIA:
-                    query += "provincia = ?";
-                    break;
-                case REGIONE:
-                    query += "regione = ?";
-                    break;
 
+        String query= "";
+        try{
+            switch (val) {
+                case NOME_COMUNE -> query= "select * from dati_comune where nome_comune= "+ att;
+                case CAP -> query= "select * from dati_comune where cap= "+ att;
+                case PROVINCIA -> query= "select * from dati_comune where provincia= "+ att;
+                case REGIONE -> query= "select * from dati_comune where regione= "+ att;
             }
             PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
-        statement.setString(1, att);
 
             ResultSet queryResult= statement.executeQuery();
-
             while(queryResult.next()) {
                 result.add(new DatiComune(queryResult.getInt("id_comune"), queryResult.getString("nome_comune"),
                         queryResult.getString("cap"), queryResult.getString("provincia"), queryResult.getString("regione")));
@@ -106,7 +94,6 @@ public class DatiComuneDAOImpl implements DatiComuneDAO{
 
             while(queryResult.next()) {
                 result.add(queryResult.getString("nome_comune"));
-
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -1,8 +1,7 @@
 package com.example.progettowebtest.Servlet;
 
 import com.example.progettowebtest.DAO.Indirizzo.DatiComuneDAOImpl;
-import com.example.progettowebtest.Model.ColonneDatiComune;
-import com.example.progettowebtest.Model.DatiComune;
+import com.example.progettowebtest.Model.Indirizzo.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

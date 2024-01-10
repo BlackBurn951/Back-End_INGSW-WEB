@@ -1,7 +1,7 @@
 package com.example.progettowebtest.DAO.Utente_Documenti;
 
 import com.example.progettowebtest.Connection.DbConn;
-import com.example.progettowebtest.Model.CartaIdentita;
+import com.example.progettowebtest.Model.Utente_Documenti.CartaIdentita;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

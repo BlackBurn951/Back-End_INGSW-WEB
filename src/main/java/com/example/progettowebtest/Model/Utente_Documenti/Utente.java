@@ -1,8 +1,10 @@
-package com.example.progettowebtest.Model;
+package com.example.progettowebtest.Model.Utente_Documenti;
+
+import com.example.progettowebtest.Model.Indirizzo.Indirizzo;
 
 import java.util.Vector;
 
-public class Utente extends DatiUtente{
+public class Utente extends DatiUtente {
     private String codiceFiscale;
     private String email;
     private String password;

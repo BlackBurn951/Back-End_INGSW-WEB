@@ -1,7 +1,7 @@
 package com.example.progettowebtest.DAO.Transazioni;
 
 
-import com.example.progettowebtest.Model.Bollettino;
+import com.example.progettowebtest.Model.Transazioni.Bollettino;
 
 import java.util.Vector;
 
