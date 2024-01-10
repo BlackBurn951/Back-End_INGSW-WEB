@@ -1,6 +1,6 @@
 package com.example.progettowebtest.DAO.Transazioni;
 
-import com.example.progettowebtest.Model.Deposito;
+import com.example.progettowebtest.Model.Transazioni.Deposito;
 
 import java.util.Vector;
 

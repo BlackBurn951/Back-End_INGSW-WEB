@@ -1,4 +1,7 @@
-package com.example.progettowebtest.Model;
+package com.example.progettowebtest.Model.Carte;
+
+import com.example.progettowebtest.Model.ContoCorrente.ContoCorrente;
+import com.example.progettowebtest.Model.Stato;
 
 public class CartaCredito extends Carta{
     private double fido;
