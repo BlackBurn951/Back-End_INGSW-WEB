@@ -1,7 +1,6 @@
 package com.example.progettowebtest.DAO.Utente_Documenti;
 
-import com.example.progettowebtest.Model.CartaIdentita;
-import com.example.progettowebtest.Model.Passaporto;
+import com.example.progettowebtest.Model.Utente_Documenti.Passaporto;
 
 import java.util.Vector;
 
