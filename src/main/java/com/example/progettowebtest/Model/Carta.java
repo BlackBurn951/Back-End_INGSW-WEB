@@ -7,14 +7,14 @@ public abstract class Carta {
     private boolean pagamentoOnline;
     private Date dataCreazione;
     private Date dataScadenza;
-    private int cvv;
+    private String cvv;
     private boolean cartaFisica;
     private double canoneMensile;
     private String pin;
     private Stato statoCarta;
     private ContoCorrente contoRiferimento;
 
-    public Carta(String numCarta, boolean pagamentoOnline, String dataCreazione, String dataScadenza, int cvv, boolean cartaFisica,
+    public Carta(String numCarta, boolean pagamentoOnline, String dataCreazione, String dataScadenza, String cvv, boolean cartaFisica,
                  double canoneMensile, String pin, Stato statoCarta, ContoCorrente contoRiferimento) {
         this.numCarta = numCarta;
         this.pagamentoOnline = pagamentoOnline;
@@ -32,7 +32,7 @@ public abstract class Carta {
     public boolean isPagamentoOnline() {return pagamentoOnline;}
     public Date getDataCreazione() {return dataCreazione;}
     public Date getDataScadenza() {return dataScadenza;}
-    public int getCvv() {return cvv;}
+    public String getCvv() {return cvv;}
     public boolean isCartaFisica() {return cartaFisica;}
     public double getCanoneMensile() {return canoneMensile;}
     public String getPin() {return pin;}
