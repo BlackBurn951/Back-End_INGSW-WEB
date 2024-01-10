@@ -1,6 +1,7 @@
 package com.example.progettowebtest.DAO.Indirizzo;
 
-import com.example.progettowebtest.Model.Indirizzo.Indirizzo;
+import com.example.progettowebtest.Model.Indirizzo;
+import com.example.progettowebtest.Model.Utente;
 
 import java.util.Vector;
 

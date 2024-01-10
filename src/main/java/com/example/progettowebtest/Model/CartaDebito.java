@@ -1,7 +1,4 @@
-package com.example.progettowebtest.Model.Carte;
-
-import com.example.progettowebtest.Model.ContoCorrente.ContoCorrente;
-import com.example.progettowebtest.Model.Stato;
+package com.example.progettowebtest.Model;
 
 public class CartaDebito extends Carta{
     public CartaDebito(String numCarta, boolean pagamentoOnline, String dataCreazione, String dataScadenza, String cvv, boolean cartaFisica,

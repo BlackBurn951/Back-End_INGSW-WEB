@@ -1,6 +1,6 @@
 package com.example.progettowebtest.DAO.Carte;
 
-import com.example.progettowebtest.Model.Carte.CartaCredito;
+import com.example.progettowebtest.Model.CartaCredito;
 
 import java.util.Vector;
 

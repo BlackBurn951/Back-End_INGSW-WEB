@@ -1,4 +1,4 @@
-package com.example.progettowebtest.Model.Indirizzo;
+package com.example.progettowebtest.Model;
 
 public class Indirizzo {
     private TipoVia tipologiaVia;

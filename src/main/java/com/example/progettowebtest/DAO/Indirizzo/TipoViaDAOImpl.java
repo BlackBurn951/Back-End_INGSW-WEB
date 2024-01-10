@@ -1,7 +1,8 @@
 package com.example.progettowebtest.DAO.Indirizzo;
 
 import com.example.progettowebtest.Connection.DbConn;
-import com.example.progettowebtest.Model.Indirizzo.TipoVia;
+import com.example.progettowebtest.Connection.DbConnection;
+import com.example.progettowebtest.Model.TipoVia;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

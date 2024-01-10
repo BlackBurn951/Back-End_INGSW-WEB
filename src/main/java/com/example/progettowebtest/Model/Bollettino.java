@@ -1,9 +1,6 @@
-package com.example.progettowebtest.Model.Transazioni;
+package com.example.progettowebtest.Model;
 
-import com.example.progettowebtest.Model.Carte.Carta;
-import com.example.progettowebtest.Model.Proxy.Transazione;
-
-public class Bollettino extends DatiTransazione implements Transazione {
+public class Bollettino extends DatiTransazione implements Transazione{
     private int idBollettino;
     private double importo;
     private String causale;

@@ -1,7 +1,7 @@
 package com.example.progettowebtest.DAO.Utente_Documenti;
 
 
-import com.example.progettowebtest.Model.Utente_Documenti.Patente;
+import com.example.progettowebtest.Model.Patente;
 
 import java.util.Vector;
 

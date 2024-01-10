@@ -1,7 +1,4 @@
-package com.example.progettowebtest.Model.Carte;
-
-import com.example.progettowebtest.Model.ContoCorrente.ContoCorrente;
-import com.example.progettowebtest.Model.Stato;
+package com.example.progettowebtest.Model;
 
 import java.sql.Date;
 

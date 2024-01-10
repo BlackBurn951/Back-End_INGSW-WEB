@@ -1,6 +1,8 @@
 package com.example.progettowebtest.DAO.Indirizzo;
 
-import com.example.progettowebtest.Model.Indirizzo.*;
+import com.example.progettowebtest.Model.ColonneDatiComune;
+import com.example.progettowebtest.Model.DatiComune;
+import com.example.progettowebtest.Model.Indirizzo;
 
 import java.util.List;
 import java.util.Vector;

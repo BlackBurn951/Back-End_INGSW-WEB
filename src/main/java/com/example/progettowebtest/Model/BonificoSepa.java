@@ -1,9 +1,6 @@
-package com.example.progettowebtest.Model.Transazioni;
+package com.example.progettowebtest.Model;
 
-import com.example.progettowebtest.Model.Carte.Carta;
-import com.example.progettowebtest.Model.Proxy.Transazione;
-
-public class BonificoSepa extends DatiTransazione implements Transazione {
+public class BonificoSepa extends DatiTransazione implements Transazione{
     private int idSepa;
     private String nomeBeneficiario;
     private String cognomeBeneficiario;

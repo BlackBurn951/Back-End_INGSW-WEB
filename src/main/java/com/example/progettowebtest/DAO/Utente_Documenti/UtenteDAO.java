@@ -1,8 +1,9 @@
 package com.example.progettowebtest.DAO.Utente_Documenti;
 
-import com.example.progettowebtest.ClassiRequest.IdentificativiUtente;
-import com.example.progettowebtest.Model.Utente_Documenti.Utente;
+import com.example.progettowebtest.Model.IdentificativiUtente;
+import com.example.progettowebtest.Model.Utente;
 
+import java.util.Objects;
 import java.util.Vector;
 
 public interface UtenteDAO {

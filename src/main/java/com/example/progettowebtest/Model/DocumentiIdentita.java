@@ -1,10 +1,8 @@
-package com.example.progettowebtest.Model.Utente_Documenti;
-
-import com.example.progettowebtest.Model.Utente_Documenti.DatiUtente;
+package com.example.progettowebtest.Model;
 
 import java.sql.Date;
 
-public abstract class DocumentiIdentita extends DatiUtente {
+public abstract class DocumentiIdentita extends DatiUtente{
     private String numIdentificativo;
     private Date dataEmissione;
     private Date dataScadenza;

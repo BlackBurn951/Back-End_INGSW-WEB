@@ -1,7 +1,8 @@
 package com.example.progettowebtest.DAO.Utente_Documenti;
 
 import com.example.progettowebtest.Connection.DbConn;
-import com.example.progettowebtest.Model.Utente_Documenti.Patente;
+import com.example.progettowebtest.Connection.DbConnection;
+import com.example.progettowebtest.Model.Patente;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

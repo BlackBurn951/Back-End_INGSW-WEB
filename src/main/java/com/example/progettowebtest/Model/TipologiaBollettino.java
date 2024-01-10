@@ -1,4 +1,4 @@
-package com.example.progettowebtest.Model.Transazioni;
+package com.example.progettowebtest.Model;
 
 public class TipologiaBollettino {
     private int idTipoBol;

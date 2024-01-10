@@ -1,8 +1,12 @@
 package com.example.progettowebtest.DAO.Indirizzo;
 
+import com.example.progettowebtest.Connection.DatabaseConfig;
 import com.example.progettowebtest.Connection.DbConn;
-import com.example.progettowebtest.Model.Indirizzo.*;
+import com.example.progettowebtest.Connection.DbConnection;
+import com.example.progettowebtest.Model.ColonneDatiComune;
+import com.example.progettowebtest.Model.DatiComune;
 
+import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

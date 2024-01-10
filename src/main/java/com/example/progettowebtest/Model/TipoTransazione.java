@@ -1,4 +1,4 @@
-package com.example.progettowebtest.Model.Proxy;
+package com.example.progettowebtest.Model;
 
 public enum TipoTransazione {
     BOLLETTINO, BONIFICOSEPA, BONIFICOINTER, PRELIEVO, DEPOSITO

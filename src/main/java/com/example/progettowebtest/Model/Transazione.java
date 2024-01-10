@@ -1,8 +1,4 @@
-package com.example.progettowebtest.Model.Proxy;
-
-import com.example.progettowebtest.Model.Carte.Carta;
-import com.example.progettowebtest.Model.Transazioni.Mezzo;
-import com.example.progettowebtest.Model.Transazioni.TipologiaBollettino;
+package com.example.progettowebtest.Model;
 
 import java.sql.Date;
 

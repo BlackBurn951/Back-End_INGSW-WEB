@@ -1,6 +1,7 @@
 package com.example.progettowebtest.DAO.Indirizzo;
 
-import com.example.progettowebtest.Model.Indirizzo.TipoVia;
+import com.example.progettowebtest.Model.Indirizzo;
+import com.example.progettowebtest.Model.TipoVia;
 
 import java.util.Vector;
 

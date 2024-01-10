@@ -1,4 +1,4 @@
-package com.example.progettowebtest.Model.ContoCorrente;
+package com.example.progettowebtest.Model;
 
 import com.example.progettowebtest.DAO.ContoCorrente_Salva_Stato.ContoCorrenteDAO;
 
