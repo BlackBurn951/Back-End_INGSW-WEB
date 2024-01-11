@@ -16,6 +16,19 @@ public class SalvadanaioDAOImpl implements SalvadanaioDAO{
 
     private ContoCorrenteDAO contoDAO= ContoCorrenteDAOImpl.getInstance();
 
+
+    private static SalvadanaioDAOImpl instance;
+
+
+    private SalvadanaioDAOImpl(){}
+
+
+    public static SalvadanaioDAOImpl getInstance(){
+        if(instance==null)
+            instance= new SalvadanaioDAOImpl();
+        return instance;
+    }
+
     @Override
     public Vector<Salvadanaio> doRetriveAll() {
         Vector<Salvadanaio> salvadanai = new Vector<>();
