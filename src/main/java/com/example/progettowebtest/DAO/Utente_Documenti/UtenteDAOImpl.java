@@ -85,7 +85,7 @@ public class UtenteDAOImpl implements UtenteDAO {
                     "provincia_di_nascita=EXCLUDED.provincia_di_nascita, num_telefono=EXCLUDED.num_telefono, data_di_nascita=EXCLUDED.data_di_nascita, email=EXCLUDED.email, password=EXCLUDED.password, " +
                     "num_identificativo_ci=EXCLUDED.num_identificativo_ci, num_patente=EXCLUDED.num_patente, num_passaporto=EXCLUDED.num_passaporto, nome_via_domicilio=EXCLUDED.nome_via_domicilio, " +
                     "num_civico_domicilio=EXCLUDED.num_civico_domicilio, nome_via_residenza=EXCLUDED.nome_via_residenza, num_civico_residenza=EXCLUDED.num_civico_residenza, id_comune_residenza=EXCLUDED.id_comune_residenza, " +
-                    "id_comune_domicilio=EXCLUDED.id_comune_domicilio, id_via_residenza=EXCLUDED.id_via_residenza, id_via_domicilio=EXCLUDED.id_via_domicilio, occupazione=EXCLUDED.occupazione, reddito_annuo=EXCLUDED.reddito_annuo ";
+                    "id_comune_domicilio=EXCLUDED.id_comune_domicilio, id_via_residenza=EXCLUDED.id_via_residenza, id_via_domicilio=EXCLUDED.id_via_domicilio, occupazione=EXCLUDED.occupazione, reddito_annuo=EXCLUDED.reddito_annuo";
 
             PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
 

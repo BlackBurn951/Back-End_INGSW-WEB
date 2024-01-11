@@ -17,6 +17,7 @@ import com.example.progettowebtest.Model.TabelleCorelateStato;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.Vector;
 
 public class RelStatoContoDAOImpl implements RelStatoContoDAO{
@@ -47,6 +48,8 @@ public class RelStatoContoDAOImpl implements RelStatoContoDAO{
     @Override
     public Vector<RelStatoConto> doRetriveByAttribute(String numCC) {
         Vector<RelStatoConto> result= new Vector<>();
+        RelStatoConto rel= null;
+
         String query=  "select * from rel_stato_conto where num_cc= ?";;
 
 
@@ -57,8 +60,11 @@ public class RelStatoContoDAOImpl implements RelStatoContoDAO{
             ResultSet queryResult= statement.executeQuery();
 
             while(queryResult.next()) {
-                    result.add(new RelStatoConto(queryResult.getInt("id_rel"), queryResult.getDate("data_inizio_stato").toString(),
-                            queryResult.getDate("data_fine_stato").toString(), statoDAO.doRetriveByKey(queryResult.getInt("id_stato")), contoCorrenteDAO.doRetriveByKey(queryResult.getString("num_cc"))));
+                rel= new RelStatoConto(queryResult.getDate("data_inizio_stato").toString(), statoDAO.doRetriveByKey(queryResult.getInt("id_stato")),
+                        contoCorrenteDAO.doRetriveByKey(queryResult.getString("num_cc")));
+                rel.setId(queryResult.getInt("id_rel"));
+                rel.setDataFineStato(queryResult.getDate("data_fine_stato").toString());
+                result.add(rel);
             }
 
         }catch (SQLException e) {
@@ -90,7 +96,30 @@ public class RelStatoContoDAOImpl implements RelStatoContoDAO{
 
     @Override
     public boolean saveOrUpdate(RelStatoConto rel) {
-        return false;
+        boolean result= false;
+        String query= "INSERT INTO rel_stato_conto (data_inizio_stato, data_fine_stato, id_stato, num_cc) " +
+                "VALUES (?, ?, ?, ?) ON CONFLICT (id_stato,num_cc) DO UPDATE SET " +
+                "data_inizio_stato=EXCLUDED.data_inizio_stato, data_fine_stato=EXCLUDED.data_fine_stato, id_stato=EXCLUDED.id_stato, num_cc=EXCLUDED.num_cc";
+
+        try{
+            PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
+
+            statement.setDate(1, rel.getDataInizioStato());
+            if(rel.getDataFineStato()==null)
+                statement.setNull(2, Types.NULL);
+            else
+                statement.setDate(2, rel.getDataFineStato());
+            statement.setInt(3, rel.getStato().getIdStato());
+            statement.setString(4, rel.getConto().getNumCC());
+
+            statement.executeUpdate();
+
+            result= true;
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     @Override

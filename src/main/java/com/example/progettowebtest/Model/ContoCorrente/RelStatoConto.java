@@ -12,10 +12,8 @@ public class RelStatoConto {
     private Stato st;
     private ContoCorrente conto;
 
-    public RelStatoConto(int id, String dataInizioStato, String dataFineStato, Stato st, ContoCorrente conto) {
-        this.id = id;
+    public RelStatoConto(String dataInizioStato, Stato st, ContoCorrente conto) {
         this.dataInizioStato = Date.valueOf(dataInizioStato);
-        this.dataFineStato = Date.valueOf(dataFineStato);
         this.st = st;
         this.conto = conto;
     }
@@ -25,4 +23,7 @@ public class RelStatoConto {
     public Date getDataFineStato() {return dataFineStato;}
     public Stato getStato() {return st;}
     public ContoCorrente getConto() {return conto;}
+
+    public void setId(int id) {this.id = id;}
+    public void setDataFineStato(String data) {dataFineStato= Date.valueOf(data);}
 }
