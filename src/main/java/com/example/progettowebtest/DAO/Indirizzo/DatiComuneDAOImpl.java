@@ -39,7 +39,6 @@ public class DatiComuneDAOImpl implements DatiComuneDAO{
         return resultList;
     }
 
-
     @Override
     public DatiComune doRetriveByKey(int idComune) {
         DatiComune result= null;

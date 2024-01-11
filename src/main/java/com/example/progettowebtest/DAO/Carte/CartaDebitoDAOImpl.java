@@ -5,7 +5,15 @@ import com.example.progettowebtest.Model.Carte.CartaDebito;
 import java.util.Vector;
 
 public class CartaDebitoDAOImpl implements CartaDebitoDAO {
+    private static CartaDebitoDAOImpl instance;
 
+    private CartaDebitoDAOImpl() {}
+
+    public static CartaDebitoDAOImpl getInstance() {
+        if(instance==null)
+            instance= new CartaDebitoDAOImpl();
+        return instance;
+    }
 
     @Override
     public Vector<CartaDebito> doRetriveAll() {
@@ -13,7 +21,7 @@ public class CartaDebitoDAOImpl implements CartaDebitoDAO {
     }
 
     @Override
-    public CartaDebito doRetriveByKey(int numCarta) {
+    public CartaDebito doRetriveByKey(String numCarta) {
         return null;
     }
 

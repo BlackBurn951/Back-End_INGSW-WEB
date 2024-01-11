@@ -1,4 +1,4 @@
-package com.example.progettowebtest.DAO.ContoCorrente_Salva_Stato;
+package com.example.progettowebtest.DAO.ContoCorrente_StatoConto;
 
 import com.example.progettowebtest.Connection.DbConn;
 import com.example.progettowebtest.DAO.Indirizzo.DatiComuneDAO;

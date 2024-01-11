@@ -40,7 +40,6 @@ public class CartaIdentitaDAOImpl implements CartaIdentitaDAO{
         return resultList;
     }
 
-
     @Override
     public CartaIdentita doRetriveByKey(String numIdentificativo) {
         CartaIdentita result = null;

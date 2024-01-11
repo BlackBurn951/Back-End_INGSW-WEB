@@ -6,7 +6,7 @@ import java.util.Vector;
 
 public interface CartaDebitoDAO {
     Vector<CartaDebito> doRetriveAll();
-    CartaDebito doRetriveByKey(int numCarta);
+    CartaDebito doRetriveByKey(String numCarta);
     boolean saveOrUpdate(CartaDebito cartaDeb);
     boolean delete(CartaDebito cartaDeb);
 }
