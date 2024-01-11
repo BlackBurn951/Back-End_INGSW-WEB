@@ -59,8 +59,14 @@ public class IndirizzoDAOImpl implements IndirizzoDAO{
 
         if(comuneIns!=null && tipo!=null) {
             try {
-                String query = "select * from indirizzo where nome_via= " + nomeVia + " and num_civico= " + numCivico + " and id_comune= " + comuneIns.getIdComune() + " and id_via= " + tipo.getIdVia();
+                String query = "select * from indirizzo where nome_via= ? and num_civico=? and id_comune= ? and id_via= ?";
                 PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
+
+                statement.setString(1, nomeVia);
+                statement.setString(2, numCivico);
+                statement.setInt(3, comuneIns.getIdComune());
+                statement.setInt(4, tipo.getIdVia());
+
                 ResultSet queryResult = statement.executeQuery();
 
                 if (!queryResult.wasNull())

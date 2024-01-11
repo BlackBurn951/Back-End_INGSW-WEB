@@ -12,20 +12,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
-public class SalvadanaioDAOImpl implements SalvadanaioDAO{
+public class SalvadanaioDAOImpl implements SalvadanaioDAO {
 
-    private ContoCorrenteDAO contoDAO= ContoCorrenteDAOImpl.getInstance();
+    private ContoCorrenteDAO contoDAO = ContoCorrenteDAOImpl.getInstance();
 
 
     private static SalvadanaioDAOImpl instance;
 
 
-    private SalvadanaioDAOImpl(){}
+    private SalvadanaioDAOImpl() {
+    }
 
 
-    public static SalvadanaioDAOImpl getInstance(){
-        if(instance==null)
-            instance= new SalvadanaioDAOImpl();
+    public static SalvadanaioDAOImpl getInstance() {
+        if (instance == null)
+            instance = new SalvadanaioDAOImpl();
         return instance;
     }
 
@@ -117,4 +118,5 @@ public class SalvadanaioDAOImpl implements SalvadanaioDAO{
             throw new RuntimeException(e);
         }
     }
+}
 
