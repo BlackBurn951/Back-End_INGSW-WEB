@@ -3,6 +3,7 @@ package com.example.progettowebtest.DAO;
 import com.example.progettowebtest.Connection.DbConn;
 import com.example.progettowebtest.Model.Stato;
 import com.example.progettowebtest.Model.TabelleCorelateStato;
+import com.example.progettowebtest.Model.ValoriStato;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -33,6 +34,31 @@ public class StatoDAOImpl implements StatoDAO{
         try{
             PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
             statement.setInt(1, id);
+
+            ResultSet queryResult= statement.executeQuery();
+
+            if(!queryResult.wasNull())
+                result = new Stato(queryResult.getInt("id_stato"), queryResult.getString("stato"));
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public Stato doRetriveByAttribute(ValoriStato val) {
+        Stato result= null;
+        String query= "select * from stato where stato= ?";
+
+        try{
+            PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
+            if(val==ValoriStato.ATTIVO)
+                statement.setString(1, "attivo");
+            else if(val==ValoriStato.SOSPESO)
+                statement.setString(1, "sospeso");
+            else
+                statement.setString(1, "chiuso");
 
             ResultSet queryResult= statement.executeQuery();
 
