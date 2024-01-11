@@ -91,7 +91,6 @@ public class PatenteDAOImpl implements PatenteDAO{
         return result;
     }
 
-
     @Override
     public boolean delete(Patente pat) {
         boolean result = false;
