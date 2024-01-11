@@ -22,12 +22,12 @@ public class ContoCorrente {
     private Utente intestatario;
     private Vector<Transazione> movimenti;
 
-    public ContoCorrente(String numCC, String iban, String pin, Date dataApertura, double limiteConto, double saldo,
+    public ContoCorrente(String numCC, String iban, String pin, String dataApertura, double limiteConto, double saldo,
                          int tassoInteresse, int tariffaAnnuale, Stato statoConto, Indirizzo indFatturazione, Utente intestatario) {
         this.numCC = numCC;
         this.iban = iban;
         this.pin = pin;
-        this.dataApertura = dataApertura;
+        this.dataApertura = Date.valueOf(dataApertura);
         this.limiteConto = limiteConto;
         this.saldo = saldo;
         this.tassoInteresse = tassoInteresse;

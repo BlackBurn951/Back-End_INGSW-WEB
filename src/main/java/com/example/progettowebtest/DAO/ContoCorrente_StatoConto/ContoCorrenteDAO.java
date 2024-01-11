@@ -1,4 +1,4 @@
-package com.example.progettowebtest.DAO.ContoCorrente_Salva_Stato;
+package com.example.progettowebtest.DAO.ContoCorrente_StatoConto;
 
 import com.example.progettowebtest.Model.ContoCorrente.ContoCorrente;
 
@@ -6,9 +6,8 @@ import java.util.Vector;
 
 public interface ContoCorrenteDAO {
     Vector<ContoCorrente> doRetriveAll();
-    ContoCorrente doRetriveByKey(int numConto);
+    ContoCorrente doRetriveByKey(String numConto);
     boolean saveOrUpdate(ContoCorrente contoCorr);
     boolean delete(ContoCorrente contoCorr);
-
 
 }
