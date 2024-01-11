@@ -55,11 +55,14 @@ public class UtenteDAOImpl implements UtenteDAO {
 
         try{
             if(col==IdentificativiUtente.CF)
-                query= "select * from utente where cf= "+id;
+                query= "select * from utente where cf= ?";
             else
-                query= "select * from utente where email= "+id;
+                query= "select * from utente where email= ?";
 
             PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
+
+            statement.setString(1,id);
+
             ResultSet queryResult= statement.executeQuery();
 
             if(!queryResult.wasNull())

@@ -21,7 +21,8 @@ public class SendEmailController {
 
 
     @PostMapping("/sendEmail")
-    public void sendEmail(HttpServletRequest request, HttpServletRequest response, @RequestBody EmailData extendedEmailData) {
+    //HttpServletRequest request, HttpServletRequest response,
+    public void sendEmail(@RequestBody EmailData extendedEmailData) {
         String nomeCognome = extendedEmailData.getNomeCognome();
         generatedOTP = generateOTP();
 

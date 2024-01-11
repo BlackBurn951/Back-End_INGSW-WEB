@@ -45,8 +45,10 @@ public class CartaIdentitaDAOImpl implements CartaIdentitaDAO{
         CartaIdentita result = null;
 
         try{
-            String query = "select * from carta_di_identità where num_identificativo= "+ numIdentificativo;
+            String query = "select * from carta_di_identità where num_identificativo= ?";
             PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
+
+            statement.setString(1,numIdentificativo);
             ResultSet queryResult = statement.executeQuery();
 
             if(!queryResult.wasNull())

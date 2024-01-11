@@ -45,8 +45,10 @@ public class PatenteDAOImpl implements PatenteDAO{
         Patente result = null;
 
         try{
-            String query = "select * from patente where num_patente= "+ numIdentificativo;
+            String query = "select * from patente where num_patente=?";
             PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
+
+            statement.setString(1, numIdentificativo);
             ResultSet queryResult = statement.executeQuery();
 
             if(!queryResult.wasNull())

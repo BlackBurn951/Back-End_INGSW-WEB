@@ -11,15 +11,14 @@ import java.util.Vector;
 @CrossOrigin(origins = "http://localhost:4200")
 public class OttieniCittaController {
 
-    @GetMapping("/cities")
-    public List<String> getCitiesSuggestions(@RequestParam("query") String query) {
-        List<String> cities = DatiComuneDAOImpl.getInstance().restituisciCitta(query);
-        return cities;
+    @GetMapping("/getCitta")
+    public List<String> getSuggerimentoCitta(@RequestParam("sugg") String sugg) {
+        return DatiComuneDAOImpl.getInstance().restituisciCitta(sugg);
     }
 
     @GetMapping("/datiCitta")
-    public List<String> getDatiCitta(@RequestParam("query") String query) {
-        Vector<DatiComune> datiCitta= DatiComuneDAOImpl.getInstance().doRetriveByAttribute(query, ColonneDatiComune.NOME_COMUNE);
+    public List<String> getDatiCitta(@RequestParam("datiC") String datiC) {
+        Vector<DatiComune> datiCitta= DatiComuneDAOImpl.getInstance().doRetriveByAttribute(datiC, ColonneDatiComune.NOME_COMUNE);
         Vector<String> result= new Vector<>();
 
         result.add(datiCitta.get(0).getCap());

@@ -46,8 +46,10 @@ public class PassaportoDAOImpl implements PassaportoDAO{
         Passaporto result = null;
 
         try{
-            String query = "select * from passaporto where num_passaporto= "+ numIdentificativo;
+            String query = "select * from passaporto where num_passaporto= ?";
             PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
+
+            statement.setString(1, numIdentificativo);
             ResultSet queryResult = statement.executeQuery();
 
             if(!queryResult.wasNull())
