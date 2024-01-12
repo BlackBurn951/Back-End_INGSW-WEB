@@ -1,47 +1,57 @@
 package com.example.progettowebtest.Servlet;
 
 import com.example.progettowebtest.ClassiRequest.DatiControlloUtente;
+import com.example.progettowebtest.ClassiRequest.DatiRegistrazione;
 import com.example.progettowebtest.DAO.Utente_Documenti.UtenteDAO;
 import com.example.progettowebtest.DAO.Utente_Documenti.UtenteDAOImpl;
 import com.example.progettowebtest.ClassiRequest.IdentificativiUtente;
-import com.example.progettowebtest.Model.Utente_Documenti.Utente;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import javax.servlet.http.HttpSession;
 
 @RestController
 public class RegistrazioneServlet extends HttpServlet {
     private UtenteDAO utenteDAO= UtenteDAOImpl.getInstance();
 
     @PostMapping("/emailCheck")
-    public void emailCheck(HttpServletRequest request, HttpServletResponse response, @RequestBody DatiControlloUtente dati) {
-        Utente ut= utenteDAO.doRetriveByKey(dati.getEmail(), IdentificativiUtente.EMAIL);
-        String addres;
-        if(ut==null) {
-            response.setStatus(200);
-            addres= "src/app/registration2/registration2.component.html";
-        }
-        else {
-            response.setStatus(302);
-            addres= "src/app/registration1/userAlreadyEx.component.html";
-        }
-        RequestDispatcher dispatcher= getServletContext().getRequestDispatcher(addres);
-        try {
-            dispatcher.include(request, response);
-        }catch (IOException | ServletException e) {
-            e.printStackTrace();
-        }
+    public boolean emailCheck(@RequestBody DatiControlloUtente dati) {
+        boolean result= false;
+        if(utenteDAO.doRetriveByKey(dati.getEmail(), IdentificativiUtente.EMAIL)== null &&
+                utenteDAO.doRetriveByKey(dati.getCf(), IdentificativiUtente.CF)== null)
+            result= true;
+
+        return result;
     }
 
     @PostMapping("/checkOTP")
-    public void checkOTP(HttpServletRequest request, HttpServletResponse response) {
+    public String checkOTP(HttpServletRequest request, @RequestParam("otpSend") String otpSend) {
+        String response= "";
 
+        HttpSession session= request.getSession(false);
+        if(session!=null && session.getCreationTime()<600000) {
+            boolean otpControl= BCrypt.checkpw(otpSend, (String)session.getAttribute("control"));
+            if(otpControl)
+                response= "OTP corretto";
+            else
+                response= "OTP errato";
+        }
+        else if(session!=null && session.getCreationTime()>=600000)
+            response= "Sessione scaduta";
+        else
+            response= "Sessione non esistente";
+
+        return response;
     }
+
+    /*@PostMapping("/insertUser")
+    public boolean insertUser(@RequestBody DatiRegistrazione dati) {
+
+    }*/
 }
