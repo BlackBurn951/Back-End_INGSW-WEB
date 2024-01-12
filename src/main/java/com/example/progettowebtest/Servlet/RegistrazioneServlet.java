@@ -18,11 +18,13 @@ public class RegistrazioneServlet extends HttpServlet {
     private UtenteDAO utenteDAO= UtenteDAOImpl.getInstance();
 
     @GetMapping("/emailCheck")
-    public boolean emailCheck(@RequestBody DatiControlloUtente dati) {
-        boolean result= false;
-        if(utenteDAO.doRetriveByKey(dati.getEmail(), IdentificativiUtente.EMAIL)== null &&
-                utenteDAO.doRetriveByKey(dati.getCf(), IdentificativiUtente.CF)== null)
-            result= true;
+    public int emailCheck(@RequestBody DatiControlloUtente dati) {
+        int result= 2;
+
+        if(utenteDAO.doRetriveByKey(dati.getEmail(), IdentificativiUtente.EMAIL)!=null)
+            result= 0;
+        else if(utenteDAO.doRetriveByKey(dati.getCf(), IdentificativiUtente.CF)!=null)
+            result= 1;
 
         return result;
     }
