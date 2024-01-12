@@ -40,7 +40,7 @@ public class SalvadanaioDAOImpl implements SalvadanaioDAO {
             ResultSet queryResult = statement.executeQuery();
 
             while (queryResult.next()) {
-                ContoCorrente contoCorrente = contoDAO.doRetrivebyKey(queryResult.getString("num_cc"));
+                ContoCorrente contoCorrente = contoDAO.doRetriveByKey(queryResult.getString("num_cc"));
                 Salvadanaio salvadanaio = new Salvadanaio(
                         queryResult.getInt("id_salvadanaio"),
                         queryResult.getDouble("saldo_attuale"),
@@ -70,7 +70,7 @@ public class SalvadanaioDAOImpl implements SalvadanaioDAO {
             ResultSet queryResult = statement.executeQuery();
 
             if (!queryResult.wasNull()) {
-                ContoCorrente contoCorrente = contoDAO.doRetrivebyKey(queryResult.getString("num_cc"));
+                ContoCorrente contoCorrente = contoDAO.doRetriveByKey(queryResult.getString("num_cc"));
                 result = new Salvadanaio(queryResult.getInt("id_salvadanaio"),
                         queryResult.getDouble("saldo_attuale"),
                         queryResult.getDouble("obiettivo"),
@@ -95,7 +95,7 @@ public class SalvadanaioDAOImpl implements SalvadanaioDAO {
             statement.setDouble(2, salva.getSaldoAttuale());
             statement.setDouble(3, salva.getObiettivo());
             statement.setString(4, salva.getNomeObiettivo());
-            statement.setString(5, salva.getContoCorrente().getNumCc());
+            statement.setString(5, salva.getContoRiferimento().getNumCC());
 
             int rowsAffected = statement.executeUpdate();
             return rowsAffected > 0;
