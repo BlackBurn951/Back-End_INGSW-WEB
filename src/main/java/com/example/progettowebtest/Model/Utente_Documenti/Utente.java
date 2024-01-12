@@ -24,6 +24,7 @@ public class Utente extends DatiUtente {
         this.occupazione = occupazione;
         this.redditoAnnuo = redditoAnnuo;
         this.doc = doc;
+        this.indirizziUtente = new Vector<>();
     }
 
     //Getters dei parametri unici dell'utente
