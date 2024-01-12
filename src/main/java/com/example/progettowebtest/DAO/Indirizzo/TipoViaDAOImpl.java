@@ -43,11 +43,11 @@ public class TipoViaDAOImpl implements TipoViaDAO{
         try{
             String query= "select * from tipo_via where id_via= ?";
             PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
-
             statement.setInt(1, idVia);
+
             ResultSet queryResult= statement.executeQuery();
 
-            if(!queryResult.wasNull())
+            if(queryResult.next())
                 result= new TipoVia(queryResult.getInt("id_via"), queryResult.getString("tipologia"));
 
         }catch (SQLException e) {

@@ -51,7 +51,7 @@ public class CartaIdentitaDAOImpl implements CartaIdentitaDAO{
             statement.setString(1,numIdentificativo);
             ResultSet queryResult = statement.executeQuery();
 
-            if(!queryResult.wasNull())
+            if(queryResult.next())
                 result = new CartaIdentita(queryResult.getString("nome"), queryResult.getString("cognome"), queryResult.getString("nazionalità"),
                         queryResult.getString("comune_di_nascita"), queryResult.getString("sesso"), queryResult.getString("provincia_di_nascita"),
                         queryResult.getDate("data_di_nascita").toString(), queryResult.getString("num_identificativo"), queryResult.getDate("data_di_emissione").toString(),

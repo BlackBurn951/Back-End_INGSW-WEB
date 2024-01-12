@@ -69,7 +69,7 @@ public class IndirizzoDAOImpl implements IndirizzoDAO{
 
                 ResultSet queryResult = statement.executeQuery();
 
-                if (!queryResult.wasNull())
+                if (queryResult.next())
                     result = new Indirizzo(tipo, queryResult.getString("nome_via"), queryResult.getString("num_civico"), comuneIns);
 
             } catch (SQLException e) {
