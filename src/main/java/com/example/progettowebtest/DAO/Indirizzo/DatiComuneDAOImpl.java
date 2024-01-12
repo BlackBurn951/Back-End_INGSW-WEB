@@ -44,11 +44,13 @@ public class DatiComuneDAOImpl implements DatiComuneDAO{
         DatiComune result= null;
 
         try{
-            String query= "select * from dati_comune where id_comune= "+ idComune;
+            String query= "select * from dati_comune where id_comune= ?";
             PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
+            statement.setInt(1, idComune);
+
             ResultSet queryResult= statement.executeQuery();
 
-            if(!queryResult.wasNull())
+            if(queryResult.next())
                 result= new DatiComune(queryResult.getInt("id_comune"), queryResult.getString("nome_comune"),
                         queryResult.getString("cap"), queryResult.getString("provincia"), queryResult.getString("regione"));
 

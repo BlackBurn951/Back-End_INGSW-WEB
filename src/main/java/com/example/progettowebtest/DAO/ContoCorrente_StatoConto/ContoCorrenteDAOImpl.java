@@ -1,5 +1,5 @@
 package com.example.progettowebtest.DAO.ContoCorrente_StatoConto;
-
+/*
 import com.example.progettowebtest.ClassiRequest.IdentificativiUtente;
 import com.example.progettowebtest.Connection.DbConn;
 import com.example.progettowebtest.DAO.Indirizzo.IndirizzoDAO;
@@ -164,3 +164,4 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO{
         return st;
     }
 }
+*/

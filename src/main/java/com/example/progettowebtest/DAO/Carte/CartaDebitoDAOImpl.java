@@ -1,5 +1,5 @@
 package com.example.progettowebtest.DAO.Carte;
-
+/*
 import com.example.progettowebtest.Connection.DbConn;
 import com.example.progettowebtest.DAO.ContoCorrente_StatoConto.ContoCorrenteDAO;
 import com.example.progettowebtest.DAO.ContoCorrente_StatoConto.ContoCorrenteDAOImpl;
@@ -134,3 +134,4 @@ public class CartaDebitoDAOImpl implements CartaDebitoDAO {
         }
     }
 }
+*/

@@ -1,5 +1,5 @@
 package com.example.progettowebtest.DAO.Carte;
-
+/*
 import com.example.progettowebtest.Connection.DbConn;
 import com.example.progettowebtest.DAO.ContoCorrente_StatoConto.ContoCorrenteDAO;
 import com.example.progettowebtest.DAO.ContoCorrente_StatoConto.ContoCorrenteDAOImpl;
@@ -37,8 +37,8 @@ public class CartaCreditoDAOImpl implements CartaCreditoDAO {
             ResultSet queryResult = statement.executeQuery();
 
             while (queryResult.next()) {
-                ContoCorrente contoCorrente = contoDAO.doRetrivebyKey(queryResult.getString("num_cc"));
-                Stato stato = statoDAO.doRetrivebyKey(queryResult.getInt("id_stato"));
+                ContoCorrente contoCorrente = contoDAO.doRetriveByKey(queryResult.getString("num_cc"));
+                Stato stato = statoDAO.doRetriveByKey(queryResult.getInt("id_stato"));
 
                 CartaCredito cartaCredito = new CartaCredito(
                         queryResult.getString("num_carta_credito"),
@@ -74,8 +74,8 @@ public class CartaCreditoDAOImpl implements CartaCreditoDAO {
             ResultSet queryResult = statement.executeQuery();
 
             if (queryResult.next()) {
-                ContoCorrente contoCorrente = contoDAO.doRetrivebyKey(queryResult.getString("num_cc"));
-                Stato stato = statoDAO.doRetrivebyKey(queryResult.getInt("id_stato"));
+                ContoCorrente contoCorrente = contoDAO.doRetriveByKey(queryResult.getString("num_cc"));
+                Stato stato = statoDAO.doRetriveByKey(queryResult.getInt("id_stato"));
 
                 result = new CartaCredito(
                         queryResult.getString("num_carta_credito"),
@@ -136,3 +136,4 @@ public class CartaCreditoDAOImpl implements CartaCreditoDAO {
         }
     }
 }
+*/

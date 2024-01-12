@@ -60,11 +60,11 @@ public class UtenteDAOImpl implements UtenteDAO {
                 query= "select * from utente where email= ?";
 
             PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
-            statement.setString(1,id);
+            statement.setString(1, id);
 
             ResultSet queryResult= statement.executeQuery();
 
-            if(!queryResult.wasNull())
+            if(queryResult.next())
                 result= createUtente(queryResult);
 
         }catch (SQLException e) {
