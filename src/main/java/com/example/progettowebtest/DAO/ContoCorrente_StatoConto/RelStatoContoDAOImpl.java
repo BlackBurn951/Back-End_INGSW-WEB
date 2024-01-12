@@ -1,5 +1,5 @@
 package com.example.progettowebtest.DAO.ContoCorrente_StatoConto;
-
+/*
 import com.example.progettowebtest.Connection.DbConn;
 import com.example.progettowebtest.DAO.Carte.CartaCreditoDAO;
 import com.example.progettowebtest.DAO.Carte.CartaCreditoDAOImpl;
@@ -127,3 +127,4 @@ public class RelStatoContoDAOImpl implements RelStatoContoDAO{
         return false;
     }
 }
+*/
