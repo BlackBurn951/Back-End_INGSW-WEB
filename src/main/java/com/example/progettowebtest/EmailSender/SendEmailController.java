@@ -4,8 +4,10 @@ import java.io.*;
 import java.security.GeneralSecurityException;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,10 +23,9 @@ public class SendEmailController {
 
 
     @PostMapping("/sendEmail")
-    //HttpServletRequest request, HttpServletRequest response,
-    public void sendEmail(@RequestBody EmailData extendedEmailData) {
+    public void sendEmail(HttpServletRequest request, @RequestBody EmailData extendedEmailData) {
         String nomeCognome = extendedEmailData.getNomeCognome();
-        generatedOTP = generateOTP();
+
 
         try {
             if(extendedEmailData.isAllegato()){
@@ -43,6 +44,16 @@ public class SendEmailController {
 
 
             }else{
+                //Generazione e ripristino sessione
+                HttpSession session= request.getSession(false);
+                if(session!=null)
+                    session.invalidate();
+                session= request.getSession(true);
+
+                //Generazione otp e assegnamento alla sessione
+                String generatedOTP = generateOTP();;
+                session.setAttribute("control", BCrypt.hashpw(generatedOTP, BCrypt.gensalt(5)));
+
                 String emailTemplate = EmailTemplateLoader.loadEmailTemplate("/email_otp_template.html");
                 String htm_otp = emailTemplate
                         .replace("$NOME_COGNOME$", nomeCognome)
@@ -53,7 +64,6 @@ public class SendEmailController {
 
             }
 
-
         } catch (IOException | GeneralSecurityException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -61,8 +71,4 @@ public class SendEmailController {
             throw new RuntimeException(e);
         }
     }
-
-
-
-
 }
