@@ -1,7 +1,6 @@
 package com.example.progettowebtest.Servlet;
 
 import com.example.progettowebtest.ClassiRequest.DatiControlloUtente;
-import com.example.progettowebtest.ClassiRequest.DatiRegistrazione;
 import com.example.progettowebtest.DAO.Utente_Documenti.UtenteDAO;
 import com.example.progettowebtest.DAO.Utente_Documenti.UtenteDAOImpl;
 import com.example.progettowebtest.ClassiRequest.IdentificativiUtente;
@@ -9,16 +8,14 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 
 
 @RestController
 public class RegistrazioneServlet extends HttpServlet {
     private UtenteDAO utenteDAO= UtenteDAOImpl.getInstance();
 
-    @GetMapping("/emailCheck")
+    @PostMapping("/emailCheck")
     public int emailCheck(@RequestBody DatiControlloUtente dati) {
         int result= 2;
 
@@ -27,16 +24,17 @@ public class RegistrazioneServlet extends HttpServlet {
         else if(utenteDAO.doRetriveByKey(dati.getCf(), IdentificativiUtente.CF)!=null)
             result= 1;
 
+        System.out.println("Valore result: "+ result);
         return result;
     }
 
     @GetMapping("/checkOTP")
-    public String checkOTP(HttpServletRequest request, @RequestParam("otpSend") String otpSend) {
+    public String checkOTP(HttpSession session, @RequestParam("otpSend") String otpSend) {
         String response= "";
-
-        HttpSession session= request.getSession(false);
-        if(session!=null && session.getCreationTime()<600000) {
+        if(session != null && System.currentTimeMillis() - session.getCreationTime() < 600000) {
+            System.out.println("Otp criptato: "+ (String)session.getAttribute("control"));
             boolean otpControl= BCrypt.checkpw(otpSend, (String)session.getAttribute("control"));
+
             if(otpControl)
                 response= "OTP corretto";
             else
