@@ -2,9 +2,10 @@ package com.example.progettowebtest.EmailSender;
 import com.google.api.services.gmail.model.Message;
 import java.io.*;
 import java.security.GeneralSecurityException;
-import javax.mail.MessagingException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.mail.MessagingException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -20,7 +21,6 @@ import static com.example.progettowebtest.EmailSender.OTPGenerator.generateOTP;
 @CrossOrigin(origins = "http://localhost:4200")
 public class SendEmailController {
     public static String generatedOTP;
-
 
     @PostMapping("/sendEmail")
     public void sendEmail(HttpServletRequest request, @RequestBody EmailData extendedEmailData) {
@@ -64,10 +64,8 @@ public class SendEmailController {
 
             }
 
-        } catch (IOException | GeneralSecurityException e) {
+        } catch (IOException | GeneralSecurityException | MessagingException e) {
             e.printStackTrace();
-            throw new RuntimeException(e);
-        } catch (MessagingException e) {
             throw new RuntimeException(e);
         }
     }
