@@ -6,11 +6,13 @@ import com.example.progettowebtest.DAO.Utente_Documenti.UtenteDAO;
 import com.example.progettowebtest.DAO.Utente_Documenti.UtenteDAOImpl;
 import com.example.progettowebtest.ClassiRequest.IdentificativiUtente;
 import jakarta.servlet.http.*;
+import org.mortbay.util.ajax.JSON;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
 
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200", exposedHeaders = "Session-ID")
 public class RegistrazioneServlet extends HttpServlet {
     private UtenteDAO utenteDAO= UtenteDAOImpl.getInstance();
 
@@ -35,7 +37,7 @@ public class RegistrazioneServlet extends HttpServlet {
         long currentTime = System.currentTimeMillis(); // Tempo corrente in millisecondi
         long tenMinutesInMillis = 10 * 60 * 1000; // 10 minuti in millisecondi
         if(session!=null && (currentTime - creationTime < tenMinutesInMillis)) {
-            if(session.getAttribute("control ").equals(otpSend)) {
+            if(session.getAttribute("control").equals(otpSend)) {
                 response = "OTP corretto";
                 System.out.println(response);
             }
@@ -54,8 +56,13 @@ public class RegistrazioneServlet extends HttpServlet {
         return response;
     }
 
-    /*@PostMapping("/insertUser")
+    @PostMapping("/insertUser")
     public boolean insertUser(@RequestBody DatiRegistrazione dati) {
-
-    }*/
+        String[] prova= dati.getDati();
+        for(String a: prova) {
+            System.out.println(a+" ");
+        }
+        System.out.println();
+        return true;
+    }
 }
