@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class RegistrazioneServlet extends HttpServlet {
     private UtenteDAO utenteDAO= UtenteDAOImpl.getInstance();
 
-    @GetMapping("/emailCheck")
+    @PostMapping("/emailCheck")
     public int emailCheck(@RequestBody DatiControlloUtente dati) {
         int result= 2;
 
@@ -27,18 +27,9 @@ public class RegistrazioneServlet extends HttpServlet {
     }
 
     @GetMapping("/checkOTP")
-    public String checkOTP(HttpServletRequest request, @RequestParam("otpSend") String otpSend) {
-        String response= "test";
-
-
-        Cookie[] biscotti= request.getCookies();
-        if(biscotti!=null) {
-            System.out.println("Array cookie non vuoto");
-            for(Cookie a: biscotti){
-                System.out.println("Valore biscotto: "+a.getAttribute("Pino"));
-            }
-        }
-        /*HttpSession session= request.getSession(false);
+    public String checkOTP(HttpServletRequest request, @RequestParam("otpSend") String otpSend, @RequestParam("IdSession") String idSess) {
+        String response;
+        HttpSession session= request.getSession(false);
         if(session!=null && session.getCreationTime()<600000) {
             boolean otpControl= BCrypt.checkpw(otpSend, (String)session.getAttribute("control"));
             if(otpControl)
@@ -51,7 +42,7 @@ public class RegistrazioneServlet extends HttpServlet {
         else {
             System.out.println("Server: sessione non trovata!!!");
             response= "Sessione non esistente!!!";
-        }*/
+        }
 
         return response;
     }
