@@ -5,13 +5,9 @@ import com.example.progettowebtest.ClassiRequest.DatiRegistrazione;
 import com.example.progettowebtest.DAO.Utente_Documenti.UtenteDAO;
 import com.example.progettowebtest.DAO.Utente_Documenti.UtenteDAOImpl;
 import com.example.progettowebtest.ClassiRequest.IdentificativiUtente;
+import jakarta.servlet.http.*;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
-
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 
 @RestController
@@ -32,9 +28,17 @@ public class RegistrazioneServlet extends HttpServlet {
 
     @GetMapping("/checkOTP")
     public String checkOTP(HttpServletRequest request, @RequestParam("otpSend") String otpSend) {
-        String response= "";
+        String response= "test";
 
-        HttpSession session= request.getSession(false);
+
+        Cookie[] biscotti= request.getCookies();
+        if(biscotti!=null) {
+            System.out.println("Array cookie non vuoto");
+            for(Cookie a: biscotti){
+                System.out.println("Valore biscotto: "+a.getAttribute("Pino"));
+            }
+        }
+        /*HttpSession session= request.getSession(false);
         if(session!=null && session.getCreationTime()<600000) {
             boolean otpControl= BCrypt.checkpw(otpSend, (String)session.getAttribute("control"));
             if(otpControl)
@@ -44,8 +48,10 @@ public class RegistrazioneServlet extends HttpServlet {
         }
         else if(session!=null && session.getCreationTime()>=600000)
             response= "Sessione scaduta";
-        else
-            response= "Sessione non esistente";
+        else {
+            System.out.println("Server: sessione non trovata!!!");
+            response= "Sessione non esistente!!!";
+        }*/
 
         return response;
     }
