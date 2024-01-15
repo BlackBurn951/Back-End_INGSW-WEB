@@ -16,7 +16,7 @@ import static com.example.progettowebtest.EmailSender.OTPGenerator.generateOTP;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200", exposedHeaders = "Session-ID")
 public class SendEmailController {
     public static String generatedOTP;
 
@@ -54,10 +54,7 @@ public class SendEmailController {
                 String generatedOTP = generateOTP();;
                 session.setAttribute("control", BCrypt.hashpw(generatedOTP, BCrypt.gensalt(5)));
 
-                System.out.println("parametro session: "+session.getAttribute("control"));
-                //response.encodeURL("IdSession= "+session.getId());
-                response.encodeURL(session.getId());
-
+                response.setHeader("Session-ID", session.getId());
 
 
                 String emailTemplate = EmailTemplateLoader.loadEmailTemplate("/email_otp_template.html");
