@@ -47,15 +47,14 @@ public class SendEmailController {
                 if(session!=null)
                     session.invalidate();
                 session= request.getSession(true);
-
                 System.out.println("Id: "+session.getId());
 
                 //Generazione otp e assegnamento alla sessione
                 String generatedOTP = generateOTP();;
-                session.setAttribute("control", BCrypt.hashpw(generatedOTP, BCrypt.gensalt(5)));
+                session.setAttribute("control", generatedOTP);
 
                 response.setHeader("Session-ID", session.getId());
-
+                request.getServletContext().setAttribute(session.getId(), session);
 
                 String emailTemplate = EmailTemplateLoader.loadEmailTemplate("/email_otp_template.html");
                 String htm_otp = emailTemplate
