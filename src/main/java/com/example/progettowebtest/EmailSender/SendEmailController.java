@@ -3,9 +3,7 @@ import com.google.api.services.gmail.model.Message;
 import java.io.*;
 import java.security.GeneralSecurityException;
 import jakarta.mail.MessagingException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.*;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -23,7 +21,7 @@ public class SendEmailController {
     public static String generatedOTP;
 
     @PostMapping("/sendEmail")
-    public void sendEmail(HttpServletRequest request, @RequestBody EmailData extendedEmailData) {
+    public void sendEmail(HttpServletRequest request, HttpServletResponse response, @RequestBody EmailData extendedEmailData) {
         String nomeCognome = extendedEmailData.getNomeCognome();
 
 
@@ -50,9 +48,17 @@ public class SendEmailController {
                     session.invalidate();
                 session= request.getSession(true);
 
+                System.out.println("Id: "+session.getId());
+
                 //Generazione otp e assegnamento alla sessione
                 String generatedOTP = generateOTP();;
                 session.setAttribute("control", BCrypt.hashpw(generatedOTP, BCrypt.gensalt(5)));
+
+                System.out.println("parametro session: "+session.getAttribute("control"));
+                //response.encodeURL("IdSession= "+session.getId());
+                response.encodeURL(session.getId());
+
+
 
                 String emailTemplate = EmailTemplateLoader.loadEmailTemplate("/email_otp_template.html");
                 String htm_otp = emailTemplate
