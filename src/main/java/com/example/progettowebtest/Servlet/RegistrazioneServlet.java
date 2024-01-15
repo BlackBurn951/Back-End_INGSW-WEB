@@ -5,20 +5,16 @@ import com.example.progettowebtest.ClassiRequest.DatiRegistrazione;
 import com.example.progettowebtest.DAO.Utente_Documenti.UtenteDAO;
 import com.example.progettowebtest.DAO.Utente_Documenti.UtenteDAOImpl;
 import com.example.progettowebtest.ClassiRequest.IdentificativiUtente;
+import jakarta.servlet.http.*;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
-
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 
 @RestController
 public class RegistrazioneServlet extends HttpServlet {
     private UtenteDAO utenteDAO= UtenteDAOImpl.getInstance();
 
-    @GetMapping("/emailCheck")
+    @PostMapping("/emailCheck")
     public int emailCheck(@RequestBody DatiControlloUtente dati) {
         int result= 2;
 
@@ -31,21 +27,29 @@ public class RegistrazioneServlet extends HttpServlet {
     }
 
     @GetMapping("/checkOTP")
-    public String checkOTP(HttpServletRequest request, @RequestParam("otpSend") String otpSend) {
-        String response= "";
+    public String checkOTP(HttpServletRequest request, @RequestParam("otpSend") String otpSend, @RequestParam("IdSession") String idSess) {
+        String response;
 
-        HttpSession session= request.getSession(false);
-        if(session!=null && session.getCreationTime()<600000) {
-            boolean otpControl= BCrypt.checkpw(otpSend, (String)session.getAttribute("control"));
-            if(otpControl)
-                response= "OTP corretto";
-            else
-                response= "OTP errato";
+        HttpSession session= (HttpSession) request.getServletContext().getAttribute(idSess);
+        long creationTime = session.getCreationTime(); // Tempo di creazione della sessione in millisecondi
+        long currentTime = System.currentTimeMillis(); // Tempo corrente in millisecondi
+        long tenMinutesInMillis = 10 * 60 * 1000; // 10 minuti in millisecondi
+        if(session!=null && (currentTime - creationTime < tenMinutesInMillis)) {
+            if(session.getAttribute("control ").equals(otpSend)) {
+                response = "OTP corretto";
+                System.out.println(response);
+            }
+            else {
+                response = "OTP errato";
+                System.out.println(response);
+            }
         }
-        else if(session!=null && session.getCreationTime()>=600000)
+        else if(session!=null && (currentTime - creationTime >= tenMinutesInMillis))
             response= "Sessione scaduta";
-        else
-            response= "Sessione non esistente";
+        else {
+            System.out.println("Server: sessione non trovata!!!");
+            response= "Sessione non esistente!!!";
+        }
 
         return response;
     }

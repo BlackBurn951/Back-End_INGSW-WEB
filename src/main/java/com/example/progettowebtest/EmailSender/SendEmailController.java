@@ -3,9 +3,7 @@ import com.google.api.services.gmail.model.Message;
 import java.io.*;
 import java.security.GeneralSecurityException;
 import jakarta.mail.MessagingException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.*;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -18,12 +16,12 @@ import static com.example.progettowebtest.EmailSender.OTPGenerator.generateOTP;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200", exposedHeaders = "Session-ID")
 public class SendEmailController {
     public static String generatedOTP;
 
     @PostMapping("/sendEmail")
-    public void sendEmail(HttpServletRequest request, @RequestBody EmailData extendedEmailData) {
+    public void sendEmail(HttpServletRequest request, HttpServletResponse response, @RequestBody EmailData extendedEmailData) {
         String nomeCognome = extendedEmailData.getNomeCognome();
 
 
@@ -49,10 +47,14 @@ public class SendEmailController {
                 if(session!=null)
                     session.invalidate();
                 session= request.getSession(true);
+                System.out.println("Id: "+session.getId());
 
                 //Generazione otp e assegnamento alla sessione
                 String generatedOTP = generateOTP();;
-                session.setAttribute("control", BCrypt.hashpw(generatedOTP, BCrypt.gensalt(5)));
+                session.setAttribute("control", generatedOTP);
+
+                response.setHeader("Session-ID", session.getId());
+                request.getServletContext().setAttribute(session.getId(), session);
 
                 String emailTemplate = EmailTemplateLoader.loadEmailTemplate("/email_otp_template.html");
                 String htm_otp = emailTemplate
