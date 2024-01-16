@@ -9,13 +9,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 public class PatenteDAOImpl implements PatenteDAO{
-    private static PatenteDAOImpl instance;
     public PatenteDAOImpl() {}
-    public static PatenteDAOImpl getInstance() {
-        if(instance==null)
-            instance= new PatenteDAOImpl();
-        return instance;
-    }
 
     @Override
     public Vector<Patente> doRetriveAll() {

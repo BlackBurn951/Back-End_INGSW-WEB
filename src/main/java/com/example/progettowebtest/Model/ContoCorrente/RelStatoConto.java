@@ -1,6 +1,5 @@
 package com.example.progettowebtest.Model.ContoCorrente;
 
-import com.example.progettowebtest.Model.ContoCorrente.ContoCorrente;
 import com.example.progettowebtest.Model.Stato;
 
 import java.sql.Date;

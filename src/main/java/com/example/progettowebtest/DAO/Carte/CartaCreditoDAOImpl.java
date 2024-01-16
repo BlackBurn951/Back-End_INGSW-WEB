@@ -13,19 +13,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
-
+/*
 public class CartaCreditoDAOImpl implements CartaCreditoDAO {
-    private static CartaCreditoDAOImpl instance;
-    private ContoCorrenteDAO contoDAO = ContoCorrenteDAOImpl.getInstance();
-    private StatoDAO statoDAO = StatoDAOImpl.getInstance();
 
-    private CartaCreditoDAOImpl() {}
+    public CartaCreditoDAOImpl() {}
 
-    public static CartaCreditoDAOImpl getInstance() {
-        if (instance == null)
-            instance = new CartaCreditoDAOImpl();
-        return instance;
-    }
 
     @Override
     public Vector<CartaCredito> doRetriveAll() {
@@ -119,7 +111,7 @@ public class CartaCreditoDAOImpl implements CartaCreditoDAO {
             return rowsAffected > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }*/
+        }
         return true;
     }
 
@@ -134,7 +126,7 @@ public class CartaCreditoDAOImpl implements CartaCreditoDAO {
             return rowsAffected > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }*/
+        }
         return true;
     }
-}
+}*/

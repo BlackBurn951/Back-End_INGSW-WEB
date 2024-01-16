@@ -9,13 +9,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 public class TipoViaDAOImpl implements TipoViaDAO{
-    private static TipoViaDAOImpl instance;
-    private TipoViaDAOImpl() {}
-    public static TipoViaDAOImpl getInstance() {
-        if(instance==null)
-            instance= new TipoViaDAOImpl();
-        return instance;
-    }
+    public TipoViaDAOImpl() {}
 
     @Override
     public Vector<TipoVia> doRetriveAll() {

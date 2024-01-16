@@ -10,13 +10,7 @@ import java.util.List;
 import java.util.Vector;
 
 public class DatiComuneDAOImpl implements DatiComuneDAO{
-    private static DatiComuneDAOImpl instance;
-    private DatiComuneDAOImpl() {}
-    public static DatiComuneDAOImpl getInstance() {
-        if(instance==null)
-            instance= new DatiComuneDAOImpl();
-        return instance;
-    }
+    public DatiComuneDAOImpl() {}
 
     @Override
     public Vector<DatiComune> doRetriveAll() {

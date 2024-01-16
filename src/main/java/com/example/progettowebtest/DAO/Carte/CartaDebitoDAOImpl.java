@@ -13,20 +13,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
-
+/*
 public class CartaDebitoDAOImpl implements CartaDebitoDAO {
-    private static CartaDebitoDAOImpl instance;
 
-    private ContoCorrenteDAO contoDAO = ContoCorrenteDAOImpl.getInstance();
-    private StatoDAO statoDAO = StatoDAOImpl.getInstance();
+    public CartaDebitoDAOImpl() {}
 
-    private CartaDebitoDAOImpl() {}
-
-    public static CartaDebitoDAOImpl getInstance() {
-        if (instance == null)
-            instance = new CartaDebitoDAOImpl();
-        return instance;
-    }
 
     @Override
     public Vector<CartaDebito> doRetriveAll() {
@@ -117,7 +108,7 @@ public class CartaDebitoDAOImpl implements CartaDebitoDAO {
             return rowsAffected > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }*/
+        }
         return true;
     }
 
@@ -132,7 +123,7 @@ public class CartaDebitoDAOImpl implements CartaDebitoDAO {
             return rowsAffected > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }*/
+        }
         return true;
     }
-}
+}*/
