@@ -25,6 +25,13 @@ public class DatiRegistrazione {
     private String capDom;
     private String provinciaDom;
     private String regioneDom;
+    private String tipoStradaFat;
+    private String nomeStradaFat;
+    private String numCivicoFat;
+    private String cittaFat;
+    private String capFat;
+    private String provinciaFat;
+    private String regioneFat;
     private String tipoDoc;
     private String idDoc;
     private String comuneAutorita;
@@ -81,4 +88,11 @@ public class DatiRegistrazione {
     public String getOccupazione() {return occupazione;}
     public String getReddito() {return reddito;}
     public String getPassword() {return password;}
+    public String getTipoStradaFat() {return tipoStradaFat;}
+    public String getNomeStradaFat() {return nomeStradaFat;}
+    public String getNumCivicoFat() {return numCivicoFat;}
+    public String getCittaFat() {return cittaFat;}
+    public String getCapFat() {return capFat;}
+    public String getProvinciaFat() {return provinciaFat;}
+    public String getRegioneFat() {return regioneFat;}
 }
