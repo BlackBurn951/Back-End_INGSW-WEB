@@ -46,7 +46,7 @@ public class PassaportoDAOImpl implements PassaportoDAO{
             statement.setString(1, numIdentificativo);
             ResultSet queryResult = statement.executeQuery();
 
-            if(!queryResult.wasNull())
+            if(queryResult.next())
                 result = new Passaporto(queryResult.getString("nome"), queryResult.getString("cognome"), queryResult.getString("nazionalità"),
                         queryResult.getString("comune_di_nascita"), queryResult.getString("sesso"), queryResult.getString("provincia_di_nascita"),
                         queryResult.getDate("data_di_nascita").toString(), queryResult.getString("num_passaporto"), queryResult.getDate("data_di_emissione").toString(),

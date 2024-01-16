@@ -28,7 +28,7 @@ public class StatoDAOImpl implements StatoDAO{
 
             ResultSet queryResult= statement.executeQuery();
 
-            if(!queryResult.wasNull())
+            if(queryResult.next())
                 result = new Stato(queryResult.getInt("id_stato"), queryResult.getString("stato"));
 
         }catch (SQLException e) {
@@ -53,7 +53,7 @@ public class StatoDAOImpl implements StatoDAO{
 
             ResultSet queryResult= statement.executeQuery();
 
-            if(!queryResult.wasNull())
+            if(queryResult.next())
                 result = new Stato(queryResult.getInt("id_stato"), queryResult.getString("stato"));
 
         }catch (SQLException e) {

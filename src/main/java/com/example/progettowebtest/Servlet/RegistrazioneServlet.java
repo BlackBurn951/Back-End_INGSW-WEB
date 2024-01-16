@@ -111,6 +111,7 @@ public class RegistrazioneServlet extends HttpServlet {
             if(!MagnusDAO.getInstance().getIndirizzoDAO().saveOrUpdate(res))
                 return false;
 
+            assert ut != null;
             ut.addAddress(res);
             if(dati.getCittaDom()!=null) {
                 tipo= MagnusDAO.getInstance().getTipoViaDAO().doRetriveByAttribute(dati.getTipoStradaDom());
@@ -127,13 +128,19 @@ public class RegistrazioneServlet extends HttpServlet {
             if(!MagnusDAO.getInstance().getUtenteDAO().saveOrUpdate(ut))
                 return false;
 
-            tipo= MagnusDAO.getInstance().getTipoViaDAO().doRetriveByAttribute(dati.getTipoStradaFat());
-            queryDatiComune= MagnusDAO.getInstance().getDatiComuneDAO().doRetriveByAttribute(dati.getCittaFat(), ColonneDatiComune.NOME_COMUNE);
-            comune= queryDatiComune.get(0);
-            Indirizzo indFat= new Indirizzo(tipo, dati.getNomeStradaFat(), dati.getNumCivicoFat(), comune);
-
             ContoCorrente cc= new ContoCorrente();
-            cc.setIndFatturazione(indFat);
+
+            if(dati.getCittaFat() != null){
+                tipo= MagnusDAO.getInstance().getTipoViaDAO().doRetriveByAttribute(dati.getTipoStradaFat());
+                queryDatiComune= MagnusDAO.getInstance().getDatiComuneDAO().doRetriveByAttribute(dati.getCittaFat(), ColonneDatiComune.NOME_COMUNE);
+                comune = queryDatiComune.get(0);
+                Indirizzo indFat= new Indirizzo(tipo, dati.getNomeStradaFat(), dati.getNumCivicoFat(), comune);
+
+                cc.setIndFatturazione(indFat);
+            }else{
+                cc.setIndFatturazione(res);
+            }
+
             cc.setIntestatario(ut);
             LocalDate data= LocalDate.now();
             cc.setDataApertura(data.toString());

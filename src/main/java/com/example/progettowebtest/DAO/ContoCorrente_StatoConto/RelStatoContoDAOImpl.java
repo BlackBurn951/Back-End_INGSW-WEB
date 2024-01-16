@@ -69,7 +69,7 @@ public class RelStatoContoDAOImpl implements RelStatoContoDAO{
 
             ResultSet queryResult= statement.executeQuery();
 
-            if(!queryResult.wasNull())
+            if(queryResult.next())
                 result= MagnusDAO.getInstance().getStatoDAO().doRetriveByKey(queryResult.getInt("id_stato"));
 
         }catch (SQLException e) {

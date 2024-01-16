@@ -48,7 +48,7 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO{
 
             ResultSet queryResult= statement.executeQuery();
 
-            if(!queryResult.wasNull()) {
+            if(queryResult.next()) {
                 intestatario= MagnusDAO.getInstance().getUtenteDAO().doRetriveByKey(queryResult.getString("cf"), IdentificativiUtente.CF);
                 indFatturazione= MagnusDAO.getInstance().getIndirizzoDAO().doRetriveByKey(queryResult.getString("nome_via_fatturazione"), queryResult.getString("num_civico_fatturazione"),
                         queryResult.getInt("id_comune_fatturazione"), queryResult.getInt("id_via_fatturazione"));

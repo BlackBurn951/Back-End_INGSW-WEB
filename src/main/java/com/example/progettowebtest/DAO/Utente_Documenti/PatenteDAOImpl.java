@@ -45,7 +45,7 @@ public class PatenteDAOImpl implements PatenteDAO{
             statement.setString(1, numIdentificativo);
             ResultSet queryResult = statement.executeQuery();
 
-            if(!queryResult.wasNull())
+            if(queryResult.next())
                 result = new Patente(queryResult.getString("nome"), queryResult.getString("cognome"), "Italiana",
                         queryResult.getString("comune_di_nascita"), queryResult.getString("sesso"), queryResult.getString("provincia_di_nascita"),
                         queryResult.getDate("data_di_nascita").toString(), queryResult.getString("num_patente"), queryResult.getDate("data_di_emissione").toString(),
