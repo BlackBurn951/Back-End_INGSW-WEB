@@ -1,5 +1,5 @@
 package com.example.progettowebtest.DAO.ContoCorrente_StatoConto;
-/*
+
 import com.example.progettowebtest.ClassiRequest.IdentificativiUtente;
 import com.example.progettowebtest.Connection.DbConn;
 import com.example.progettowebtest.DAO.Indirizzo.IndirizzoDAO;
@@ -109,6 +109,10 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO{
                 statement.setInt(12, contoCorr.getIndFatturazione().getTipologiaVia().getIdVia());
             }
             else {
+                statement.setString(1, contoCorr.getNumCC());
+                statement.setString(2, contoCorr.getIban());
+                statement.setString(3, contoCorr.getPin());
+                statement.setDate(4, contoCorr.getDataApertura());
                 statement.setDouble(5, contoCorr.getSaldo());
                 statement.setInt(6, contoCorr.getTassoInteresse());
                 statement.setInt(7, contoCorr.getTariffaAnnuale());
@@ -124,7 +128,8 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO{
                 contoCorr.setStatoConto(attivo);
 
                 RelStatoConto relazione= new RelStatoConto(contoCorr.getDataApertura().toString(), attivo, contoCorr);
-                relStatoContoDAO.saveOrUpdate(relazione);
+                if(!relStatoContoDAO.saveOrUpdate(relazione))
+                    return false;
 
                 contoCorr.setIban(iban);
                 contoCorr.setPin(pin);
@@ -164,4 +169,3 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO{
         return st;
     }
 }
-*/

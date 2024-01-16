@@ -34,6 +34,7 @@ public class ContoCorrente {
         this.intestatario = intestatario;
         movimenti= new Vector<>();
     }
+    public ContoCorrente() {}
 
     public String getNumCC() {return numCC;}
     public String getIban() {return iban;}
@@ -53,7 +54,9 @@ public class ContoCorrente {
     public void setTassoInteresse(int tassoInteresse) {this.tassoInteresse = tassoInteresse;}
     public void setTariffaAnnuale(int tariffaAnnuale) {this.tariffaAnnuale = tariffaAnnuale;}
     public void setStatoConto(Stato statoConto) {this.statoConto = statoConto;}
-
+    public void setIndFatturazione(Indirizzo indFatturazione) {this.indFatturazione = indFatturazione;}
+    public void setIntestatario(Utente intestatario) {this.intestatario = intestatario;}
+    public void setDataApertura(String dataApertura) {this.dataApertura = Date.valueOf(dataApertura);}
 
     public void addTransazione(Transazione trans) {movimenti.add(trans);}
     public void removeTransazione(Transazione trans) {movimenti.remove(trans);}
