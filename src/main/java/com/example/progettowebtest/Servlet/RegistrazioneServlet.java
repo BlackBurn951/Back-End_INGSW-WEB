@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class RegistrazioneServlet extends HttpServlet {
     private UtenteDAO utenteDAO= UtenteDAOImpl.getInstance();
 
+    //DA SPOSTARE
     @PostMapping("/emailCheck")
     public int emailCheck(@RequestBody DatiControlloUtente dati) {
         int result= 2;
@@ -28,6 +29,8 @@ public class RegistrazioneServlet extends HttpServlet {
         return result;
     }
 
+
+    //DA CONTROLLARE IL CONTO DEL MINUTAGGIO
     @GetMapping("/checkOTP")
     public String checkOTP(HttpServletRequest request, @RequestParam("otpSend") String otpSend, @RequestParam("IdSession") String idSess) {
         String response;
@@ -58,11 +61,34 @@ public class RegistrazioneServlet extends HttpServlet {
 
     @PostMapping("/insertUser")
     public boolean insertUser(@RequestBody DatiRegistrazione dati) {
-        String[] prova= dati.getDati();
+        String[] prova= dati.getDatiPersonali();
         for(String a: prova) {
-            System.out.println(a+" ");
+            System.out.print(a+" ");
         }
         System.out.println();
+
+        for(String a: dati.getDatiIndirizzo())
+            System.out.print(a+" ");
+        System.out.println();
+
+        for(String a: dati.getDatiIndDom())
+            System.out.print(a+" ");
+        System.out.println();
+
+        for(String a: dati.getDatiIndFat())
+            System.out.print(a+" ");
+        System.out.println();
+
+        for(String a: dati.getDatiDocumento())
+            System.out.print(a+" ");
+        System.out.println();
+
+        for(String a: dati.getDatiConto())
+            System.out.print(a+" ");
+        System.out.println();
+
+        for(String a: dati.getDatiPass())
+            System.out.print(a+" ");
         return true;
     }
 }
