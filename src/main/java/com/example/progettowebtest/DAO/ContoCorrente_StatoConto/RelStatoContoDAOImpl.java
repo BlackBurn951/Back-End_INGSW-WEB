@@ -1,9 +1,9 @@
 package com.example.progettowebtest.DAO.ContoCorrente_StatoConto;
 
 import com.example.progettowebtest.Connection.DbConn;
+import com.example.progettowebtest.DAO.MagnusDAO;
 import com.example.progettowebtest.DAO.StatoDAO;
 import com.example.progettowebtest.DAO.StatoDAOImpl;
-import com.example.progettowebtest.Model.ContoCorrente.ContoCorrente;
 import com.example.progettowebtest.Model.ContoCorrente.RelStatoConto;
 import com.example.progettowebtest.Model.Stato;
 
@@ -14,18 +14,10 @@ import java.sql.Types;
 import java.util.Vector;
 
 public class RelStatoContoDAOImpl implements RelStatoContoDAO{
-    private static RelStatoContoDAOImpl instance;
-    private StatoDAO statoDAO= StatoDAOImpl.getInstance();
-    private ContoCorrenteDAO contoCorrenteDAO= ContoCorrenteDAOImpl.getInstance();
 
 
-    private RelStatoContoDAOImpl() {}
+    public RelStatoContoDAOImpl() {}
 
-    public static RelStatoContoDAOImpl getInstance() {
-        if(instance==null)
-            instance= new RelStatoContoDAOImpl();
-        return instance;
-    }
 
     @Override
     public Vector<RelStatoConto> doRetriveAll() {
@@ -52,8 +44,8 @@ public class RelStatoContoDAOImpl implements RelStatoContoDAO{
             ResultSet queryResult= statement.executeQuery();
 
             while(queryResult.next()) {
-                rel= new RelStatoConto(queryResult.getDate("data_inizio_stato").toString(), statoDAO.doRetriveByKey(queryResult.getInt("id_stato")),
-                        contoCorrenteDAO.doRetriveByKey(queryResult.getString("num_cc")));
+                rel= new RelStatoConto(queryResult.getDate("data_inizio_stato").toString(), MagnusDAO.getInstance().getStatoDAO().doRetriveByKey(queryResult.getInt("id_stato")),
+                        MagnusDAO.getInstance().getContoCorrenteDAO().doRetriveByKey(queryResult.getString("num_cc")));
                 rel.setId(queryResult.getInt("id_rel"));
                 rel.setDataFineStato(queryResult.getDate("data_fine_stato").toString());
                 result.add(rel);
@@ -78,7 +70,7 @@ public class RelStatoContoDAOImpl implements RelStatoContoDAO{
             ResultSet queryResult= statement.executeQuery();
 
             if(!queryResult.wasNull())
-                result= statoDAO.doRetriveByKey(queryResult.getInt("id_stato"));
+                result= MagnusDAO.getInstance().getStatoDAO().doRetriveByKey(queryResult.getInt("id_stato"));
 
         }catch (SQLException e) {
             e.printStackTrace();

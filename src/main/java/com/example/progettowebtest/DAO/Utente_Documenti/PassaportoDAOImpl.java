@@ -9,13 +9,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 public class PassaportoDAOImpl implements PassaportoDAO{
-    private static PassaportoDAOImpl instance;
-    private PassaportoDAOImpl() {}
-    public static PassaportoDAOImpl getInstance() {
-        if(instance==null)
-            instance= new PassaportoDAOImpl();
-        return instance;
-    }
+    public PassaportoDAOImpl() {}
 
     @Override
     public Vector<Passaporto> doRetriveAll() {
