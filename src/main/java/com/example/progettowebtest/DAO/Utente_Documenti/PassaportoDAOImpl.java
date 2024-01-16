@@ -60,29 +60,30 @@ public class PassaportoDAOImpl implements PassaportoDAO{
 
     @Override
     public boolean saveOrUpdate(Passaporto passa) {
-        boolean result = true;
+        boolean result = false;
 
         try {
-            String query = "INSERT INTO passaporto (nome, cognome, nazionalità, comune_di_nascita, sesso, provincia_di_nascita, data_di_nascita, num_passaporto, " +
-                    "data_di_emissione, data_di_scadenza, comune_di_rilascio) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT (num_passaporto) DO UPDATE SET " +
+            String query = "INSERT INTO passaporto (num_passaporto, nome, cognome, data_di_nascita, data_di_emissione, data_di_scadenza, comune_di_nascita, " +
+                    "sesso, provincia_di_nascita, comune_di_rilascio, nazionalità) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT (num_passaporto) DO UPDATE SET " +
                     "nome = EXCLUDED.nome, cognome = EXCLUDED.cognome, nazionalità = EXCLUDED.nazionalità, comune_di_nascita = EXCLUDED.comune_di_nascita, sesso = EXCLUDED.sesso, " +
                     "provincia_di_nascita = EXCLUDED.provincia_di_nascita, data_di_nascita = EXCLUDED.data_di_nascita, data_di_emissione = EXCLUDED.data_di_emissione, " +
                     "data_di_scadenza = EXCLUDED.data_di_scadenza, comune_di_rilascio = EXCLUDED.comune_di_rilascio";
             PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
 
-            statement.setString(1, passa.getNome());
-            statement.setString(2, passa.getCognome());
-            statement.setString(3, passa.getCittadinanza());
-            statement.setString(4, passa.getComuneNascita());
-            statement.setString(5, passa.getSesso());
-            statement.setString(6, passa.getProvNascita());
-            statement.setDate(7, passa.getDataNascita());
-            statement.setString(8, passa.getNumIdentificativo());
-            statement.setDate(9, passa.getDataEmissione());
-            statement.setDate(10, passa.getDataScadenza());
-            statement.setString(11, passa.getEntitaRilascio());
+            statement.setString(1, passa.getNumIdentificativo());
+            statement.setString(2, passa.getNome());
+            statement.setString(3, passa.getCognome());
+            statement.setDate(4, passa.getDataNascita());
+            statement.setDate(5, passa.getDataEmissione());
+            statement.setDate(6, passa.getDataScadenza());
+            statement.setString(7, passa.getComuneNascita());
+            statement.setString(8, passa.getSesso());
+            statement.setString(9, passa.getProvNascita());
+            statement.setString(10, passa.getEntitaRilascio());
+            statement.setString(11, passa.getCittadinanza());
 
-            statement.executeUpdate();
+            if(statement.executeUpdate()>0)
+                result= true;
 
         } catch (SQLException e) {
             e.printStackTrace();

@@ -74,7 +74,7 @@ public class RegistrazioneServlet extends HttpServlet {
     @PostMapping("/insertUser")
     public boolean insertUser(@RequestBody DatiRegistrazione dati) {
         boolean result= false;
-
+        System.out.println(dati.getComuneNas());
         try{
             Utente ut= null;
             if(dati.getTipoDoc().equals("patente")) {

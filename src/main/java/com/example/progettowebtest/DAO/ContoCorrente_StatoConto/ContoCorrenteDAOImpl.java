@@ -118,16 +118,17 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO{
                 Stato attivo= MagnusDAO.getInstance().getStatoDAO().doRetriveByAttribute(ValoriStato.ATTIVO);
                 contoCorr.setStatoConto(attivo);
 
-                RelStatoConto relazione= new RelStatoConto(contoCorr.getDataApertura().toString(), attivo, contoCorr);
-                if(!MagnusDAO.getInstance().getRelStatoContoDAO().saveOrUpdate(relazione))
-                    result= false;
-
+                contoCorr.setNumCC(numConto);
                 contoCorr.setIban(iban);
                 contoCorr.setPin(pin);
                 contoCorr.setStatoConto(attivo);
                 contoCorr.setSaldo(500.0);
                 contoCorr.setTariffaAnnuale(20);
                 contoCorr.setTassoInteresse(3);
+
+                RelStatoConto relazione= new RelStatoConto(contoCorr.getDataApertura().toString(), attivo, contoCorr);
+                if(!MagnusDAO.getInstance().getRelStatoContoDAO().saveOrUpdate(relazione))
+                    result= false;
             }
 
             result= true;

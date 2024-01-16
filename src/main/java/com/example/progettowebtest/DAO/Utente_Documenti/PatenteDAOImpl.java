@@ -59,26 +59,30 @@ public class PatenteDAOImpl implements PatenteDAO{
 
     @Override
     public boolean saveOrUpdate(Patente pat) {
-        boolean result = true;
+        boolean result = false;
 
         try {
-            String query = "INSERT INTO patente (num_patente, nome, cognome, comune_di_nascita, sesso, provincia_di_nascita, data_di_nascita, data_di_emissione, data_di_scadenza, autorità_emittente) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT (num_patente) DO UPDATE SET " +
+            String query = "INSERT INTO patente (num_patente, nome, cognome, data_di_nascita, data_di_emissione, data_di_scadenza, comune_di_nascita, sesso, provincia_di_nascita, " +
+                    "autorità_emittente, nazionalità) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT (num_patente) DO UPDATE SET " +
                     "nome = EXCLUDED.nome, cognome = EXCLUDED.cognome, comune_di_nascita = EXCLUDED.comune_di_nascita, sesso = EXCLUDED.sesso, provincia_di_nascita = EXCLUDED.provincia_di_nascita, " +
-                    "data_di_nascita = EXCLUDED.data_di_nascita, data_di_emissione = EXCLUDED.data_di_emissione, data_di_scadenza = EXCLUDED.data_di_scadenza, autorità_emittente = EXCLUDED.autorità_emittente";
+                    "data_di_nascita = EXCLUDED.data_di_nascita, data_di_emissione = EXCLUDED.data_di_emissione, data_di_scadenza = EXCLUDED.data_di_scadenza, autorità_emittente = EXCLUDED.autorità_emittente, nazionalità = EXCLUDED.nazionalità";
 
             PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
 
             statement.setString(1, pat.getNumIdentificativo());
             statement.setString(2, pat.getNome());
             statement.setString(3, pat.getCognome());
-            statement.setString(4, pat.getComuneNascita());
-            statement.setString(5, pat.getSesso());
-            statement.setString(6, pat.getProvNascita());
-            statement.setDate(7, pat.getDataNascita());
-            statement.setDate(8, pat.getDataEmissione());
-            statement.setDate(9, pat.getDataScadenza());
+            statement.setDate(4, pat.getDataNascita());
+            statement.setDate(5, pat.getDataEmissione());
+            statement.setDate(6, pat.getDataScadenza());
+            statement.setString(7, pat.getComuneNascita());
+            statement.setString(8, pat.getSesso());
+            statement.setString(9, pat.getProvNascita());
             statement.setString(10, pat.getEntitaRilascio());
+            statement.setString(11, pat.getCittadinanza());
+
+            if(statement.executeUpdate()>0)
+                result= true;
 
         } catch (SQLException e) {
             e.printStackTrace();

@@ -8,6 +8,7 @@ import com.example.progettowebtest.Model.Indirizzo.Indirizzo;
 import com.example.progettowebtest.Model.Utente_Documenti.DocumentiIdentita;
 import com.example.progettowebtest.ClassiRequest.IdentificativiUtente;
 import com.example.progettowebtest.Model.Utente_Documenti.Utente;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.sql.SQLException;
 import java.util.Vector;
@@ -65,7 +66,7 @@ public class UtenteDAOImpl implements UtenteDAO {
     public boolean saveOrUpdate(Utente ut) {
         Indirizzo res, dom;
         boolean result= false;
-
+        String pass;
         try {
             String query = "INSERT INTO utente(cf, nome, cognome, cittadinanza, comune_di_nascita, sesso, provincia_di_nascita, num_telefono, data_di_nascita, " +
                     "email, password, num_identificativo_ci, num_patente, num_passaporto, nome_via_domicilio, num_civico_domicilio, nome_via_residenza, " +
@@ -89,7 +90,10 @@ public class UtenteDAOImpl implements UtenteDAO {
             statement.setString(8, ut.getNumTelefono());
             statement.setDate(9, ut.getDataNascita());
             statement.setString(10, ut.getEmail());
-            statement.setString(11, ut.getPassword()); ;
+
+            pass= BCrypt.hashpw(ut.getPassword(), BCrypt.gensalt(10));
+            statement.setString(11, pass);
+            ut.setPassword(pass);
 
             inserisciDocumento(statement, ut.getDoc());
 

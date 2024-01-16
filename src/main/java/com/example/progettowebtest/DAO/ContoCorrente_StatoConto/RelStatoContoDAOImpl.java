@@ -82,9 +82,10 @@ public class RelStatoContoDAOImpl implements RelStatoContoDAO{
     public boolean saveOrUpdate(RelStatoConto rel) {
         boolean result= false;
         String query= "INSERT INTO rel_stato_conto (data_inizio_stato, data_fine_stato, id_stato, num_cc) " +
-                "VALUES (?, ?, ?, ?) ON CONFLICT (id_stato,num_cc) DO UPDATE SET " +
-                "data_inizio_stato=EXCLUDED.data_inizio_stato, data_fine_stato=EXCLUDED.data_fine_stato, id_stato=EXCLUDED.id_stato, num_cc=EXCLUDED.num_cc";
+                "VALUES (?, ?, ?, ?)";
 
+        //ON CONFLICT (id_rel) DO UPDATE SET " +
+        //"data_inizio_stato=EXCLUDED.data_inizio_stato, data_fine_stato=EXCLUDED.data_fine_stato, id_stato=EXCLUDED.id_stato, num_cc=EXCLUDED.num_cc"
         try{
             PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
 
