@@ -61,34 +61,7 @@ public class RegistrazioneServlet extends HttpServlet {
 
     @PostMapping("/insertUser")
     public boolean insertUser(@RequestBody DatiRegistrazione dati) {
-        String[] prova= dati.getDatiPersonali();
-        for(String a: prova) {
-            System.out.print(a+" ");
-        }
-        System.out.println();
-
-        for(String a: dati.getDatiIndirizzo())
-            System.out.print(a+" ");
-        System.out.println();
-
-        for(String a: dati.getDatiIndDom())
-            System.out.print(a+" ");
-        System.out.println();
-
-        for(String a: dati.getDatiIndFat())
-            System.out.print(a+" ");
-        System.out.println();
-
-        for(String a: dati.getDatiDocumento())
-            System.out.print(a+" ");
-        System.out.println();
-
-        for(String a: dati.getDatiConto())
-            System.out.print(a+" ");
-        System.out.println();
-
-        for(String a: dati.getDatiPass())
-            System.out.print(a+" ");
+        System.out.println(dati.getCf()+" "+dati.getCognomeDocumento()+" "+dati.getCittaRes()+" "+dati.getReddito());
         return true;
     }
 }
