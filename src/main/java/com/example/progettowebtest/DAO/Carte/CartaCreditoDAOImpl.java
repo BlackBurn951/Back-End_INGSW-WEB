@@ -1,5 +1,5 @@
 package com.example.progettowebtest.DAO.Carte;
-/*
+
 import com.example.progettowebtest.Connection.DbConn;
 import com.example.progettowebtest.DAO.ContoCorrente_StatoConto.ContoCorrenteDAO;
 import com.example.progettowebtest.DAO.ContoCorrente_StatoConto.ContoCorrenteDAOImpl;
@@ -101,7 +101,7 @@ public class CartaCreditoDAOImpl implements CartaCreditoDAO {
 
     @Override
     public boolean saveOrUpdate(CartaCredito cartaCredito) {
-        try {
+        /*try {
             String query = "INSERT INTO carta_di_credito (num_carta_credito, stato_pagamento_online, data_creazione, " +
                     "data_scadenza, cvv, carta_fisica, canone_mensile, pin, id_stato, num_cc, fido) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) " +
@@ -119,12 +119,13 @@ public class CartaCreditoDAOImpl implements CartaCreditoDAO {
             return rowsAffected > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }
+        }*/
+        return true;
     }
 
     @Override
     public boolean delete(CartaCredito cartaCredito) {
-        try {
+       /* try {
             String query = "DELETE FROM carta_di_credito WHERE num_carta_credito = ?";
             PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
             statement.setString(1, cartaCredito.getNumCartaCredito());
@@ -133,7 +134,7 @@ public class CartaCreditoDAOImpl implements CartaCreditoDAO {
             return rowsAffected > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }
+        }*/
+        return true;
     }
 }
-*/

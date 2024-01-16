@@ -1,5 +1,5 @@
 package com.example.progettowebtest.DAO.Carte;
-/*
+
 import com.example.progettowebtest.Connection.DbConn;
 import com.example.progettowebtest.DAO.ContoCorrente_StatoConto.ContoCorrenteDAO;
 import com.example.progettowebtest.DAO.ContoCorrente_StatoConto.ContoCorrenteDAOImpl;
@@ -38,8 +38,8 @@ public class CartaDebitoDAOImpl implements CartaDebitoDAO {
             ResultSet queryResult = statement.executeQuery();
 
             while (queryResult.next()) {
-                ContoCorrente contoCorrente = contoDAO.doRetrivebyKey(queryResult.getString("num_cc"));
-                Stato stato = statoDAO.doRetrivebyKey(queryResult.getInt("id_stato"));
+                ContoCorrente contoCorrente = contoDAO.doRetriveByKey(queryResult.getString("num_cc"));
+                Stato stato = statoDAO.doRetriveByKey(queryResult.getInt("id_stato"));
 
                 CartaDebito cartaDebito = new CartaDebito(
                         queryResult.getString("num_carta_debito"),
@@ -74,8 +74,8 @@ public class CartaDebitoDAOImpl implements CartaDebitoDAO {
             ResultSet queryResult = statement.executeQuery();
 
             if (queryResult.next()) {
-                ContoCorrente contoCorrente = contoDAO.doRetrivebyKey(queryResult.getString("num_cc"));
-                Stato stato = statoDAO.doRetrivebyKey(queryResult.getInt("id_stato"));
+                ContoCorrente contoCorrente = contoDAO.doRetriveByKey(queryResult.getString("num_cc"));
+                Stato stato = statoDAO.doRetriveByKey(queryResult.getInt("id_stato"));
 
                 result = new CartaDebito(
                         queryResult.getString("num_carta_debito"),
@@ -99,14 +99,14 @@ public class CartaDebitoDAOImpl implements CartaDebitoDAO {
 
     @Override
     public boolean saveOrUpdate(CartaDebito cartaDebito) {
-        try {
+       /* try {
             String query = "INSERT INTO carta_di_debito (num_carta_debito, stato_pagamento_online, data_creazione, " +
-                    "data_scadenza, cvv, carta_fisica, canone_mensile, pin, id_stato, num_cc) " +
+                    "data_scadenza, cvv, carta_fisica, canone_mensile, pin, num_cc) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) " +
                     "ON CONFLICT (num_carta_debito) DO UPDATE SET stato_pagamento_online = EXCLUDED.stato_pagamento_online, " +
                     "data_creazione = EXCLUDED.data_creazione, data_scadenza = EXCLUDED.data_scadenza, " +
                     "cvv = EXCLUDED.cvv, carta_fisica = EXCLUDED.carta_fisica, canone_mensile = EXCLUDED.canone_mensile, " +
-                    "pin = EXCLUDED.pin, id_stato = EXCLUDED.id_stato, num_cc = EXCLUDED.num_cc";
+                    "pin = EXCLUDED.pin, num_cc = EXCLUDED.num_cc";
             PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
 
             statement.setString(1, cartaDebito.getNumCartaDebito());
@@ -117,12 +117,13 @@ public class CartaDebitoDAOImpl implements CartaDebitoDAO {
             return rowsAffected > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }
+        }*/
+        return true;
     }
 
     @Override
     public boolean delete(CartaDebito cartaDebito) {
-        try {
+        /*try {
             String query = "DELETE FROM carta_di_debito WHERE num_carta_debito = ?";
             PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
             statement.setString(1, cartaDebito.getNumCartaDebito());
@@ -131,7 +132,7 @@ public class CartaDebitoDAOImpl implements CartaDebitoDAO {
             return rowsAffected > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }
+        }*/
+        return true;
     }
 }
-*/

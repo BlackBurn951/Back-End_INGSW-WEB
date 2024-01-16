@@ -76,7 +76,7 @@ public class UtenteDAOImpl implements UtenteDAO {
     @Override
     public boolean saveOrUpdate(Utente ut) {
         Indirizzo res, dom;
-        boolean result= true;
+        boolean result= false;
 
         try {
             String query = "INSERT INTO utente(cf, nome, cognome, cittadinanza, comune_di_nascita, sesso, provincia_di_nascita, num_telefono, data_di_nascita, " +
@@ -128,11 +128,11 @@ public class UtenteDAOImpl implements UtenteDAO {
             statement.setString(23, ut.getOccupazione());
             statement.setDouble(24, ut.getRedditoAnnuo());
           
-            statement.executeUpdate();
+            if(statement.executeUpdate()>0)
+                result= true;
 
         }catch (SQLException e) {
             e.printStackTrace();
-            result= false;
         }
         return result;
     }

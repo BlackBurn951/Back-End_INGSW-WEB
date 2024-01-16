@@ -45,7 +45,7 @@ public class DatiRegistrazione {
     private String provNascitaDoc;
     private String sessoDoc;
     private String occupazione;
-    private String reddito;
+    private int reddito;
     private String password;
 
 
@@ -86,7 +86,7 @@ public class DatiRegistrazione {
     public String getProvNas() {return provNas;}
     public String getCittadinanza() {return cittadinanza;}
     public String getOccupazione() {return occupazione;}
-    public String getReddito() {return reddito;}
+    public int getReddito() {return reddito;}
     public String getPassword() {return password;}
     public String getTipoStradaFat() {return tipoStradaFat;}
     public String getNomeStradaFat() {return nomeStradaFat;}

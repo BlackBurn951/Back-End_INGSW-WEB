@@ -1,18 +1,11 @@
 package com.example.progettowebtest.DAO.ContoCorrente_StatoConto;
-/*
+
 import com.example.progettowebtest.Connection.DbConn;
-import com.example.progettowebtest.DAO.Carte.CartaCreditoDAO;
-import com.example.progettowebtest.DAO.Carte.CartaCreditoDAOImpl;
-import com.example.progettowebtest.DAO.Carte.CartaDebitoDAO;
-import com.example.progettowebtest.DAO.Carte.CartaDebitoDAOImpl;
 import com.example.progettowebtest.DAO.StatoDAO;
 import com.example.progettowebtest.DAO.StatoDAOImpl;
-import com.example.progettowebtest.Model.Carte.Carta;
-import com.example.progettowebtest.Model.Carte.RelStatoCarta;
 import com.example.progettowebtest.Model.ContoCorrente.ContoCorrente;
 import com.example.progettowebtest.Model.ContoCorrente.RelStatoConto;
 import com.example.progettowebtest.Model.Stato;
-import com.example.progettowebtest.Model.TabelleCorelateStato;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,8 +17,7 @@ public class RelStatoContoDAOImpl implements RelStatoContoDAO{
     private static RelStatoContoDAOImpl instance;
     private StatoDAO statoDAO= StatoDAOImpl.getInstance();
     private ContoCorrenteDAO contoCorrenteDAO= ContoCorrenteDAOImpl.getInstance();
-    private CartaDebitoDAO cartaDebitoDAO= CartaDebitoDAOImpl.getInstance();
-    private CartaCreditoDAO cartaCreditoDAO= CartaCreditoDAOImpl.getInstance();
+
 
     private RelStatoContoDAOImpl() {}
 
@@ -127,4 +119,3 @@ public class RelStatoContoDAOImpl implements RelStatoContoDAO{
         return false;
     }
 }
-*/
