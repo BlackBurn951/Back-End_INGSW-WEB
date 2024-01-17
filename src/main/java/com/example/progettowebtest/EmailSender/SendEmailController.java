@@ -10,16 +10,14 @@ import jakarta.servlet.http.*;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import static com.example.progettowebtest.EmailSender.EmailService.*;
 import static com.example.progettowebtest.EmailSender.OTPGenerator.generateOTP;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200", exposedHeaders = "Session-ID")
+@CrossOrigin(origins = "http://localhost:4200", exposedHeaders = "Attivita")
 public class SendEmailController {
     public static String generatedOTP;
 

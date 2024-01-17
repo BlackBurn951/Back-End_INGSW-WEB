@@ -2,13 +2,7 @@ package com.example.progettowebtest.Servlet;
 
 import com.example.progettowebtest.ClassiRequest.DatiControlloUtente;
 import com.example.progettowebtest.ClassiRequest.DatiRegistrazione;
-import com.example.progettowebtest.DAO.ContoCorrente_StatoConto.ContoCorrenteDAO;
-import com.example.progettowebtest.DAO.ContoCorrente_StatoConto.ContoCorrenteDAOImpl;
-import com.example.progettowebtest.DAO.Indirizzo.*;
 import com.example.progettowebtest.DAO.MagnusDAO;
-import com.example.progettowebtest.DAO.StatoDAO;
-import com.example.progettowebtest.DAO.StatoDAOImpl;
-import com.example.progettowebtest.DAO.Utente_Documenti.*;
 import com.example.progettowebtest.ClassiRequest.IdentificativiUtente;
 import com.example.progettowebtest.EmailSender.CreaPDFConfermaConto;
 import com.example.progettowebtest.EmailSender.EmailService;
@@ -42,28 +36,35 @@ public class RegistrazioneServlet extends HttpServlet {
 
     //DA SPOSTARE
     @PostMapping("/emailCheck")
-    public int emailCheck(@RequestBody DatiControlloUtente dati) {
+    public int emailCheck(HttpServletRequest request, HttpServletResponse response, @RequestBody DatiControlloUtente dati) {
         int result= 2;
 
         if(MagnusDAO.getInstance().getUtenteDAO().doRetriveByKey(dati.getEmail(), IdentificativiUtente.EMAIL)!=null)
             result= 0;
         else if(MagnusDAO.getInstance().getUtenteDAO().doRetriveByKey(dati.getCf(), IdentificativiUtente.CF)!=null)
             result= 1;
-
+        else {
+            HttpSession session= request.getSession(false);
+            if(session!=null)
+                session.invalidate();
+            session= request.getSession(true);
+            response.setHeader("Session-ID", session.getId());
+            session.setMaxInactiveInterval(1800);
+            request.getServletContext().setAttribute(session.getId(), session);
+        }
         return result;
     }
 
 
     //DA CONTROLLARE IL CONTO DEL MINUTAGGIO
     @GetMapping("/checkOTP")
-    public String checkOTP(HttpServletRequest request, @RequestParam("otpSend") String otpSend, @RequestParam("IdSession") String idSess) {
+    public String checkOTP(HttpServletRequest request, @RequestParam("otpSend") String otpSend, @RequestParam("IDSession") String idSess) {
         String response;
 
         HttpSession session= (HttpSession) request.getServletContext().getAttribute(idSess);
-        long creationTime = session.getCreationTime(); // Tempo di creazione della sessione in millisecondi
-        long currentTime = System.currentTimeMillis(); // Tempo corrente in millisecondi
-        long tenMinutesInMillis = 10 * 60 * 1000; // 10 minuti in millisecondi
-        if(session!=null && (currentTime - creationTime < tenMinutesInMillis)) {
+        long minutiAttuali= TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis());
+
+        if(session!=null && ((minutiAttuali - (long) session.getAttribute("TempoInvioOTP")) <= 10)) {
             if(session.getAttribute("control").equals(otpSend)) {
                 response = "OTP corretto";
                 System.out.println(response);
@@ -73,7 +74,7 @@ public class RegistrazioneServlet extends HttpServlet {
                 System.out.println(response);
             }
         }
-        else if(session!=null && (currentTime - creationTime >= tenMinutesInMillis))
+        else if(session!=null && ((minutiAttuali - (long) session.getAttribute("TempoInvioOTP")) > 10))
             response= "Sessione scaduta";
         else {
             System.out.println("Server: sessione non trovata!!!");
@@ -84,9 +85,9 @@ public class RegistrazioneServlet extends HttpServlet {
     }
 
     @PostMapping("/insertUser")
-    public boolean insertUser(@RequestBody DatiRegistrazione dati) {
+    public boolean insertUser(HttpServletRequest request, @RequestParam("IDSession") String idSession, @RequestBody DatiRegistrazione dati) {
         boolean result= false;
-        System.out.println(dati.getComuneNas());
+        
         try{
             Utente ut= null;
             if(dati.getTipoDoc().equals("patente")) {
@@ -159,7 +160,25 @@ public class RegistrazioneServlet extends HttpServlet {
 
             MagnusDAO.getInstance().getContoCorrenteDAO().saveOrUpdate(cc, true);
 
-        }catch (NullPointerException e) {
+            //Invio contratto
+            String indirizzoRes= dati.getTipoStradaRes()+" "+dati.getNomeStradaRes()+" "+dati.getNumCivicoRes()+" "+dati.getCittaRes()+" "+dati.getCapRes()+" "+dati.getProvinciaRes()+" "+dati.getRegioneRes();
+
+            String emailTemplate = EmailTemplateLoader.loadEmailTemplate("/email_pdf_template.html");
+            String pdf_html = emailTemplate
+                    .replace("EMAIL_DESTINATARIO", dati.getEmail())
+                    .replace("NOME_COGNOME", dati.getNome()+" "+dati.getCognome())
+                    .replace("DATA_NASCITA", dati.getDataNascita())
+                    .replace("INDIRIZZO", indirizzoRes)
+                    .replace("NUMERO_TELEFONO", dati.getCellulare())
+                    .replace("DATA_FIRMA", data.toString())
+                    .replace("PINDASERVER", MagnusDAO.getInstance().getContoCorrenteDAO().getPinChiaro());
+            MagnusDAO.getInstance().getContoCorrenteDAO().setPinChiaro("");
+
+            PDDocument pdfFile = CreaPDFConfermaConto.creaPDFconto(dati.getNome()+" "+dati.getCognome(), dati.getDataNascita(), indirizzoRes, dati.getCellulare(), dati.getEmail(), data.toString());
+            Message message = EmailService.createMessageWithAttachment(pdf_html, "caesar.magnus.info@gmail.com", dati.getEmail(), "Conferma registrazione e dati conto", pdfFile);
+            sendMessage(getService(), "caesar.magnus.info@gmail.com", message);
+
+        }catch (NullPointerException | GeneralSecurityException | IOException | MessagingException e ) {
             e.printStackTrace();
         }
         return result;

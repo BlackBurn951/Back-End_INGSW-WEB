@@ -24,8 +24,12 @@ import java.util.Random;
 import java.util.Vector;
 
 public class ContoCorrenteDAOImpl implements ContoCorrenteDAO{
+    public String pinChiaro;
 
     public ContoCorrenteDAOImpl() {};
+
+    public String getPinChiaro() {return pinChiaro;}
+    public void setPinChiaro(String pinChiaro) {this.pinChiaro = pinChiaro;}
 
 
     @Override
@@ -77,6 +81,7 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO{
             Random rng = new Random();
             numConto= generatealphaNum(rng);
             pin = String.valueOf(rng.nextInt(10)) + String.valueOf(rng.nextInt(10)) + String.valueOf(rng.nextInt(10)) + String.valueOf(rng.nextInt(10)) + String.valueOf(rng.nextInt(10));
+            setPinChiaro(pin);
             iban = "IT" + String.valueOf(rng.nextInt(10)) + String.valueOf(rng.nextInt(10)) + generateAlpha(rng.nextInt(21)) + String.valueOf(rng.nextInt(10)) + String.valueOf(rng.nextInt(10)) + String.valueOf(rng.nextInt(10)) + String.valueOf(rng.nextInt(10))
                             + String.valueOf(rng.nextInt(10)) + String.valueOf(rng.nextInt(10)) + String.valueOf(rng.nextInt(10)) + String.valueOf(rng.nextInt(10)) + String.valueOf(rng.nextInt(10)) + String.valueOf(rng.nextInt(10)) + numConto;
             pin = BCrypt.hashpw(pin, BCrypt.gensalt(5));
@@ -149,6 +154,8 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO{
         return alfa[pos];
     }
 
+
+    //Metodi di servizio
     private String generatealphaNum(Random rng) {
         String st= "";
         int numOrAlpha= rng.nextInt(10);
