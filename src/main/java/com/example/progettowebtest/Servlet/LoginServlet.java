@@ -4,22 +4,35 @@ import com.example.progettowebtest.ClassiRequest.CambioPassword;
 import com.example.progettowebtest.ClassiRequest.IdentificativiUtente;
 import com.example.progettowebtest.DAO.MagnusDAO;
 import com.example.progettowebtest.Model.Utente_Documenti.Utente;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200", exposedHeaders = "Session-ID")
 public class LoginServlet {
 
     @GetMapping("/login")
-    public boolean doLogin(@RequestParam("username") String username, @RequestParam("password") String password) {
-        boolean result= false;
+    public String doLogin(HttpServletRequest request, HttpServletResponse response, @RequestParam("username") String username, @RequestParam("password") String password) {
+        Utente ut = MagnusDAO.getInstance().getUtenteDAO().doRetriveByKey(username, IdentificativiUtente.EMAIL);
 
-        Utente ut= MagnusDAO.getInstance().getUtenteDAO().doRetriveByKey(username, IdentificativiUtente.EMAIL);
-        if(ut!=null && BCrypt.checkpw(password, ut.getPassword()))
-            result= true;
+        if (ut != null && BCrypt.checkpw(password, ut.getPassword())) {
+            HttpSession session= request.getSession(true);
+            session.setAttribute("Utente", ut);
+            session.setAttribute("Conto", MagnusDAO.getInstance().getContoCorrenteDAO().doRetriveByAttribute(ut.getCodiceFiscale()));
 
-        return result;
+            request.getServletContext().setAttribute(session.getId(), session);
+
+            response.setHeader("Session-ID", session.getId());
+            return session.getId();
+        }
+        return "";
     }
 
     @GetMapping("/checkUser")
@@ -35,11 +48,8 @@ public class LoginServlet {
 
     @PostMapping("/recuperaPass")
     public void recuperaPass(@RequestBody CambioPassword cambio) {
-        System.out.println("password nuova arrivata: "+cambio.getPassword());
         Utente ut= MagnusDAO.getInstance().getUtenteDAO().doRetriveByKey(cambio.getEmail(), IdentificativiUtente.EMAIL);
-        System.out.println("Vecchia password criptata: "+ut.getPassword());
         ut.setPassword(cambio.getPassword());
         MagnusDAO.getInstance().getUtenteDAO().saveOrUpdate(ut);
-        System.out.println("Nuova password criptata: "+ut.getPassword());
     }
 }

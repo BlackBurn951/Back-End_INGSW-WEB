@@ -17,7 +17,9 @@ import com.google.api.services.gmail.model.Message;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.*;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.model.IModel;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -58,6 +60,7 @@ public class RegistrazioneServlet extends HttpServlet {
     public String checkOTP(HttpServletRequest request, @RequestParam("otpSend") String otpSend, @RequestParam("IDSession") String idSess) {
         String response;
 
+        System.out.println("Id sessione inviato: "+ idSess);
         HttpSession session= (HttpSession) request.getServletContext().getAttribute(idSess);
         //System.out.println("id sessione presa dal context: "+ session.getId());
         long minutiAttuali= TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis());
@@ -83,9 +86,9 @@ public class RegistrazioneServlet extends HttpServlet {
     }
 
     @PostMapping("/insertUser")
-    public boolean insertUser(HttpServletRequest request, @RequestParam("IDSession") String idSession, @RequestBody DatiRegistrazione dati) {
+    public boolean insertUser(HttpServletRequest request, HttpServletResponse response, @RequestParam("IDSession") String idSession, @RequestBody DatiRegistrazione dati) {
         boolean result= false;
-        
+
         try{
             Utente ut= null;
             if(dati.getTipoDoc().equals("patente")) {
@@ -181,7 +184,12 @@ public class RegistrazioneServlet extends HttpServlet {
             HttpSession session= (HttpSession) request.getServletContext().getAttribute(idSession);
             if(session==null)
                 session= request.getSession(true);
-            session.setMaxInactiveInterval(21600);
+            session.setAttribute("Utente", ut);
+            session.setAttribute("Conto", cc);
+
+            request.getServletContext().setAttribute(session.getId(), session);
+
+            response.setHeader("Session-ID", session.getId());
 
         }catch (NullPointerException | GeneralSecurityException | IOException | MessagingException e ) {
             e.printStackTrace();
