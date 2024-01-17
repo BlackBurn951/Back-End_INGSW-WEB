@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conto Corrente Personale</title>
+    <link rel="stylesheet" href="css/homepage_logged.css">
+</head>
+<body>
+
+<header>
+    <div class="containerLogo"><img class="logo" src="/static/images/logoCM.ico"></div>
+    <div class="container2">
+        <h1 class="titolo">Conto Corrente Personale</h1>
+        <div class="notifiche-esci">
+            <div class="notifications-container">
+
+            </div>
+            <a href="#" class="logout">ESCI</a>
+        </div>
+    </div>
+</header>
+<nav>
+    <ul>
+        <li><a [routerLink]="['/profile-page']"><img class="imageButton" src="/static/images/userProfileImage.png"></a></li>
+        <li><a [routerLink]="['/card-page']"><img class="imageButton" src="/static/images/credit.png"></a></li>
+        <li><a [routerLink]="['/transaction']"><img class="imageButton" src="/static/images/payment.png"></a></li>
+    </ul>
+    <div class="picture"><img class="arrow" src="/static/images/arrow-right.png"></div>
+</nav>
+
+<section class="sectionConto">
+    <h2>Informazioni sul Conto</h2>
+    <div class="conto-info">
+        <div class="conto-dati">
+            <p>Numero Conto: XXXX-XXXX-XXXX-XXXX</p>
+            <p>Saldo: € 1,000.00</p>
+            <div class="status" [class]="changeStatus().classe">
+                <p>Stato:</p>
+                <p class="typeStatus" [style.color]="changeStatus().colore"></p>
+            </div>
+        </div>
+    </div>
+
+</section>
+<section class="sectionTransazioni">
+    <div id="transactions">
+        <h2 id="titleTransaction">Ultime Transazioni</h2>
+        <ul>
+            <li>Spesa - € 50.00</li>
+            <li>Deposito - € 200.00</li>
+            <!-- Aggiungi altre transazioni qui -->
+        </ul>
+    </div>
+</section>
+</body>
+</html>
