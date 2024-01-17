@@ -80,7 +80,7 @@ public class EmailService {
                 .build();
     }
 
-    static Message createMessageWithAttachment(String htmlContent, String sender, String to, String subject, PDDocument file) throws MessagingException, IOException {
+    public static Message createMessageWithAttachment(String htmlContent, String sender, String to, String subject, PDDocument file) throws MessagingException, IOException {
         MimeMessage email = new MimeMessage(Session.getDefaultInstance(new Properties(), null));
         email.setFrom(new InternetAddress(sender));
         email.addRecipient(jakarta.mail.Message.RecipientType.TO, new InternetAddress(to));
