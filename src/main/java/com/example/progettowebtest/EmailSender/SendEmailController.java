@@ -35,10 +35,11 @@ public class SendEmailController {
             if(idSession.isEmpty()) {
                 session = request.getSession(true);
                 request.getServletContext().setAttribute(session.getId(), session);
+                response.setHeader("Session-ID", session.getId());
             }
-            else {
+            else
                 session= (HttpSession) request.getServletContext().getAttribute(idSession);
-            }
+
             if(session==null) {
                 response.setHeader("Attivita", "Scaduta");
                 return;
