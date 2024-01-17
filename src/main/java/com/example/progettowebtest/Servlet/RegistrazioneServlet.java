@@ -85,7 +85,7 @@ public class RegistrazioneServlet extends HttpServlet {
     @PostMapping("/insertUser")
     public boolean insertUser(HttpServletRequest request, @RequestParam("IDSession") String idSession, @RequestBody DatiRegistrazione dati) {
         boolean result= false;
-        
+
         try{
             Utente ut= null;
             if(dati.getTipoDoc().equals("patente")) {

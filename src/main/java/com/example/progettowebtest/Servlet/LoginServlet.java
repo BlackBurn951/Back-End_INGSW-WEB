@@ -12,14 +12,20 @@ import org.springframework.web.bind.annotation.*;
 public class LoginServlet {
 
     @GetMapping("/login")
-    public boolean doLogin(@RequestParam("username") String username, @RequestParam("password") String password) {
-        boolean result= false;
+    public String doLogin(HttpServletRequest request, HttpServletResponse response, @RequestParam("username") String username, @RequestParam("password") String password) {
+        Utente ut = MagnusDAO.getInstance().getUtenteDAO().doRetriveByKey(username, IdentificativiUtente.EMAIL);
 
-        Utente ut= MagnusDAO.getInstance().getUtenteDAO().doRetriveByKey(username, IdentificativiUtente.EMAIL);
-        if(ut!=null && BCrypt.checkpw(password, ut.getPassword()))
-            result= true;
+        if (ut != null && BCrypt.checkpw(password, ut.getPassword())) {
+            HttpSession session= request.getSession(true);
+            session.setAttribute("Utente", ut);
+            session.setAttribute("Conto", MagnusDAO.getInstance().getContoCorrenteDAO().doRetriveByAttribute(ut.getCodiceFiscale()));
 
-        return result;
+            request.getServletContext().setAttribute(session.getId(), session);
+
+            response.setHeader("Session-ID", session.getId());
+            return session.getId();
+        }
+        return "";
     }
 
     @GetMapping("/checkUser")
