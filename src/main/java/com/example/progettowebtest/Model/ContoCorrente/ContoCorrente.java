@@ -48,6 +48,10 @@ public class ContoCorrente {
     public Utente getIntestatario() {return intestatario;}
     public Vector<Transazione> getMovimenti() {return movimenti;}
 
+    public void setNumCC(String numCC) {
+        this.numCC = numCC;
+    }
+
     public void setIban(String iban) {this.iban = iban;}
     public void setPin(String pin) {this.pin = pin;}
     public void setSaldo(double saldo) {this.saldo = saldo;}

@@ -24,8 +24,12 @@ import java.util.Random;
 import java.util.Vector;
 
 public class ContoCorrenteDAOImpl implements ContoCorrenteDAO{
+    public String pinChiaro;
 
     public ContoCorrenteDAOImpl() {};
+
+    public String getPinChiaro() {return pinChiaro;}
+    public void setPinChiaro(String pinChiaro) {this.pinChiaro = pinChiaro;}
 
 
     @Override
@@ -48,7 +52,39 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO{
 
             ResultSet queryResult= statement.executeQuery();
 
-            if(!queryResult.wasNull()) {
+            if(queryResult.next()) {
+                intestatario= MagnusDAO.getInstance().getUtenteDAO().doRetriveByKey(queryResult.getString("cf"), IdentificativiUtente.CF);
+                indFatturazione= MagnusDAO.getInstance().getIndirizzoDAO().doRetriveByKey(queryResult.getString("nome_via_fatturazione"), queryResult.getString("num_civico_fatturazione"),
+                        queryResult.getInt("id_comune_fatturazione"), queryResult.getInt("id_via_fatturazione"));
+                state= MagnusDAO.getInstance().getRelStatoContoDAO().doRetriveActualState(queryResult.getString("num_cc"));
+                result= new ContoCorrente(queryResult.getString("num_cc"), queryResult.getString("iban"), queryResult.getString("pin_sicurezza"), queryResult.getDate("data_apertura").toString(),
+                        queryResult.getDouble("saldo"), queryResult.getInt("tasso_interesse"), queryResult.getInt("tariffa_annuale"), indFatturazione, intestatario);
+                result.setStatoConto(state);
+                //aggiunta dei proxy
+            }
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public ContoCorrente doRetriveByAttribute(String attributo) {
+        ContoCorrente result= null;
+        Utente intestatario= null;
+        Indirizzo indFatturazione= null;
+        Stato state= null;
+
+        String query= "select * from conto_corrente where cf= ?";
+
+        try{
+            PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
+            statement.setString(1, attributo);
+
+            ResultSet queryResult= statement.executeQuery();
+
+            if(queryResult.next()) {
                 intestatario= MagnusDAO.getInstance().getUtenteDAO().doRetriveByKey(queryResult.getString("cf"), IdentificativiUtente.CF);
                 indFatturazione= MagnusDAO.getInstance().getIndirizzoDAO().doRetriveByKey(queryResult.getString("nome_via_fatturazione"), queryResult.getString("num_civico_fatturazione"),
                         queryResult.getInt("id_comune_fatturazione"), queryResult.getInt("id_via_fatturazione"));
@@ -77,6 +113,7 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO{
             Random rng = new Random();
             numConto= generatealphaNum(rng);
             pin = String.valueOf(rng.nextInt(10)) + String.valueOf(rng.nextInt(10)) + String.valueOf(rng.nextInt(10)) + String.valueOf(rng.nextInt(10)) + String.valueOf(rng.nextInt(10));
+            setPinChiaro(pin);
             iban = "IT" + String.valueOf(rng.nextInt(10)) + String.valueOf(rng.nextInt(10)) + generateAlpha(rng.nextInt(21)) + String.valueOf(rng.nextInt(10)) + String.valueOf(rng.nextInt(10)) + String.valueOf(rng.nextInt(10)) + String.valueOf(rng.nextInt(10))
                             + String.valueOf(rng.nextInt(10)) + String.valueOf(rng.nextInt(10)) + String.valueOf(rng.nextInt(10)) + String.valueOf(rng.nextInt(10)) + String.valueOf(rng.nextInt(10)) + String.valueOf(rng.nextInt(10)) + numConto;
             pin = BCrypt.hashpw(pin, BCrypt.gensalt(5));
@@ -118,16 +155,17 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO{
                 Stato attivo= MagnusDAO.getInstance().getStatoDAO().doRetriveByAttribute(ValoriStato.ATTIVO);
                 contoCorr.setStatoConto(attivo);
 
-                RelStatoConto relazione= new RelStatoConto(contoCorr.getDataApertura().toString(), attivo, contoCorr);
-                if(!MagnusDAO.getInstance().getRelStatoContoDAO().saveOrUpdate(relazione))
-                    result= false;
-
+                contoCorr.setNumCC(numConto);
                 contoCorr.setIban(iban);
                 contoCorr.setPin(pin);
                 contoCorr.setStatoConto(attivo);
                 contoCorr.setSaldo(500.0);
                 contoCorr.setTariffaAnnuale(20);
                 contoCorr.setTassoInteresse(3);
+
+                RelStatoConto relazione= new RelStatoConto(contoCorr.getDataApertura().toString(), attivo, contoCorr);
+                if(!MagnusDAO.getInstance().getRelStatoContoDAO().saveOrUpdate(relazione))
+                    result= false;
             }
 
             result= true;
@@ -143,6 +181,8 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO{
         return false;
     }
 
+
+    //Metodi di servizio
     private String generateAlpha(int pos) {
         String[] alfa= {"A","B","C","D","E","F","G","H","I","L","M","N","O","P","Q","R","S","T","U","V","Z"};
         return alfa[pos];

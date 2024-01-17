@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conto Corrente Personale</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            display: flex;
+        }
+
+        header {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav {
+            background-color: whitesmoke;
+            color: #fff;
+            padding: 20px;
+            width: 65px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: flex-end;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            transition: width 0.3s;
+            overflow: hidden;
+        }
+
+        nav:hover {
+            width: 220px;
+            .arrow{
+                transform: scaleX(-1);
+            }
+            .imageButton{
+                align-items: center;
+                margin-left: 30px;
+                margin-bottom: 10px;
+            }
+        }
+
+
+        .picture{
+            width: 30px;
+            height: 420px;
+        }
+        .arrow{
+            max-width: 135%;
+            max-height: 100%;
+        }
+        .imageButton{
+            max-width: 50%;
+        }
+        .logo{
+            max-width: 80%;
+            margin-left: -40px;
+        }
+
+
+        nav:hover {
+            .imageButton{
+                right: 50px;
+            }
+        }
+
+        .sectionConto{
+            padding: 30px;
+            background-color: lightblue;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            flex-grow: 0;
+            margin: 50px 500px 50px 500px;
+            width: 800px;
+        }
+
+        .sectionTransazioni{
+            padding: 30px;
+            background-color: lightblue;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            flex-grow: 0;
+            margin: 50px 500px 50px 500px;
+            width: 800px;
+        }
+
+        #titleTransactions{
+            background-color: black;
+        }
+
+        .status{
+            display: flex;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        .conto-info {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Josefin Sans', sans-serif;
+        }
+
+
+
+        .notifiche-esci{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15vh;
+        }
+
+        .container2{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 80vh;
+        }
+
+        .titolo{
+            font-size: 4vh;
+        }
+
+
+        .logout{
+            text-decoration: none;
+            font-weight: bold;
+            color: white;
+            font-size: 3vh;
+        }
+
+
+
+        @media (max-width: 1800px) {
+            .sectionConto,
+            .sectionTransazioni {
+                width: 50%;
+                margin-left: 65vh;
+            }
+
+            .container2 {
+                flex-direction: row;
+                gap: 10px;
+            }
+
+            .notification-list {
+                max-height: 100px; /* Imposta l'altezza massima del container delle notifiche */
+            }
+
+            header {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .container2{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 30vh;
+            }
+
+            .notifiche-esci {
+                padding: 18px 15px;
+                margin-left: 180px; /* Aggiungi spazio a sinistra del bottone notifiche e di esci */
+            }
+            nav:hover {
+                width: 170px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="containerLogo">
+        <img class="logo" src="/images/logoCM.ico" alt=""></div>
+    <div class="container2">
+        <h1 class="titolo">Conto Corrente Personale</h1>
+        <div class="notifiche-esci">
+              <a href="#" class="logout">ESCI</a>
+        </div>
+      </div>
+</header>
+  <nav>
+      <ul>
+          <li><a><img class="imageButton" src="/images/userProfileImage.png" alt=""></a></li>
+          <li><a><img class="imageButton" src="/images/credit.png" alt=""></a></li>
+          <li><a><img class="imageButton" src="/images/payment.png" alt=""></a></li>
+      </ul>
+      <div class="picture">
+          <img class="arrow" src="/images/arrow-right.png" alt="">
+      </div>
+  </nav>
+
+  <section class="sectionConto">
+      <h2>Informazioni sul Conto</h2>
+      <div class="conto-info">
+          <div class="conto-dati">
+              <p>Numero Conto: XXXX-XXXX-XXXX-XXXX</p>
+              <p>Saldo: € 1,000.00</p>
+              <div class="status">
+                  <p>Stato:</p>
+                  <p class="typeStatus"> </p>
+              </div>
+          </div>
+      </div>
+  </section>
+  <section class="sectionTransazioni">
+      <div id="transactions">
+          <h2 id="titleTransaction">Ultime Transazioni</h2>
+          <ul>
+              <li>Spesa - € 50.00</li>
+              <li>Deposito - € 200.00</li>
+        </ul>
+    </div>
+</section>
+</body>
+</html>
