@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginServlet {
     @GetMapping("/login")
     public boolean doLogin(@RequestParam("username") String username, @RequestParam("password") String password) {
-        //AGGIUNGERE SESSIONE QUI E ALLA REGISTRAZIONE
         boolean result= false;
 
         Utente ut= MagnusDAO.getInstance().getUtenteDAO().doRetriveByKey(username, IdentificativiUtente.EMAIL);
