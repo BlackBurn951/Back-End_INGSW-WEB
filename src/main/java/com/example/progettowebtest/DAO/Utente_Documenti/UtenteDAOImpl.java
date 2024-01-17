@@ -3,30 +3,19 @@ package com.example.progettowebtest.DAO.Utente_Documenti;
 import com.example.progettowebtest.Connection.DbConn;
 import com.example.progettowebtest.DAO.Indirizzo.IndirizzoDAO;
 import com.example.progettowebtest.DAO.Indirizzo.IndirizzoDAOImpl;
+import com.example.progettowebtest.DAO.MagnusDAO;
 import com.example.progettowebtest.Model.Indirizzo.Indirizzo;
 import com.example.progettowebtest.Model.Utente_Documenti.DocumentiIdentita;
 import com.example.progettowebtest.ClassiRequest.IdentificativiUtente;
 import com.example.progettowebtest.Model.Utente_Documenti.Utente;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.sql.SQLException;
 import java.util.Vector;
 import java.sql.*;
 
 public class UtenteDAOImpl implements UtenteDAO {
-
-    private static UtenteDAOImpl instance;
-    private CartaIdentitaDAO cartaIdentitaDAO= CartaIdentitaDAOImpl.getInstance();
-    private PatenteDAO patenteDAO= PatenteDAOImpl.getInstance();
-    private PassaportoDAO passaportoDAO= PassaportoDAOImpl.getInstance();
-    private IndirizzoDAO indirizzoDAO= IndirizzoDAOImpl.getInstance();
-
-    private UtenteDAOImpl() {}
-    public static UtenteDAOImpl getInstance() {
-        if(instance==null)
-            instance= new UtenteDAOImpl();
-        return instance;
-    }
-
+    public UtenteDAOImpl() {}
 
     @Override
     public Vector<Utente> doRetriveAll() {
@@ -76,8 +65,8 @@ public class UtenteDAOImpl implements UtenteDAO {
     @Override
     public boolean saveOrUpdate(Utente ut) {
         Indirizzo res, dom;
-        boolean result= true;
-
+        boolean result= false;
+        String pass;
         try {
             String query = "INSERT INTO utente(cf, nome, cognome, cittadinanza, comune_di_nascita, sesso, provincia_di_nascita, num_telefono, data_di_nascita, " +
                     "email, password, num_identificativo_ci, num_patente, num_passaporto, nome_via_domicilio, num_civico_domicilio, nome_via_residenza, " +
@@ -101,7 +90,10 @@ public class UtenteDAOImpl implements UtenteDAO {
             statement.setString(8, ut.getNumTelefono());
             statement.setDate(9, ut.getDataNascita());
             statement.setString(10, ut.getEmail());
-            statement.setString(11, ut.getPassword()); ;
+
+            pass= BCrypt.hashpw(ut.getPassword(), BCrypt.gensalt(10));
+            statement.setString(11, pass);
+            ut.setPassword(pass);
 
             inserisciDocumento(statement, ut.getDoc());
 
@@ -128,11 +120,11 @@ public class UtenteDAOImpl implements UtenteDAO {
             statement.setString(23, ut.getOccupazione());
             statement.setDouble(24, ut.getRedditoAnnuo());
           
-            statement.executeUpdate();
+            if(statement.executeUpdate()>0)
+                result= true;
 
         }catch (SQLException e) {
             e.printStackTrace();
-            result= false;
         }
         return result;
     }
@@ -192,24 +184,24 @@ public class UtenteDAOImpl implements UtenteDAO {
         passaporto = query.getString("num_passaporto");
 
         if (docId != null)
-            doc = cartaIdentitaDAO.doRetriveByKey(docId);
+            doc = MagnusDAO.getInstance().getCartaIdentitaDAO().doRetriveByKey(docId);
         else if (patente != null)
-            doc = patenteDAO.doRetriveByKey(patente);
+            doc = MagnusDAO.getInstance().getPassaportoDAO().doRetriveByKey(patente);
         else if (passaporto != null)
-            doc = passaportoDAO.doRetriveByKey(passaporto);
+            doc = MagnusDAO.getInstance().getPassaportoDAO().doRetriveByKey(passaporto);
 
         result = new Utente(query.getString("nome"), query.getString("cognome"), query.getString("cittadinanza"), query.getString("comune_di_nascita"),
                 query.getString("sesso"), query.getString("provincia_di_nascita"), query.getString("num_telefono"), query.getDate("data_di_nascita").toString(),
                 query.getString("cf"), query.getString("email"), query.getString("password"), query.getString("occupazione"),
                 query.getDouble("reddito_annuo"), doc);
 
-        Indirizzo res = indirizzoDAO.doRetriveByKey(query.getString("nome_via_residenza"), query.getString("num_civico_residenza"), query.getInt("id_comune_residenza"),
+        Indirizzo res = MagnusDAO.getInstance().getIndirizzoDAO().doRetriveByKey(query.getString("nome_via_residenza"), query.getString("num_civico_residenza"), query.getInt("id_comune_residenza"),
                 query.getInt("id_via_residenza")), dom;
 
         String nomeVia = query.getString("nome_via_domicilio"), numCivico = query.getString("num_civico_domicilio");
         int idComune= query.getInt("id_comune_domicilio"), idTipo= query.getInt("id_via_domicilio");
         if(nomeVia!= null) {
-            dom= indirizzoDAO.doRetriveByKey(nomeVia, numCivico, idComune, idTipo);
+            dom= MagnusDAO.getInstance().getIndirizzoDAO().doRetriveByKey(nomeVia, numCivico, idComune, idTipo);
             result.addAddress(res);
             result.addAddress(dom);
         }

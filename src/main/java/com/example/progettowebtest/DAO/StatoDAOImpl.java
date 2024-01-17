@@ -2,7 +2,6 @@ package com.example.progettowebtest.DAO;
 
 import com.example.progettowebtest.Connection.DbConn;
 import com.example.progettowebtest.Model.Stato;
-import com.example.progettowebtest.Model.TabelleCorelateStato;
 import com.example.progettowebtest.Model.ValoriStato;
 
 import java.sql.PreparedStatement;
@@ -11,15 +10,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 public class StatoDAOImpl implements StatoDAO{
-    private static StatoDAOImpl instance= null;
-
-    private  StatoDAOImpl() {}
-
-    public static StatoDAOImpl getInstance() {
-        if(instance==null)
-            instance= new StatoDAOImpl();
-        return instance;
-    }
+    public  StatoDAOImpl() {}
 
     @Override
     public Vector<Stato> doRetriveAll() {
@@ -37,7 +28,7 @@ public class StatoDAOImpl implements StatoDAO{
 
             ResultSet queryResult= statement.executeQuery();
 
-            if(!queryResult.wasNull())
+            if(queryResult.next())
                 result = new Stato(queryResult.getInt("id_stato"), queryResult.getString("stato"));
 
         }catch (SQLException e) {
@@ -62,7 +53,7 @@ public class StatoDAOImpl implements StatoDAO{
 
             ResultSet queryResult= statement.executeQuery();
 
-            if(!queryResult.wasNull())
+            if(queryResult.next())
                 result = new Stato(queryResult.getInt("id_stato"), queryResult.getString("stato"));
 
         }catch (SQLException e) {

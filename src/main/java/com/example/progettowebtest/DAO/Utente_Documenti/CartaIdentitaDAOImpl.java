@@ -9,13 +9,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 public class CartaIdentitaDAOImpl implements CartaIdentitaDAO{
-    private static CartaIdentitaDAOImpl instance;
-    private CartaIdentitaDAOImpl() {}
-    public static CartaIdentitaDAOImpl getInstance() {
-        if(instance==null)
-            instance= new CartaIdentitaDAOImpl();
-        return instance;
-    }
+    public CartaIdentitaDAOImpl() {}
 
     @Override
     public Vector<CartaIdentita> doRetriveAll() {

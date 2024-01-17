@@ -1,5 +1,5 @@
 package com.example.progettowebtest.DAO.Carte;
-/*
+
 import com.example.progettowebtest.Connection.DbConn;
 import com.example.progettowebtest.DAO.ContoCorrente_StatoConto.ContoCorrenteDAO;
 import com.example.progettowebtest.DAO.ContoCorrente_StatoConto.ContoCorrenteDAOImpl;
@@ -13,19 +13,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
-
+/*
 public class CartaCreditoDAOImpl implements CartaCreditoDAO {
-    private static CartaCreditoDAOImpl instance;
-    private ContoCorrenteDAO contoDAO = ContoCorrenteDAOImpl.getInstance();
-    private StatoDAO statoDAO = StatoDAOImpl.getInstance();
 
-    private CartaCreditoDAOImpl() {}
+    public CartaCreditoDAOImpl() {}
 
-    public static CartaCreditoDAOImpl getInstance() {
-        if (instance == null)
-            instance = new CartaCreditoDAOImpl();
-        return instance;
-    }
 
     @Override
     public Vector<CartaCredito> doRetriveAll() {
@@ -101,7 +93,7 @@ public class CartaCreditoDAOImpl implements CartaCreditoDAO {
 
     @Override
     public boolean saveOrUpdate(CartaCredito cartaCredito) {
-        try {
+        /*try {
             String query = "INSERT INTO carta_di_credito (num_carta_credito, stato_pagamento_online, data_creazione, " +
                     "data_scadenza, cvv, carta_fisica, canone_mensile, pin, id_stato, num_cc, fido) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) " +
@@ -120,11 +112,12 @@ public class CartaCreditoDAOImpl implements CartaCreditoDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return true;
     }
 
     @Override
     public boolean delete(CartaCredito cartaCredito) {
-        try {
+       /* try {
             String query = "DELETE FROM carta_di_credito WHERE num_carta_credito = ?";
             PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
             statement.setString(1, cartaCredito.getNumCartaCredito());
@@ -134,6 +127,6 @@ public class CartaCreditoDAOImpl implements CartaCreditoDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return true;
     }
-}
-*/
+}*/

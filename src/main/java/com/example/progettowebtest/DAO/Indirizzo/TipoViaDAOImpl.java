@@ -9,13 +9,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 public class TipoViaDAOImpl implements TipoViaDAO{
-    private static TipoViaDAOImpl instance;
-    private TipoViaDAOImpl() {}
-    public static TipoViaDAOImpl getInstance() {
-        if(instance==null)
-            instance= new TipoViaDAOImpl();
-        return instance;
-    }
+    public TipoViaDAOImpl() {}
 
     @Override
     public Vector<TipoVia> doRetriveAll() {
@@ -46,7 +40,6 @@ public class TipoViaDAOImpl implements TipoViaDAO{
             statement.setInt(1, idVia);
 
             ResultSet queryResult= statement.executeQuery();
-
             if(queryResult.next())
                 result= new TipoVia(queryResult.getInt("id_via"), queryResult.getString("tipologia"));
 
@@ -61,11 +54,13 @@ public class TipoViaDAOImpl implements TipoViaDAO{
         TipoVia result= null;
 
         try{
-            String query= "select * from tipo_via where tipologia= "+ tipo;
+            String query= "select * from tipo_via where tipologia= ?";
             PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
-            ResultSet queryResult= statement.executeQuery();
+            statement.setString(1, tipo);
 
-            result= new TipoVia(queryResult.getInt("id_via"), queryResult.getString("tipologia"));
+            ResultSet queryResult= statement.executeQuery();
+            if(queryResult.next())
+                result= new TipoVia(queryResult.getInt("id_via"), queryResult.getString("tipologia"));
 
         }catch (SQLException e) {
             e.printStackTrace();
@@ -75,17 +70,18 @@ public class TipoViaDAOImpl implements TipoViaDAO{
 
     @Override
     public boolean saveOrUpdate(TipoVia tipo) {
-        boolean result = true;
+        boolean result = false;
 
         try {
             String query = "INSERT INTO tipo_via (tipologia) VALUES (?) ON CONFLICT (tipologia) DO NOTHING";
-
             PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
             statement.setString(1, tipo.getTipoVia());
 
+            if(statement.executeUpdate()>0)
+                result= true;
+
         } catch (SQLException e) {
             e.printStackTrace();
-            result= false;
         }
         return result;
     }
@@ -95,10 +91,11 @@ public class TipoViaDAOImpl implements TipoViaDAO{
         boolean result = false;
 
         try {
-            String query = "DELETE FROM tipo_via WHERE id_via = "+ tipo.getIdVia();
+            String query = "DELETE FROM tipo_via WHERE id_via = ?";
             PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
+            statement.setInt(1, tipo.getIdVia());
 
-            if (statement.executeUpdate()>0)
+            if(statement.executeUpdate()>0)
                 result = true;
 
         } catch (SQLException e) {

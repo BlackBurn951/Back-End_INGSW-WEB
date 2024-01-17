@@ -1,6 +1,7 @@
 package com.example.progettowebtest.DAO.Indirizzo;
 
 import com.example.progettowebtest.Connection.DbConn;
+import com.example.progettowebtest.DAO.MagnusDAO;
 import com.example.progettowebtest.Model.Indirizzo.*;
 
 import java.sql.PreparedStatement;
@@ -9,19 +10,8 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 public class IndirizzoDAOImpl implements IndirizzoDAO{
-    private static IndirizzoDAOImpl instance;
-    private DatiComuneDAO comuneDAO= DatiComuneDAOImpl.getInstance();
-    private TipoViaDAO tipoViaDAO= TipoViaDAOImpl.getInstance();
-
-
     public IndirizzoDAOImpl(){}
 
-
-    public static IndirizzoDAOImpl getInstance() {
-        if (instance == null)
-            instance = new IndirizzoDAOImpl();
-        return instance;
-    }
 
     @Override
     public Vector<Indirizzo> doRetriveAll() {
@@ -37,8 +27,8 @@ public class IndirizzoDAOImpl implements IndirizzoDAO{
                 idComune = queryResult.getInt("id_comune");
                 idTipoVia = queryResult.getInt("id_via");
 
-                DatiComune comuneIns = comuneDAO.doRetriveByKey(idComune);
-                TipoVia tipo = tipoViaDAO.doRetriveByKey(idTipoVia);
+                DatiComune comuneIns = MagnusDAO.getInstance().getDatiComuneDAO().doRetriveByKey(idComune);
+                TipoVia tipo = MagnusDAO.getInstance().getTipoViaDAO().doRetriveByKey(idTipoVia);
 
                 Indirizzo indirizzo = new Indirizzo(tipo, queryResult.getString("nome_via"), queryResult.getString("num_civico"), comuneIns);
                 resultList.add(indirizzo);
@@ -54,8 +44,8 @@ public class IndirizzoDAOImpl implements IndirizzoDAO{
     public Indirizzo doRetriveByKey(String nomeVia, String numCivico, int comune, int tipologia) {
         Indirizzo result= null;
 
-        DatiComune comuneIns= comuneDAO.doRetriveByKey(comune);
-        TipoVia tipo= tipoViaDAO.doRetriveByKey(tipologia);
+        DatiComune comuneIns= MagnusDAO.getInstance().getDatiComuneDAO().doRetriveByKey(comune);
+        TipoVia tipo= MagnusDAO.getInstance().getTipoViaDAO().doRetriveByKey(tipologia);
 
         if(comuneIns!=null && tipo!=null) {
             try {

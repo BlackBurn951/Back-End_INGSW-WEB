@@ -10,13 +10,7 @@ import java.util.List;
 import java.util.Vector;
 
 public class DatiComuneDAOImpl implements DatiComuneDAO{
-    private static DatiComuneDAOImpl instance;
-    private DatiComuneDAOImpl() {}
-    public static DatiComuneDAOImpl getInstance() {
-        if(instance==null)
-            instance= new DatiComuneDAOImpl();
-        return instance;
-    }
+    public DatiComuneDAOImpl() {}
 
     @Override
     public Vector<DatiComune> doRetriveAll() {
@@ -49,7 +43,6 @@ public class DatiComuneDAOImpl implements DatiComuneDAO{
             statement.setInt(1, idComune);
 
             ResultSet queryResult= statement.executeQuery();
-
             if(queryResult.next())
                 result= new DatiComune(queryResult.getInt("id_comune"), queryResult.getString("nome_comune"),
                         queryResult.getString("cap"), queryResult.getString("provincia"), queryResult.getString("regione"));
@@ -63,7 +56,7 @@ public class DatiComuneDAOImpl implements DatiComuneDAO{
     @Override
     public Vector<DatiComune> doRetriveByAttribute(String att, ColonneDatiComune val) {
         Vector<DatiComune> result = new Vector<>();
-        String columnName;
+        String columnName= "";
 
         switch (val) {
             case NOME_COMUNE:
@@ -78,28 +71,19 @@ public class DatiComuneDAOImpl implements DatiComuneDAO{
             case REGIONE:
                 columnName = "regione";
                 break;
-            default:
-                columnName = "";
-                break;
         }
 
-        if (columnName.isEmpty()) {
-            return result;
-        }
-
-        String query = "SELECT * FROM dati_comune WHERE " + columnName + " = ?";
+        String query = "SELECT * FROM dati_comune WHERE "+ columnName+" = ?";
         try {
             PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
             statement.setString(1, att);
 
             ResultSet queryResult = statement.executeQuery();
             while (queryResult.next()) {
-                result.add(new DatiComune(
-                        queryResult.getInt("id_comune"), queryResult.getString("nome_comune"), queryResult.getString("cap"),
-                        queryResult.getString("provincia"),
-                        queryResult.getString("regione")
-                ));
+                result.add(new DatiComune(queryResult.getInt("id_comune"), queryResult.getString("nome_comune"),
+                        queryResult.getString("cap"), queryResult.getString("provincia"), queryResult.getString("regione")));
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
