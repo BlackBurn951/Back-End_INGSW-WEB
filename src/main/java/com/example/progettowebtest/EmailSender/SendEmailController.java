@@ -17,7 +17,7 @@ import static com.example.progettowebtest.EmailSender.OTPGenerator.generateOTP;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200", exposedHeaders = "Attivita")
+@CrossOrigin(origins = "http://localhost:4200", exposedHeaders = {"Session-ID","Attivita"})
 public class SendEmailController {
     public static String generatedOTP;
 
@@ -31,8 +31,14 @@ public class SendEmailController {
         }
 
         try {
-            HttpSession session= (HttpSession) request.getServletContext().getAttribute(idSession);
-
+            HttpSession session;
+            if(idSession.isEmpty()) {
+                session = request.getSession(true);
+                request.getServletContext().setAttribute(session.getId(), session);
+            }
+            else {
+                session= (HttpSession) request.getServletContext().getAttribute(idSession);
+            }
             if(session==null) {
                 response.setHeader("Attivita", "Scaduta");
                 return;

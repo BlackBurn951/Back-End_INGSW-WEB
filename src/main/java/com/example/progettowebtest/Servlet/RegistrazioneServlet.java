@@ -33,8 +33,7 @@ import static com.example.progettowebtest.EmailSender.EmailService.sendMessage;
 @CrossOrigin(origins = "http://localhost:4200", exposedHeaders = "Session-ID")
 public class RegistrazioneServlet extends HttpServlet {
 
-
-    //DA SPOSTARE
+    //RICORDARSI DI CAPIRE COME FARE IL LOGIN IN AUTOMATICO
     @PostMapping("/emailCheck")
     public int emailCheck(HttpServletRequest request, HttpServletResponse response, @RequestBody DatiControlloUtente dati) {
         int result= 2;
@@ -55,13 +54,12 @@ public class RegistrazioneServlet extends HttpServlet {
         return result;
     }
 
-
-    //DA CONTROLLARE IL CONTO DEL MINUTAGGIO
     @GetMapping("/checkOTP")
     public String checkOTP(HttpServletRequest request, @RequestParam("otpSend") String otpSend, @RequestParam("IDSession") String idSess) {
         String response;
 
         HttpSession session= (HttpSession) request.getServletContext().getAttribute(idSess);
+        //System.out.println("id sessione presa dal context: "+ session.getId());
         long minutiAttuali= TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis());
 
         if(session!=null && ((minutiAttuali - (long) session.getAttribute("TempoInvioOTP")) <= 10)) {
@@ -177,6 +175,13 @@ public class RegistrazioneServlet extends HttpServlet {
             PDDocument pdfFile = CreaPDFConfermaConto.creaPDFconto(dati.getNome()+" "+dati.getCognome(), dati.getDataNascita(), indirizzoRes, dati.getCellulare(), dati.getEmail(), data.toString());
             Message message = EmailService.createMessageWithAttachment(pdf_html, "caesar.magnus.info@gmail.com", dati.getEmail(), "Conferma registrazione e dati conto", pdfFile);
             sendMessage(getService(), "caesar.magnus.info@gmail.com", message);
+
+
+            //Aggiornamento sessione
+            HttpSession session= (HttpSession) request.getServletContext().getAttribute(idSession);
+            if(session==null)
+                session= request.getSession(true);
+            session.setMaxInactiveInterval(21600);
 
         }catch (NullPointerException | GeneralSecurityException | IOException | MessagingException e ) {
             e.printStackTrace();
