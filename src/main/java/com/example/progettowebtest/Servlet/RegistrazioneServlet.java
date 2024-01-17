@@ -10,17 +10,29 @@ import com.example.progettowebtest.DAO.StatoDAO;
 import com.example.progettowebtest.DAO.StatoDAOImpl;
 import com.example.progettowebtest.DAO.Utente_Documenti.*;
 import com.example.progettowebtest.ClassiRequest.IdentificativiUtente;
+import com.example.progettowebtest.EmailSender.CreaPDFConfermaConto;
+import com.example.progettowebtest.EmailSender.EmailService;
+import com.example.progettowebtest.EmailSender.EmailTemplateLoader;
 import com.example.progettowebtest.Model.ContoCorrente.ContoCorrente;
 import com.example.progettowebtest.Model.Indirizzo.ColonneDatiComune;
 import com.example.progettowebtest.Model.Indirizzo.DatiComune;
 import com.example.progettowebtest.Model.Indirizzo.Indirizzo;
 import com.example.progettowebtest.Model.Indirizzo.TipoVia;
 import com.example.progettowebtest.Model.Utente_Documenti.*;
+import com.google.api.services.gmail.model.Message;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.*;
+import org.apache.pdfbox.pdmodel.PDDocument;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.time.LocalDate;
 import java.util.Vector;
+import java.util.concurrent.TimeUnit;
+
+import static com.example.progettowebtest.EmailSender.EmailService.getService;
+import static com.example.progettowebtest.EmailSender.EmailService.sendMessage;
 
 
 @RestController
