@@ -30,7 +30,7 @@ public class BonificoInterDAOImpl implements BonificoInterDAO{
 
             while(queryResult.next()) {
                 result.add(new TransazioneProxy(queryResult.getInt("id_internazionale"), queryResult.getDate("data_transazione").toString(), queryResult.getDouble("importo"),
-                        queryResult.getString("casuale"), TipoTransazione.BONIFICOINTER));
+                        queryResult.getString("causale"), TipoTransazione.BONIFICOINTER));
             }
 
         }catch (SQLException e) {
@@ -45,19 +45,19 @@ public class BonificoInterDAOImpl implements BonificoInterDAO{
         if(proxy)
             query= "select * from bonifico_internazionale as b, rel_cc_bon_int as r where b.id_internazionale= r.id_internazionale";
         else
-            query= "select r.data_transazione, b.importo, b.causale from bonifico_internazionale as b, rel_cc_bon_int as r where b.id_internazionale= r.id_internazionale";
+            query= "select r.data_transazione, b.importo, b.causale from bonifico_internazionale as b, rel_cc_bon_int as r where b.id_internazionale=r.id_internazionale";
 
         try{
             PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
             ResultSet queryResult= statement.executeQuery();
 
-            if(proxy)
+            if(proxy && queryResult.next())
                 return new BonificoInter(queryResult.getDate("data_transazione").toString(), queryResult.getDouble("costo_commissione"),
                         queryResult.getBoolean("esito"), queryResult.getInt("id_internazionale"), queryResult.getString("nome_beneficiario"), queryResult.getString("cognome_beneficiario"),
-                        queryResult.getDouble("importo"), queryResult.getString("casuale"), queryResult.getString("iban_destinatario"), );
-            else
-                return new TransazioneProxy(queryResult.getInt("id_bollettino"), queryResult.getDate("data_transazione").toString(), queryResult.getDouble("importo"),
-                        queryResult.getString("casuale"), TipoTransazione.BOLLETTINO);
+                        queryResult.getDouble("importo"), queryResult.getString("causale"), queryResult.getString("iban_destinatario"), queryResult.getString("valuta_pagamento"), queryResult.getString("paese_destinatario"));
+            else if(queryResult.next())
+                return new TransazioneProxy(queryResult.getInt("id_internazionale"), queryResult.getDate("data_transazione").toString(), queryResult.getDouble("importo"),
+                        queryResult.getString("causale"), TipoTransazione.BONIFICOINTER);
 
         }catch (SQLException e) {
             e.printStackTrace();
@@ -66,12 +66,56 @@ public class BonificoInterDAOImpl implements BonificoInterDAO{
     }
 
     @Override
-    public boolean saveOrUpdate(BonificoInter bonInt) {
+    public boolean saveOrUpdate(BonificoInter bonInt, String numCC) {
+        String query="insert into bonifico_internazionale(nome_beneficiario, cognome_beneficiario, importo, causale, " +
+                "iban_destinatario, valuta_pagamento, paese_destinatario) values(?, ?, ?, ?, ?, ?, ?)";
+
+        try{
+            PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
+
+            statement.setString(1, bonInt.getNomeBeneficiario());
+            statement.setString(2, bonInt.getCognomeBeneficiario());
+            statement.setDouble(3, bonInt.getImporto());
+            statement.setString(4, bonInt.getCausale());
+            statement.setString(5, bonInt.getIbanDestinatario());
+            statement.setString(6, bonInt.getValutaPagamento());
+            statement.setString(7, bonInt.getPaeseDestinatario());
+
+            if(statement.executeUpdate()>0 && inserisciRelazion(bonInt, numCC))
+                return true;
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
     @Override
     public boolean delete(BonificoInter bonInt) {
+        return false;
+    }
+
+
+    //Metodi di servizio
+    private boolean inserisciRelazion(BonificoInter bon, String numCC) {
+        String query= "insert into rel_cc_bon_int(data_transazione, costo_commissione, esito, id_internazionale, num_cc) " +
+                "values (?, ?, ?, ?, ?)";
+
+        try{
+            PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
+
+            statement.setDate(1, bon.getDataTransazione());
+            statement.setDouble(2, bon.getCostoTransazione());
+            statement.setBoolean(3, bon.getEsito());
+            statement.setInt(4, bon.getId());
+            statement.setString(5, numCC);
+
+            if(statement.executeUpdate()>0)
+                return true;
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 }

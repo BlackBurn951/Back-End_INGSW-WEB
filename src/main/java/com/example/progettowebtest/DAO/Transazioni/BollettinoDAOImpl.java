@@ -29,7 +29,7 @@ public class BollettinoDAOImpl implements BollettinoDAO{
 
             while(queryResult.next()) {
                 result.add(new TransazioneProxy(queryResult.getInt("id_bollettino"), queryResult.getDate("data_transazione").toString(), queryResult.getDouble("importo"),
-                        queryResult.getString("casuale"), TipoTransazione.BOLLETTINO));
+                        queryResult.getString("causale"), TipoTransazione.BOLLETTINO));
             }
 
         }catch (SQLException e) {
@@ -52,11 +52,11 @@ public class BollettinoDAOImpl implements BollettinoDAO{
 
             if(proxy)
                 return new Bollettino(queryResult.getDate("data_transazione").toString(), queryResult.getDouble("costo_commissione"),
-                        queryResult.getBoolean("esito"), queryResult.getInt("id_bollettino"), queryResult.getDouble("importo"), queryResult.getString("casuale"),
+                        queryResult.getBoolean("esito"), queryResult.getInt("id_bollettino"), queryResult.getDouble("importo"), queryResult.getString("causale"),
                         queryResult.getString("num_cc_destinazione"), MagnusDAO.getInstance().getTipologiaBollettinoDAO().doRetriveByKey(queryResult.getInt("id_tipologia_bollettino")));
             else
                 return new TransazioneProxy(queryResult.getInt("id_bollettino"), queryResult.getDate("data_transazione").toString(), queryResult.getDouble("importo"),
-                        queryResult.getString("casuale"), TipoTransazione.BOLLETTINO);
+                        queryResult.getString("causale"), TipoTransazione.BOLLETTINO);
 
         }catch (SQLException e) {
             e.printStackTrace();
@@ -66,6 +66,7 @@ public class BollettinoDAOImpl implements BollettinoDAO{
 
     @Override
     public boolean saveOrUpdate(Bollettino bol, String numCC) {
+
         String query="insert into bollettino(importo, causale, num_cc_destinazione, id_tipologia_bollettino)" +
                 "values(?, ?, ?, ?)";
 
@@ -79,6 +80,7 @@ public class BollettinoDAOImpl implements BollettinoDAO{
 
             if(statement.executeUpdate()>0 && inserisciRelazion(bol, numCC))
                 return true;
+
 
         }catch (SQLException e) {
             e.printStackTrace();
@@ -112,5 +114,6 @@ public class BollettinoDAOImpl implements BollettinoDAO{
             e.printStackTrace();
         }
         return false;
+
     }
 }

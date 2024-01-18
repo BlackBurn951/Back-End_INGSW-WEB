@@ -1,14 +1,16 @@
 package com.example.progettowebtest.DAO.Carte;
 
 
+import com.example.progettowebtest.Model.Carte.Carta;
 import com.example.progettowebtest.Model.Carte.CartaCredito;
 
 import java.util.Vector;
 
-public interface CartaCreditoDAO {
+public interface CarteDAO {
 
-    Vector<CartaCredito> doRetriveAll();
-    CartaCredito doRetriveByKey(String numCarta);
+    Vector<Carta> doRetriveAll();
+    Vector<Carta> doRetriveAllForCC(String numCC);
+    Carta doRetriveByKey(String numCarta, boolean tipo);
     boolean saveOrUpdate(CartaCredito cartaCred);
     boolean delete(CartaCredito cartaCred);
 
