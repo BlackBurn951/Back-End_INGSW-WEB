@@ -6,7 +6,7 @@ import com.example.progettowebtest.Model.Transazioni.Bollettino;
 
 import java.util.Vector;
 
-public interface BollettinoDAO {
+
     Vector<Transazione> doRetriveAll();
     Vector<Transazione> doRetriveAllForCC(String numCC);
     Transazione doRetriveByKey(int id, boolean proxy);
