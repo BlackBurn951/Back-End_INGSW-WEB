@@ -1,6 +1,7 @@
 package com.example.progettowebtest.DAO.Transazioni;
 
 import com.example.progettowebtest.Connection.DbConn;
+import com.example.progettowebtest.Model.Proxy.Transazione;
 import com.example.progettowebtest.Model.Transazioni.Bollettino;
 import com.example.progettowebtest.Model.Transazioni.TipologiaBollettino;
 
@@ -12,6 +13,11 @@ import java.util.Vector;
 public class TipologiaBollettinoDAOImpl implements TipologiaBollettinoDAO{
     @Override
     public Vector<TipologiaBollettino> doRetriveAll() {
+        return null;
+    }
+
+    @Override
+    public Vector<Transazione> doRetriveAllForCC(String numCC) {
         return null;
     }
 
