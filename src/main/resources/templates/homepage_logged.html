@@ -6,42 +6,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Conto Corrente Personale</title>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Ottieni l'ID della sessione dall'URL
-            var urlParams = new URLSearchParams(window.location.search);
-            var idSession = urlParams.get("IDSession");
+    
+    <script src="/javaScripts/funzioniHomepage.js"></script>
 
-            // Modifica l'href del link con l'ID della sessione
-            var linkElement = document.querySelector("#redirect");
-            var linkHref = linkElement.getAttribute("href");
-            linkElement.setAttribute("href", linkHref + '?IDSession='+idSession);
-        });
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Ottieni l'ID della sessione dall'URL
-            var urlParams = new URLSearchParams(window.location.search);
-            var idSession = urlParams.get("IDSession");
 
-            // Modifica l'href del link con l'ID della sessione
-            var linkElement = document.querySelector("#redirect2");
-            var linkHref = linkElement.getAttribute("href");
-            linkElement.setAttribute("href", linkHref + '?IDSession='+idSession);
-        });
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Ottieni l'ID della sessione dall'URL
-            var urlParams = new URLSearchParams(window.location.search);
-            var idSession = urlParams.get("IDSession");
-
-            // Modifica l'href del link con l'ID della sessione
-            var linkElement = document.querySelector("#redirect3");
-            var linkHref = linkElement.getAttribute("href");
-            linkElement.setAttribute("href", linkHref + '?IDSession='+idSession);
-        });
-    </script>
 </head>
 <header>
     <div class="containerLogo">
