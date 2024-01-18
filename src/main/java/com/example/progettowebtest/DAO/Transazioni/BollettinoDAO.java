@@ -8,6 +8,6 @@ import java.util.Vector;
 public interface BollettinoDAO {
     Vector<Bollettino> doRetriveAll();
     Bollettino doRetriveByKey(int id, boolean proxy);
-    boolean saveOrUpdate(Bollettino bol);
+    boolean saveOrUpdate(Bollettino bol, String numCC);
     boolean delete(Bollettino bol);
 }
