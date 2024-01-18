@@ -6,16 +6,14 @@ import com.example.progettowebtest.Model.Proxy.Transazione;
 public class Prelievo extends DatiTransazione implements Transazione {
     private int idPrelievo;
     private double importo;
-    private String causale;
     private Mezzo mezzo;
     private Carta cartaEsecuzione;
 
     public Prelievo(String dataTransazione, double costoTransazione, boolean esito, int idPrelievo,
-                    double importo, String causale, Mezzo mezzo, Carta cartaEsecuzione) {
+                    double importo, Mezzo mezzo, Carta cartaEsecuzione) {
         super(dataTransazione, costoTransazione, esito);
         this.idPrelievo = idPrelievo;
         this.importo = importo;
-        this.causale = causale;
         this.mezzo = mezzo;
         this.cartaEsecuzione = cartaEsecuzione;
     }
@@ -31,7 +29,7 @@ public class Prelievo extends DatiTransazione implements Transazione {
     public int getId() {return idPrelievo;}
 
     @Override
-    public String getCausale() {return causale;}
+    public String getCausale() {return "ERRORE";}
 
     @Override
     public String getNomeBeneficiario() {return "ERRORE";}
