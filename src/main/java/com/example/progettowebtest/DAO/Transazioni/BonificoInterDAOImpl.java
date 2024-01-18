@@ -1,5 +1,5 @@
 package com.example.progettowebtest.DAO.Transazioni;
-
+/*
 import com.example.progettowebtest.Connection.DbConn;
 import com.example.progettowebtest.DAO.MagnusDAO;
 import com.example.progettowebtest.Model.Proxy.TipoTransazione;
@@ -75,3 +75,4 @@ public class BonificoInterDAOImpl implements BonificoInterDAO{
         return false;
     }
 }
+*/
