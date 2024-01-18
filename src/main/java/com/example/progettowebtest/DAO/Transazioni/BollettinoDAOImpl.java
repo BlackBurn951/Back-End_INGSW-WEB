@@ -20,7 +20,7 @@ public class BollettinoDAOImpl implements BollettinoDAO{
     }
 
     @Override
-    public boolean saveOrUpdate(Bollettino bol) {
+    public boolean saveOrUpdate(Bollettino bol, String numCC) {
         boolean result= false;
         String query="insert into bollettino(importo, causale, num_cc_destinazione, id_tipologia_bollettino)" +
                 "values(?, ?, ?, ?)";
@@ -33,15 +33,9 @@ public class BollettinoDAOImpl implements BollettinoDAO{
             statement.setString(3, bol.getNumCcDest());
             statement.setInt(4, bol.getTipoBol().getIdTipoBol());
 
-            if(statement.executeUpdate()>0) {
-                query= "insert into rel_cc_bollettino(data_transizione, costo_commissione, esito, id_bollettino, num_cc) " +
-                        "values (?, ?, ?, ?, ?)";
-                statement= DbConn.getConnection().prepareStatement(query);
+            if(statement.executeUpdate()>0)
+                inserisciRelazione(bol, numCC);
 
-                statement.setDate(1, bol.getDataTransazione());
-                statement.setDouble(2, bol.getCostoTransazione());
-                statement.setBoolean(3, bol.getEsito());
-            }
         }catch (SQLException e) {
             e.printStackTrace();
         }
@@ -51,5 +45,10 @@ public class BollettinoDAOImpl implements BollettinoDAO{
     @Override
     public boolean delete(Bollettino bol) {
         return false;
+    }
+
+    //Metodi di servizio
+    private boolean inserisciRelazione(Bollettino bol, String numCC) {
+        return true;
     }
 }
