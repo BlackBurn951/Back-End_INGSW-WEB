@@ -9,6 +9,6 @@ public interface PrelievoDAO {
     Vector<Transazione> doRetriveAll();
     Vector<Transazione> doRetriveAllForCC(String numCC);
     Transazione doRetriveByKey(int id, boolean proxy);
-    boolean saveOrUpdate(Prelievo prel);
+    boolean saveOrUpdate(Prelievo prel, String numCC);
     boolean delete(Prelievo prel);
 }

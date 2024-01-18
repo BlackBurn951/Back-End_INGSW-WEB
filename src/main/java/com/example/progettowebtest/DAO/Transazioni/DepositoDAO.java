@@ -9,6 +9,6 @@ public interface DepositoDAO {
     Vector<Transazione> doRetriveAll();
     Vector<Transazione> doRetriveAllForCC(String numCC);
     Transazione doRetriveByKey(int id, boolean proxy);
-    boolean saveOrUpdate(Deposito depo);
+    boolean saveOrUpdate(Deposito depo, String numCC);
     boolean delete(Deposito depo);
 }
