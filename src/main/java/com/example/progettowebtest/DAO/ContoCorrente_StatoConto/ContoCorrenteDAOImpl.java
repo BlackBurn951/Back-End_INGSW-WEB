@@ -190,8 +190,9 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO{
 
     private String generatealphaNum(Random rng) {
         String st= "";
-        int numOrAlpha= rng.nextInt(10);
+        int numOrAlpha;
         while(st.length()<12) {
+            numOrAlpha= rng.nextInt(10);
             if (numOrAlpha>=0 && numOrAlpha<4)
                 st+=String.valueOf(rng.nextInt(10));
             else
