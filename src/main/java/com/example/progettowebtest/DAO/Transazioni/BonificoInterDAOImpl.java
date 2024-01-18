@@ -11,7 +11,7 @@ public class BonificoInterDAOImpl implements BonificoInterDAO{
     }
 
     @Override
-    public BonificoInter doRetriveByKey(int id) {
+    public BonificoInter doRetriveByKey(int id, boolean proxy) {
         return null;
     }
 

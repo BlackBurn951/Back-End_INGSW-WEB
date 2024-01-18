@@ -11,7 +11,7 @@ public class BonificoSepa extends DatiTransazione implements Transazione {
     private String causale;
     private String ibanDestinatario;
 
-    public BonificoSepa(String dataTransazione, double costoTransazione, String esito, int idSepa, String nomeBeneficiario,
+    public BonificoSepa(String dataTransazione, double costoTransazione, boolean esito, int idSepa, String nomeBeneficiario,
                         String cognomeBeneficiario, double importo, String causale, String ibanDestinatario) {
         super(dataTransazione, costoTransazione, esito);
         this.idSepa = idSepa;

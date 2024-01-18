@@ -6,7 +6,7 @@ import java.util.Vector;
 
 public interface DepositoDAO {
     Vector<Deposito> doRetriveAll();
-    Deposito doRetriveByKey(int id);
+    Deposito doRetriveByKey(int id, boolean proxy);
     boolean saveOrUpdate(Deposito depo);
     boolean delete(Deposito depo);
 }

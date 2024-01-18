@@ -7,7 +7,7 @@ import java.util.Vector;
 
 public interface BonificoInterDAO {
     Vector<BonificoInter> doRetriveAll();
-    BonificoInter doRetriveByKey(int id);
+    BonificoInter doRetriveByKey(int id, boolean proxy);
     boolean saveOrUpdate(BonificoInter bonInt);
     boolean delete(BonificoInter bonInt);
 }
