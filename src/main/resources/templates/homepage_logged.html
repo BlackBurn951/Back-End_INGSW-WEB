@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="/css/homepage_logged.css">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conto Corrente Personale</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Ottieni l'ID della sessione dall'URL
+            var urlParams = new URLSearchParams(window.location.search);
+            var idSession = urlParams.get("IDSession");
+
+            // Modifica l'href del link con l'ID della sessione
+            var linkElement = document.querySelector("#redirect");
+            var linkHref = linkElement.getAttribute("href");
+            linkElement.setAttribute("href", linkHref + '?IDSession='+idSession);
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Ottieni l'ID della sessione dall'URL
+            var urlParams = new URLSearchParams(window.location.search);
+            var idSession = urlParams.get("IDSession");
+
+            // Modifica l'href del link con l'ID della sessione
+            var linkElement = document.querySelector("#redirect2");
+            var linkHref = linkElement.getAttribute("href");
+            linkElement.setAttribute("href", linkHref + '?IDSession='+idSession);
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Ottieni l'ID della sessione dall'URL
+            var urlParams = new URLSearchParams(window.location.search);
+            var idSession = urlParams.get("IDSession");
+
+            // Modifica l'href del link con l'ID della sessione
+            var linkElement = document.querySelector("#redirect3");
+            var linkHref = linkElement.getAttribute("href");
+            linkElement.setAttribute("href", linkHref + '?IDSession='+idSession);
+        });
+    </script>
+</head>
+<header>
+    <div class="containerLogo">
+        <img class="logo" src="/images/logoBanca.png" alt=""></div>
+    <div class="container2">
+        <h1 class="titolo">Conto Corrente Personale</h1>
+        <div class="notifiche-esci">
+            <a href="/redirect/tornaHomepage" class="logout">ESCI</a>
+        </div>
+    </div>
+</header>
+<body>
+  <nav>
+      <ul>
+          <li><a id="redirect" href="/personal_data"><img class="imageButton" src="/images/userProfileImage.png" alt=""></a></li>
+          <li><a id="redirect2" href="/redirect/vaiPaginaCarte"><img class="imageButton" src="/images/credit.png" alt=""></a></li>
+          <li><a id="redirect3" href="/redirect/vaiPaginaPagamenti"><img class="imageButton" src="/images/payment.png" alt=""></a></li>
+      </ul>
+      <div class="picture">
+          <img class="arrow" src="/images/arrow-right.png" alt="">
+      </div>
+  </nav>
+  <div class="informazioniConto">
+    <div class="containerDatiConto">
+        <h1>Benvenuto <span th:text="${utente.getNome()}"></span></h1>
+        <h3>Numero conto: <span th:text="${conto.getNumCC()}"></span></h3>
+        <h3>Saldo: <span th:text="${conto.getSaldo()}"></span></h3>
+        <h3>Stato: <span th:text="${conto.getStatoConto().getValoreStato()}"></span></h3>
+    </div>
+    <div class="containerDatiTransazioni">
+      <h2>Ultime transazioni</h2>
+        <ul>
+            <li>Spesa - € 50.00</li>
+            <li>Deposito - € 200.00</li>
+            <!-- Aggiungi altre transazioni qui -->
+        </ul>
+</div>
+  </div>
+</body>
+
+</html>
