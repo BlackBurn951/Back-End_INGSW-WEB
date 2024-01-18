@@ -1,5 +1,7 @@
 package com.example.progettowebtest.Model.Transazioni;
 
+import com.example.progettowebtest.Model.Proxy.Transazione;
+
 import java.sql.Date;
 
 public abstract class DatiTransazione {
