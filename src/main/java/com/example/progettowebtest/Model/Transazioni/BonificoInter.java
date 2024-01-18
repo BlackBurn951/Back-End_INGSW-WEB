@@ -13,7 +13,7 @@ public class BonificoInter extends DatiTransazione implements Transazione {
     private String valutaPagamento;
     private String paeseDestinatario;
 
-    public BonificoInter(String dataTransazione, double costoTransazione, String esito, int idInter, String nomeBeneficiario,
+    public BonificoInter(String dataTransazione, double costoTransazione, boolean esito, int idInter, String nomeBeneficiario,
                          String cognomeBeneficiario, double importo, String causale, String ibanDestinatario, String valutaPagamento, String paeseDestinatario) {
         super(dataTransazione, costoTransazione, esito);
         this.idInter = idInter;

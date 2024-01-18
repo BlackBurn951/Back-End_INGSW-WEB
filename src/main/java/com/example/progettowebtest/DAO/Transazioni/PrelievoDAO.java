@@ -6,7 +6,7 @@ import java.util.Vector;
 
 public interface PrelievoDAO {
     Vector<Prelievo> doRetriveAll();
-    Prelievo doRetriveByKey(int id);
+    Prelievo doRetriveByKey(int id, boolean proxy);
     boolean saveOrUpdate(Prelievo prel);
     boolean delete(Prelievo prel);
 }

@@ -1,5 +1,6 @@
 package com.example.progettowebtest.Model.Proxy;
 
+import com.example.progettowebtest.DAO.MagnusDAO;
 import com.example.progettowebtest.Model.Carte.Carta;
 import com.example.progettowebtest.Model.Transazioni.*;
 
@@ -113,12 +114,11 @@ public class TransazioneProxy implements Transazione {
 
     @Override
     public TipologiaBollettino getTipoBol() {
-        TipologiaBollettino result= null;
         if(transazioneReale==null && (isType(TipoTransazione.BOLLETTINO)))
             instanzaTransazione();
         else if (transazioneReale!=null && (isType(TipoTransazione.BOLLETTINO)))
             return transazioneReale.getTipoBol();
-        return result;
+        return null;
     }
 
 
@@ -126,22 +126,20 @@ public class TransazioneProxy implements Transazione {
     //Metodi gestibili solo dai PRELIEVI e DEPOSITI
     @Override
     public Mezzo getMezzo() {
-        Mezzo result= null;
         if(transazioneReale==null && (isType(TipoTransazione.DEPOSITO) || isType(TipoTransazione.PRELIEVO)))
             instanzaTransazione();
         else if (transazioneReale!=null && (isType(TipoTransazione.DEPOSITO) || isType(TipoTransazione.PRELIEVO)))
             return transazioneReale.getMezzo();
-        return result;
+        return null;
     }
 
     @Override
     public Carta getCartaEsecuzione() {
-        Carta result= null;
         if(transazioneReale==null && (isType(TipoTransazione.DEPOSITO) || isType(TipoTransazione.PRELIEVO)))
             instanzaTransazione();
         else if (transazioneReale!=null && (isType(TipoTransazione.DEPOSITO) || isType(TipoTransazione.PRELIEVO)))
             return transazioneReale.getCartaEsecuzione();
-        return result;
+        return null;
     }
 
 
@@ -149,15 +147,15 @@ public class TransazioneProxy implements Transazione {
     //Metodi di servizio
     private void instanzaTransazione() {
         if (tipo == TipoTransazione.BOLLETTINO) {
-            //transazioneReale=
-        } else if (transazioneReale instanceof BonificoInter) {
-            //
-        } else if (transazioneReale instanceof BonificoSepa) {
-            //
-        } else if (transazioneReale instanceof Deposito) {
-            //
-        } else if (transazioneReale instanceof Prelievo) {
-            //
+            transazioneReale= MagnusDAO.getInstance().getBollettinoDAO().doRetriveByKey(id, true);
+        } else if (tipo==TipoTransazione.BONIFICOINTER) {
+            transazioneReale= MagnusDAO.getInstance().getBonificoInterDAO().doRetriveByKey(id, true);
+        } else if (tipo==TipoTransazione.BONIFICOSEPA) {
+            transazioneReale= MagnusDAO.getInstance().getBonificoSepaDAO().doRetriveByKey(id, true);
+        } else if (tipo==TipoTransazione.DEPOSITO) {
+            transazioneReale= MagnusDAO.getInstance().getDepositoDAO().doRetriveByKey(id, true);
+        } else if (tipo==TipoTransazione.PRELIEVO) {
+            transazioneReale= MagnusDAO.getInstance().getPrelievoDAO().doRetriveByKey(id, true);
         }
     }
 

@@ -11,7 +11,7 @@ public class PrelievoDAOImpl implements PrelievoDAO {
     }
 
     @Override
-    public Prelievo doRetriveByKey(int id) {
+    public Prelievo doRetriveByKey(int id, boolean proxy) {
         return null;
     }
 
