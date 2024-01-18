@@ -1,13 +1,15 @@
 package com.example.progettowebtest.Model.Transazioni;
 
+import com.example.progettowebtest.Model.Proxy.Transazione;
+
 import java.sql.Date;
 
 public abstract class DatiTransazione {
     private Date dataTransazione;
     private double costoTransazione;
-    private String esito;
+    private boolean esito;
 
-    public DatiTransazione(String dataTransazione, double costoTransazione, String esito) {
+    public DatiTransazione(String dataTransazione, double costoTransazione, boolean esito) {
         this.dataTransazione = Date.valueOf(dataTransazione);
         this.costoTransazione = costoTransazione;
         this.esito = esito;
@@ -15,5 +17,5 @@ public abstract class DatiTransazione {
 
     public Date getDataTransazione() {return dataTransazione;}
     public double getCostoTransazione() {return costoTransazione;}
-    public String getEsito() {return esito;}
+    public boolean getEsito() {return esito;}
 }

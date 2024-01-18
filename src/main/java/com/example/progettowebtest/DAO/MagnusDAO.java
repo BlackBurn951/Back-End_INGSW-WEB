@@ -5,6 +5,7 @@ import com.example.progettowebtest.DAO.ContoCorrente_StatoConto.ContoCorrenteDAO
 import com.example.progettowebtest.DAO.ContoCorrente_StatoConto.RelStatoContoDAO;
 import com.example.progettowebtest.DAO.ContoCorrente_StatoConto.RelStatoContoDAOImpl;
 import com.example.progettowebtest.DAO.Indirizzo.*;
+import com.example.progettowebtest.DAO.Transazioni.*;
 import com.example.progettowebtest.DAO.Utente_Documenti.*;
 
 public class MagnusDAO {
@@ -19,6 +20,12 @@ public class MagnusDAO {
     private ContoCorrenteDAO contoCorrenteDAO;
     private RelStatoContoDAO relStatoContoDAO;
     private StatoDAO statoDAO;
+    private BollettinoDAO bollettinoDAO;
+    private BonificoInterDAO bonificoInterDAO;
+    private BonificoSepaDAO bonificoSepaDAO;
+    private DepositoDAO depositoDAO;
+    private PrelievoDAO prelievoDAO;
+    private TipologiaBollettinoDAO tipologiaBollettinoDAO;
 
     public MagnusDAO() {
         utenteDAO= new UtenteDAOImpl();
@@ -31,49 +38,32 @@ public class MagnusDAO {
         contoCorrenteDAO= new ContoCorrenteDAOImpl();
         relStatoContoDAO= new RelStatoContoDAOImpl();
         statoDAO= new StatoDAOImpl();
+        bollettinoDAO= new BollettinoDAOImpl();
+        bonificoInterDAO= new BonificoInterDAOImpl();
+        bonificoSepaDAO= new BonificoSepaDAOImpl();
+        depositoDAO= new DepositoDAOImpl();
+        prelievoDAO= new PrelievoDAOImpl();
+        tipologiaBollettinoDAO= new TipologiaBollettinoDAOImpl();
     }
 
     public static MagnusDAO getInstance() {
         return instance;
     }
 
-    public UtenteDAO getUtenteDAO() {
-        return utenteDAO;
-    }
-
-    public CartaIdentitaDAO getCartaIdentitaDAO() {
-        return cartaIdentitaDAO;
-    }
-
-    public PassaportoDAO getPassaportoDAO() {
-        return passaportoDAO;
-    }
-
-    public PatenteDAO getPatenteDAO() {
-        return patenteDAO;
-    }
-
-    public DatiComuneDAO getDatiComuneDAO() {
-        return datiComuneDAO;
-    }
-
-    public IndirizzoDAO getIndirizzoDAO() {
-        return indirizzoDAO;
-    }
-
-    public TipoViaDAO getTipoViaDAO() {
-        return tipoViaDAO;
-    }
-
-    public ContoCorrenteDAO getContoCorrenteDAO() {
-        return contoCorrenteDAO;
-    }
-
-    public RelStatoContoDAO getRelStatoContoDAO() {
-        return relStatoContoDAO;
-    }
-
-    public StatoDAO getStatoDAO() {
-        return statoDAO;
-    }
+    public UtenteDAO getUtenteDAO() {return utenteDAO;}
+    public CartaIdentitaDAO getCartaIdentitaDAO() {return cartaIdentitaDAO;}
+    public PassaportoDAO getPassaportoDAO() {return passaportoDAO;}
+    public PatenteDAO getPatenteDAO() {return patenteDAO;}
+    public DatiComuneDAO getDatiComuneDAO() {return datiComuneDAO;}
+    public IndirizzoDAO getIndirizzoDAO() {return indirizzoDAO;}
+    public TipoViaDAO getTipoViaDAO() {return tipoViaDAO;}
+    public ContoCorrenteDAO getContoCorrenteDAO() {return contoCorrenteDAO;}
+    public RelStatoContoDAO getRelStatoContoDAO() {return relStatoContoDAO;}
+    public StatoDAO getStatoDAO() {return statoDAO;}
+    public BollettinoDAO getBollettinoDAO() {return bollettinoDAO;}
+    public BonificoInterDAO getBonificoInterDAO() {return bonificoInterDAO;}
+    public BonificoSepaDAO getBonificoSepaDAO() {return bonificoSepaDAO;}
+    public DepositoDAO getDepositoDAO() {return depositoDAO;}
+    public PrelievoDAO getPrelievoDAO() {return prelievoDAO;}
+    public TipologiaBollettinoDAO getTipologiaBollettinoDAO() {return tipologiaBollettinoDAO;}
 }

@@ -1,17 +1,23 @@
 package com.example.progettowebtest.DAO.Transazioni;
 
+import com.example.progettowebtest.Model.Proxy.Transazione;
 import com.example.progettowebtest.Model.Transazioni.Prelievo;
 
 import java.util.Vector;
 
 public class PrelievoDAOImpl implements PrelievoDAO {
     @Override
-    public Vector<Prelievo> doRetriveAll() {
+    public Vector<Transazione> doRetriveAll() {
         return null;
     }
 
     @Override
-    public Prelievo doRetriveByKey(int id) {
+    public Vector<Transazione> doRetriveAllForCC(String numCC) {
+        return null;
+    }
+
+    @Override
+    public Transazione doRetriveByKey(int id, boolean proxy) {
         return null;
     }
 
