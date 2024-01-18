@@ -66,6 +66,7 @@ public class BollettinoDAOImpl implements BollettinoDAO{
 
     @Override
     public boolean saveOrUpdate(Bollettino bol, String numCC) {
+
         String query="insert into bollettino(importo, causale, num_cc_destinazione, id_tipologia_bollettino)" +
                 "values(?, ?, ?, ?)";
 
@@ -79,6 +80,7 @@ public class BollettinoDAOImpl implements BollettinoDAO{
 
             if(statement.executeUpdate()>0 && inserisciRelazion(bol, numCC))
                 return true;
+
 
         }catch (SQLException e) {
             e.printStackTrace();
@@ -112,5 +114,6 @@ public class BollettinoDAOImpl implements BollettinoDAO{
             e.printStackTrace();
         }
         return false;
+
     }
 }
