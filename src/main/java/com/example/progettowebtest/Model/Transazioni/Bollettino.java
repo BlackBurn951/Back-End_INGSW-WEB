@@ -10,7 +10,7 @@ public class Bollettino extends DatiTransazione implements Transazione {
     private String numCcDest;
     private TipologiaBollettino tipoBol;
 
-    public Bollettino(String dataTransazione, double costoTransazione, String esito, int idBollettino,
+    public Bollettino(String dataTransazione, double costoTransazione, boolean esito, int idBollettino,
                       double importo, String causale, String numCcDest, TipologiaBollettino tipoBol) {
         super(dataTransazione, costoTransazione, esito);
         this.idBollettino = idBollettino;

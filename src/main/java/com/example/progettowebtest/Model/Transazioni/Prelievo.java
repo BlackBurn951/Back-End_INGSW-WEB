@@ -10,7 +10,7 @@ public class Prelievo extends DatiTransazione implements Transazione {
     private Mezzo mezzo;
     private Carta cartaEsecuzione;
 
-    public Prelievo(String dataTransazione, double costoTransazione, String esito, int idPrelievo,
+    public Prelievo(String dataTransazione, double costoTransazione, boolean esito, int idPrelievo,
                     double importo, String causale, Mezzo mezzo, Carta cartaEsecuzione) {
         super(dataTransazione, costoTransazione, esito);
         this.idPrelievo = idPrelievo;

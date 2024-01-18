@@ -11,7 +11,7 @@ public class BonificoSepaDAOImpl implements BonificoSepaDAO {
     }
 
     @Override
-    public BonificoSepa doRetriveByKey(int id) {
+    public BonificoSepa doRetriveByKey(int id, boolean proxy) {
         return null;
     }
 

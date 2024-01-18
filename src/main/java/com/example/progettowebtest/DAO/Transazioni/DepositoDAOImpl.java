@@ -11,7 +11,7 @@ public class DepositoDAOImpl implements DepositoDAO{
     }
 
     @Override
-    public Deposito doRetriveByKey(int id) {
+    public Deposito doRetriveByKey(int id, boolean proxy) {
         return null;
     }
 

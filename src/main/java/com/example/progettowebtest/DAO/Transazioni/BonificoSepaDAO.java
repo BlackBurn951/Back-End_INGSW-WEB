@@ -7,7 +7,7 @@ import java.util.Vector;
 
 public interface BonificoSepaDAO {
     Vector<BonificoSepa> doRetriveAll();
-    BonificoSepa doRetriveByKey(int id);
+    BonificoSepa doRetriveByKey(int id, boolean proxy);
     boolean saveOrUpdate(BonificoSepa bonSepa);
     boolean delete(BonificoSepa bonSepa);
 }

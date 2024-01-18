@@ -70,6 +70,38 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO{
     }
 
     @Override
+    public ContoCorrente doRetriveByAttribute(String attributo) {
+        ContoCorrente result= null;
+        Utente intestatario= null;
+        Indirizzo indFatturazione= null;
+        Stato state= null;
+
+        String query= "select * from conto_corrente where cf= ?";
+
+        try{
+            PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
+            statement.setString(1, attributo);
+
+            ResultSet queryResult= statement.executeQuery();
+
+            if(queryResult.next()) {
+                intestatario= MagnusDAO.getInstance().getUtenteDAO().doRetriveByKey(queryResult.getString("cf"), IdentificativiUtente.CF);
+                indFatturazione= MagnusDAO.getInstance().getIndirizzoDAO().doRetriveByKey(queryResult.getString("nome_via_fatturazione"), queryResult.getString("num_civico_fatturazione"),
+                        queryResult.getInt("id_comune_fatturazione"), queryResult.getInt("id_via_fatturazione"));
+                state= MagnusDAO.getInstance().getRelStatoContoDAO().doRetriveActualState(queryResult.getString("num_cc"));
+                result= new ContoCorrente(queryResult.getString("num_cc"), queryResult.getString("iban"), queryResult.getString("pin_sicurezza"), queryResult.getDate("data_apertura").toString(),
+                        queryResult.getDouble("saldo"), queryResult.getInt("tasso_interesse"), queryResult.getInt("tariffa_annuale"), indFatturazione, intestatario);
+                result.setStatoConto(state);
+                //aggiunta dei proxy
+            }
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
     public boolean saveOrUpdate(ContoCorrente contoCorr, boolean fristTime) {
         boolean result= false;
         String query= "INSERT INTO conto_corrente (num_cc, iban, pin_sicurezza, data_apertura, saldo, tasso_interesse, tariffa_annuale, nome_via_fatturazione, " +
@@ -149,17 +181,18 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO{
         return false;
     }
 
+
+    //Metodi di servizio
     private String generateAlpha(int pos) {
         String[] alfa= {"A","B","C","D","E","F","G","H","I","L","M","N","O","P","Q","R","S","T","U","V","Z"};
         return alfa[pos];
     }
 
-
-    //Metodi di servizio
     private String generatealphaNum(Random rng) {
         String st= "";
-        int numOrAlpha= rng.nextInt(10);
+        int numOrAlpha;
         while(st.length()<12) {
+            numOrAlpha= rng.nextInt(10);
             if (numOrAlpha>=0 && numOrAlpha<4)
                 st+=String.valueOf(rng.nextInt(10));
             else
