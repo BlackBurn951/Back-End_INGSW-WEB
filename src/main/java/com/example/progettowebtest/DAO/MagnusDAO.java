@@ -43,7 +43,7 @@ public class MagnusDAO {
         relStatoContoDAO= new RelStatoContoDAOImpl();
         statoDAO= new StatoDAOImpl();
         bollettinoDAO= new BollettinoDAOImpl();
-        bonificoInterDAO= new BonificoInterDAOImpl();
+        //bonificoInterDAO= new BonificoInterDAOImpl();
         bonificoSepaDAO= new BonificoSepaDAOImpl();
         depositoDAO= new DepositoDAOImpl();
         prelievoDAO= new PrelievoDAOImpl();
