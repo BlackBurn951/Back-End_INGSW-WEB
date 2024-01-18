@@ -1,17 +1,23 @@
 package com.example.progettowebtest.DAO.Transazioni;
 
+import com.example.progettowebtest.Model.Proxy.Transazione;
 import com.example.progettowebtest.Model.Transazioni.BonificoInter;
 
 import java.util.Vector;
 
 public class BonificoInterDAOImpl implements BonificoInterDAO{
     @Override
-    public Vector<BonificoInter> doRetriveAll() {
+    public Vector<Transazione> doRetriveAll() {
         return null;
     }
 
     @Override
-    public BonificoInter doRetriveByKey(int id, boolean proxy) {
+    public Vector<Transazione> doRetriveAllForCC(String numCC) {
+        return null;
+    }
+
+    @Override
+    public Transazione doRetriveByKey(int id, boolean proxy) {
         return null;
     }
 

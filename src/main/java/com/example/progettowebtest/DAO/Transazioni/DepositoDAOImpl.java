@@ -1,17 +1,18 @@
 package com.example.progettowebtest.DAO.Transazioni;
 
+import com.example.progettowebtest.Model.Proxy.Transazione;
 import com.example.progettowebtest.Model.Transazioni.Deposito;
 
 import java.util.Vector;
 
 public class DepositoDAOImpl implements DepositoDAO{
     @Override
-    public Vector<Deposito> doRetriveAll() {
+    public Vector<Transazione> doRetriveAll() {
         return null;
     }
 
     @Override
-    public Deposito doRetriveByKey(int id, boolean proxy) {
+    public Transazione doRetriveByKey(int id, boolean proxy) {
         return null;
     }
 

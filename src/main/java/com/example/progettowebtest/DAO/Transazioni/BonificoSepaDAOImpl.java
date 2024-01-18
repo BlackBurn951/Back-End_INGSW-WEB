@@ -1,17 +1,18 @@
 package com.example.progettowebtest.DAO.Transazioni;
 
+import com.example.progettowebtest.Model.Proxy.Transazione;
 import com.example.progettowebtest.Model.Transazioni.BonificoSepa;
 
 import java.util.Vector;
 
 public class BonificoSepaDAOImpl implements BonificoSepaDAO {
     @Override
-    public Vector<BonificoSepa> doRetriveAll() {
+    public Vector<Transazione> doRetriveAll() {
         return null;
     }
 
     @Override
-    public BonificoSepa doRetriveByKey(int id, boolean proxy) {
+    public Transazione doRetriveByKey(int id, boolean proxy) {
         return null;
     }
 

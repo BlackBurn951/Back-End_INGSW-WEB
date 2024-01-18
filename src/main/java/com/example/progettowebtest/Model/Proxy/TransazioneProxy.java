@@ -16,9 +16,9 @@ public class TransazioneProxy implements Transazione {
     private TipoTransazione tipo;
 
 
-    public TransazioneProxy(int id, Date dataTransazione, double importo, String causale, TipoTransazione tipo) {
+    public TransazioneProxy(int id, String dataTransazione, double importo, String causale, TipoTransazione tipo) {
         this.id = id;
-        this.dataTransazione = dataTransazione;
+        this.dataTransazione = Date.valueOf(dataTransazione);
         this.importo = importo;
         this.causale = causale;
         this.tipo= tipo;
@@ -46,7 +46,7 @@ public class TransazioneProxy implements Transazione {
     }
 
     @Override
-    public String getEsito() {
+    public boolean getEsito() {
         if (transazioneReale==null)
             instanzaTransazione();
         return transazioneReale.getEsito();
