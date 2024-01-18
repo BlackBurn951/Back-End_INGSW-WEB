@@ -1,0 +1,153 @@
+h1, h3, h2{
+    text-align: center;
+}
+
+h2{
+    margin-top: 7vh;
+}
+
+.editable {
+    border: 1px solid #007BFF;
+}
+
+.edit-icon {
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+label{
+    margin-top: 3vh;
+}
+
+body {
+    background-color: #3498db;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.containerPrincipale {
+    max-width: 60%;
+    margin: auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+
+
+.titolo {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.formDati {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.colonnaUna,
+.colonnaDue {
+    flex: 1;
+    padding: 0 10px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.formDati .form-control {
+    margin-left: 50%;
+    transform: translateX(-50%); /* Centra l'input rispetto al 50% */
+}
+
+header{
+    margin-top: 5vh;
+
+}
+
+#buttonGoBack {
+    margin-left: 6vh;
+    padding: 20px 35px;
+    background-color: lightslategrey;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+
+
+#buttonGoBack:hover{
+    background-color: #153f5d;
+
+}
+
+
+.form-control {
+    align-content: center;
+    width: 80%;
+    padding: 8px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f9fa; /* Light Gray */
+}
+
+
+.bottoni {
+    display: flex;
+    justify-content: space-between;
+    gap: 10vh;
+    margin-top: 10vh;
+}
+
+button {
+    font-size: 15px;
+    padding: 20px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #3498db;
+    color: #fff;
+}
+
+button[type="button"] {
+    background-color: #3498db;
+    color: #fff;
+}
+
+
+
+label, input{
+    text-align: center;
+}
+
+button[type="button"]:last-child {
+    background-color: #dc3545;
+}
+
+button[type="button"]:last-child:hover {
+    background-color: #c82333;
+}
+
+.bottoni button[type="button"]:nth-child(3) {
+    background-color: #dc3545;
+}
+
+.bottoni button[type="button"]:nth-child(3):hover {
+    background-color: #c82333;
+}
+
