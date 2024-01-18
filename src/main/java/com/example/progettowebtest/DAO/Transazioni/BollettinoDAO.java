@@ -1,13 +1,15 @@
 package com.example.progettowebtest.DAO.Transazioni;
 
 
+import com.example.progettowebtest.Model.Proxy.Transazione;
 import com.example.progettowebtest.Model.Transazioni.Bollettino;
 
 import java.util.Vector;
 
-public interface BollettinoDAO {
-    Vector<Bollettino> doRetriveAll();
-    Bollettino doRetriveByKey(int id, boolean proxy);
+public interface BollettinoDAO{
+    Vector<Transazione> doRetriveAll();
+    Vector<Transazione> doRetriveAllForCC(String numCC);
+    Transazione doRetriveByKey(int id, boolean proxy);
     boolean saveOrUpdate(Bollettino bol, String numCC);
     boolean delete(Bollettino bol);
 }

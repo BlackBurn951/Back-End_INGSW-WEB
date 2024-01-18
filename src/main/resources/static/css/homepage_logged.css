@@ -1,26 +1,15 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #ff0000;
-    display: flex;
-}
-
 header {
     background-color: #3498db;
     color: #fff;
-    padding: 10px;
     text-align: center;
-    width: 100%;
     display: flex;
     justify-content: center;
 }
 
 nav {
     background-color: whitesmoke;
-    color: #fff;
     padding: 20px;
-    width: 65px;
+    width: 50px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column-reverse;
@@ -33,7 +22,7 @@ nav {
 }
 
 nav:hover {
-    width: 220px;
+    width: 130px;
     .arrow{
         transform: scaleX(-1);
     }
@@ -44,11 +33,11 @@ nav:hover {
     }
 }
 
-
 .picture{
     width: 30px;
     height: 420px;
 }
+
 .arrow{
     max-width: 135%;
     max-height: 100%;
@@ -56,51 +45,15 @@ nav:hover {
 .imageButton{
     max-width: 50%;
 }
-.logo{
-    max-width: 80%;
+
+.logo {
+    width: 90px; /* Imposta la larghezza desiderata */
+    height: auto; /* Imposta l'altezza automaticamente in base all'aspetto originale */
     margin-left: -40px;
 }
 
-
-nav:hover {
-    .imageButton{
-        right: 50px;
-    }
-}
-
-.sectionConto{
-    padding: 30px;
-    background-color: lightblue;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    flex-grow: 0;
-    margin: 50px 500px 50px 500px;
-    width: 800px;
-}
-
-.sectionTransazioni{
-    padding: 30px;
-    background-color: lightblue;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    flex-grow: 0;
-    margin: 50px 500px 50px 500px;
-    width: 800px;
-}
-
-#titleTransactions{
-    background-color: black;
-}
-
-.status{
-    display: flex;
-}
-
 h2 {
-    color: #333;
-}
-
-.conto-info {
-    display: flex;
-    justify-content: space-between;
+    color: #000000;
 }
 
 ul {
@@ -112,25 +65,9 @@ li {
     margin-bottom: 10px;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Josefin Sans', sans-serif;
-}
-
-#bottone-notifiche{
-    padding: 2vh 5vh;
-    background-color: lightslategrey; /* Colore di sfondo */
-    color: #fff; /* Colore del testo */
-    border: none; /* Rimuovi il bordo */
-    border-radius: 5px; /* Bordo arrotondato */
-    cursor: pointer;
-    font-size: 16px;
-}
-
-#bottone-notifiche:hover{
-    background-color: #0b4d74;
+body{
+    margin: auto;
+    font-family: Arial, sans-serif;
 }
 
 .notifiche-esci{
@@ -144,17 +81,12 @@ li {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 80vh;
-}
-
-.notification-text {
-    display: inline-block;
+    gap: 120vh;
 }
 
 .titolo{
     font-size: 4vh;
 }
-
 
 .logout{
     text-decoration: none;
@@ -163,48 +95,34 @@ li {
     font-size: 3vh;
 }
 
+.containerDatiConto {
+    text-align: center;
+    background-color:  rgba(208, 208, 208, 0.9); /* Cambia il colore di sfondo se necessario */
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Aggiungi una leggera ombra se necessario */
+}
 
+.containerDatiTransazioni {
+    text-align: center;
+    background-color:  rgba(208, 208, 208, 0.9); /* Cambia il colore di sfondo se necessario */
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    gap:5vh;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Aggiungi una leggera ombra se necessario */
+}
 
-@media (max-width: 1800px) {
-    .sectionConto,
-    .sectionTransazioni {
-        width: 50%;
-        margin-left: 65vh;
-    }
-
-    .container2 {
-        flex-direction: row;
-        gap: 10px;
-    }
-
-    .notification-list {
-        max-height: 100px; /* Imposta l'altezza massima del container delle notifiche */
-    }
-
-    header {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .container2{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 30vh;
-    }
-
-    #titleTransactions {
-        flex-grow: 1; /* Fai espandere il titolo per occupare lo spazio rimanente */
-        margin-right: 20px; /* Aggiungi spazio a destra del titolo */
-    }
-
-    #bottone-notifiche,
-    .notifiche-esci {
-        padding: 18px 15px;
-        margin-left: 180px; /* Aggiungi spazio a sinistra del bottone notifiche e di esci */
-    }
-    nav:hover {
-        width: 170px;
-    }
+.informazioniConto{
+    background: url('/images/allec-gomes-gJ8VovObjRA-unsplash.jpg') center no-repeat;
+    background-size: cover;
+    align-items: center;
+    padding: 180px;
+    display: flex;
+    flex-direction: column;
+    gap:5vh;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Aggiungi una leggera ombra se necessario */
 }

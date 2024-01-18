@@ -11,7 +11,7 @@ public interface Transazione {
     double getImporto();
     String getCausale();
     double getCostoTransazione();
-    String getEsito();
+    boolean getEsito();
     String getNomeBeneficiario();
     public String getCognomeBeneficiario();
     int getId();
