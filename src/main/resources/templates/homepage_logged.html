@@ -1,156 +1,47 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link rel="stylesheet" href="/css/homepage_logged.css">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Conto Corrente Personale</title>
-    <style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Ottieni l'ID della sessione dall'URL
+            var urlParams = new URLSearchParams(window.location.search);
+            var idSession = urlParams.get("IDSession");
 
+            // Modifica l'href del link con l'ID della sessione
+            var linkElement = document.querySelector("#redirect");
+            var linkHref = linkElement.getAttribute("href");
+            linkElement.setAttribute("href", linkHref + '?IDSession='+idSession);
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Ottieni l'ID della sessione dall'URL
+            var urlParams = new URLSearchParams(window.location.search);
+            var idSession = urlParams.get("IDSession");
 
-        header {
-            background-color: #3498db;
-            color: #fff;
-            text-align: center;
-            display: flex;
-            justify-content: center;
-        }
+            // Modifica l'href del link con l'ID della sessione
+            var linkElement = document.querySelector("#redirect2");
+            var linkHref = linkElement.getAttribute("href");
+            linkElement.setAttribute("href", linkHref + '?IDSession='+idSession);
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Ottieni l'ID della sessione dall'URL
+            var urlParams = new URLSearchParams(window.location.search);
+            var idSession = urlParams.get("IDSession");
 
-        nav {
-            background-color: whitesmoke;
-            padding: 20px;
-            width: 50px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column-reverse;
-            align-items: flex-end;
-            position: fixed;
-            top: 0;
-            bottom: 0;
-            transition: width 0.3s;
-            overflow: hidden;
-        }
-
-
-        nav:hover {
-            width: 130px;
-            .arrow{
-                transform: scaleX(-1);
-            }
-            .imageButton{
-                align-items: center;
-                margin-left: 30px;
-                margin-bottom: 10px;
-            }
-        }
-
-
-        .picture{
-            width: 30px;
-            height: 420px;
-        }
-
-        .arrow{
-            max-width: 135%;
-            max-height: 100%;
-        }
-        .imageButton{
-            max-width: 50%;
-        }
-
-        .logo {
-            width: 90px; /* Imposta la larghezza desiderata */
-            height: auto; /* Imposta l'altezza automaticamente in base all'aspetto originale */
-            margin-left: -40px;
-        }
-
-
-        h2 {
-            color: #000000;
-        }
-
-
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        li {
-            margin-bottom: 10px;
-        }
-
-        body{
-            margin: auto;
-            font-family: Arial, sans-serif;
-        }
-
-
-
-        .notifiche-esci{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 15vh;
-        }
-
-
-        .container2{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 120vh;
-        }
-
-        .titolo{
-            font-size: 4vh;
-        }
-
-
-        .logout{
-            text-decoration: none;
-            font-weight: bold;
-            color: white;
-            font-size: 3vh;
-        }
-
-
-
-        .containerDatiConto {
-            text-align: center;
-            background-color:  rgba(208, 208, 208, 0.9); /* Cambia il colore di sfondo se necessario */
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            width: 50%;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Aggiungi una leggera ombra se necessario */
-        }
-
-
-        .containerDatiTransazioni {
-            text-align: center;
-            background-color:  rgba(208, 208, 208, 0.9); /* Cambia il colore di sfondo se necessario */
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            width: 50%;
-            gap:5vh;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Aggiungi una leggera ombra se necessario */
-        }
-
-        .informazioniConto{
-            background: url('/images/allec-gomes-gJ8VovObjRA-unsplash.jpg') center no-repeat;
-            background-size: cover;
-            align-items: center;
-            padding: 180px;
-            display: flex;
-            flex-direction: column;
-            gap:5vh;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Aggiungi una leggera ombra se necessario */
-        }
-
-
-
-    </style>
+            // Modifica l'href del link con l'ID della sessione
+            var linkElement = document.querySelector("#redirect3");
+            var linkHref = linkElement.getAttribute("href");
+            linkElement.setAttribute("href", linkHref + '?IDSession='+idSession);
+        });
+    </script>
 </head>
 <header>
     <div class="containerLogo">
@@ -158,16 +49,16 @@
     <div class="container2">
         <h1 class="titolo">Conto Corrente Personale</h1>
         <div class="notifiche-esci">
-            <a href="#" class="logout">ESCI</a>
+            <a href="/redirect/tornaHomepage" class="logout">ESCI</a>
         </div>
     </div>
 </header>
 <body>
   <nav>
       <ul>
-          <li><a href="link1.html"><img class="imageButton" src="/images/userProfileImage.png" alt=""></a></li>
-          <li><a><img class="imageButton" src="/images/credit.png" alt=""></a></li>
-          <li><a><img class="imageButton" src="/images/payment.png" alt=""></a></li>
+          <li><a id="redirect" href="/personal_data"><img class="imageButton" src="/images/userProfileImage.png" alt=""></a></li>
+          <li><a id="redirect2" href="/redirect/vaiPaginaCarte"><img class="imageButton" src="/images/credit.png" alt=""></a></li>
+          <li><a id="redirect3" href="/redirect/vaiPaginaPagamenti"><img class="imageButton" src="/images/payment.png" alt=""></a></li>
       </ul>
       <div class="picture">
           <img class="arrow" src="/images/arrow-right.png" alt="">

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <link rel="stylesheet" href="/css/personal_data.css">
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Title</title>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Ottieni l'ID della sessione dall'URL
+      var urlParams = new URLSearchParams(window.location.search);
+      var idSession = urlParams.get("IDSession");
+
+      // Modifica l'href del link con l'ID della sessione
+      var linkElement = document.querySelector("#buttonGoBack");
+      var linkHref = linkElement.getAttribute("href");
+      linkElement.setAttribute("href", linkHref + '?IDSession='+idSession);
+    });
+  </script>
+</head>
+<body>
+<header>
+  <a id="buttonGoBack" href="/redirect/vaiLogged" >Indietro</a>
+</header>
+
+<div class="containerPrincipale">
+
+        <h1>DATI PROFILO</h1>
+
+          <form class="formDati">
+            <div class="colonnaUna">
+              <h2>Dati personali</h2>
+
+              <label for="inputFirstName">Nome</label>
+              <input class="form-control" id="inputFirstName" type="text" placeholder="" th:placeholder="${utente.getNome()}" readonly/>
+
+              <label for="inputLastName">Cognome</label>
+              <input class="form-control" id="inputLastName" type="text" th:placeholder="${utente.getCognome()}" readonly>
+
+              <label for="inputEmailAddress">Indirizzo email</label>
+              <input class="form-control" id="inputEmailAddress" type="email" th:placeholder="${utente.getEmail()}" readonly>
+
+              <label for="telefono">Numero di telefono</label>
+              <input class="form-control" id="telefono" type="text" th:placeholder="${utente.getNumTelefono()}" readonly>
+
+              <label for="cf">Codice fiscale</label>
+              <input class="form-control" id="cf" type="text" th:placeholder="${utente.getCodiceFiscale()}" readonly>
+
+              <label for="comuneNascita">Comune di nascita</label>
+              <input class="form-control" id="comuneNascita" type="text" th:placeholder="${utente.getComuneNascita()}" readonly>
+
+              <label for="dataNascita">Data di nascita</label>
+              <input class="form-control" id="dataNascita" type="text" name="birthday" th:placeholder="${utente.getDataNascita()}" readonly>
+
+              <label for="provinciaDiNascita">Provincia di nascita</label>
+              <input class="form-control" id="provinciaDiNascita" type="text" th:placeholder="${utente.getProvNascita()}" readonly>
+
+              <label for="sesso">Sesso</label>
+              <input class="form-control" id="sesso" type="text" th:placeholder="${utente.getSesso()}" readonly>
+
+              <label for="cittadinanza">Cittadinanza</label>
+              <input class="form-control" id="cittadinanza" type="text" th:placeholder="${utente.getCittadinanza()}" readonly>
+
+
+              <h2>Indirizzo residenza</h2>
+
+              <label for="nomeStrada">Nome strada</label>
+              <input class="form-control" id="nomeStrada" type="text" th:placeholder="${utente.getResidenza().getTipologiaVia().getTipoVia()+' '+utente.getResidenza().getNomeVia+' '+utente.getResidenza().getNumCivico()}" readonly>
+
+              <label for="comune">Comune</label>
+              <input class="form-control" id="comune" type="text" th:placeholder="${utente.getResidenza().getComune().getNomeComune()+' '+utente.getResidenza().getComune().getCap()}" readonly>
+
+              <label for="provincia">Provincia</label>
+              <input class="form-control" id="provincia" type="text" th:placeholder="${utente.getResidenza().getComune().getProvincia()+' '+utente.getResidenza().getComune().getRegione()}" readonly>
+
+            </div>
+            <div class="colonnaDue">
+
+              <h2>Dati conto</h2>
+
+              <label for="numConto">Numero conto</label>
+              <input class="form-control" id="numConto" type="text" th:placeholder="${conto.getNumCC()}" readonly>
+
+              <label for="Iban">IBAN</label>
+              <input class="form-control" id="Iban" type="text" th:placeholder="${conto.getIban()}" readonly>
+
+              <label for="dataApertura">Data apertura</label>
+              <input class="form-control" id="dataApertura" type="text" th:placeholder="${conto.getDataApertura()}" readonly>
+
+              <label for="tassoInt">Tasso interesse</label>
+              <input class="form-control" id="tassoInt" type="text" th:placeholder="${conto.getTassoInteresse()+'%'}" readonly>
+
+              <label for="tarAnn">Tariffa annuale</label>
+              <input class="form-control" id="tarAnn" type="text" th:placeholder="${conto.getTariffaAnnuale()+'€'}" readonly>
+
+              <label for="occup">Occupazione</label>
+              <input class="form-control editable" id="occup" type="text" th:placeholder="${utente.getOccupazione()}" readonly>
+
+              <label for="reddAnn">Reddito annuo</label>
+              <input class="form-control editable" id="reddAnn" type="text" th:placeholder="${utente.getRedditoAnnuo()+'€'}" readonly>
+
+              <h2>Indirizzo fatturazione</h2>
+
+              <label for="nomeStradaFat">Nome strada</label>
+              <input class="form-control" id="nomeStradaFat" type="text" th:placeholder="${conto.getIndFatturazione().getTipologiaVia().getTipoVia()+' '+conto.getIndFatturazione().getNomeVia+' '+conto.getIndFatturazione().getNumCivico()}" readonly>
+
+              <label for="comuneFat">Comune</label>
+              <input class="form-control" id="comuneFat" type="text" th:placeholder="${conto.getIndFatturazione().getComune().getNomeComune()+' '+conto.getIndFatturazione().getComune().getCap()}"  readonly>
+
+              <label for="provinciaFat">Provincia</label>
+              <input class="form-control" id="provinciaFat" type="text" th:placeholder="${conto.getIndFatturazione().getComune().getProvincia()+' '+conto.getIndFatturazione().getComune().getRegione()}" readonly>
+
+
+            </div>
+          </form>
+          <div class="bottoni">
+            <button type="button">Modifica email</button>
+            <button type="button">Modifica password</button>
+            <button type="button">Sospendi conto</button>
+            <button type="button">Chiudi conto</button>
+
+          </div>
+  </div>
+</body>
+</html>
