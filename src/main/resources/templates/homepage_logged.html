@@ -5,29 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Conto Corrente Personale</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #ffffff;
-            display: flex;
-        }
+
 
         header {
             background-color: #3498db;
             color: #fff;
-            padding: 10px;
             text-align: center;
-            width: 100%;
             display: flex;
             justify-content: center;
         }
 
         nav {
             background-color: whitesmoke;
-            color: #fff;
             padding: 20px;
-            width: 65px;
+            width: 50px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column-reverse;
@@ -39,8 +30,9 @@
             overflow: hidden;
         }
 
+
         nav:hover {
-            width: 220px;
+            width: 130px;
             .arrow{
                 transform: scaleX(-1);
             }
@@ -56,6 +48,7 @@
             width: 30px;
             height: 420px;
         }
+
         .arrow{
             max-width: 135%;
             max-height: 100%;
@@ -63,52 +56,19 @@
         .imageButton{
             max-width: 50%;
         }
-        .logo{
-            max-width: 80%;
+
+        .logo {
+            width: 90px; /* Imposta la larghezza desiderata */
+            height: auto; /* Imposta l'altezza automaticamente in base all'aspetto originale */
             margin-left: -40px;
         }
 
 
-        nav:hover {
-            .imageButton{
-                right: 50px;
-            }
-        }
-
-        .sectionConto{
-            padding: 30px;
-            background-color: lightblue;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            flex-grow: 0;
-            margin: 50px 500px 50px 500px;
-            width: 800px;
-        }
-
-        .sectionTransazioni{
-            padding: 30px;
-            background-color: lightblue;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            flex-grow: 0;
-            margin: 50px 500px 50px 500px;
-            width: 800px;
-        }
-
-        #titleTransactions{
-            background-color: black;
-        }
-
-        .status{
-            display: flex;
-        }
-
         h2 {
-            color: #333;
+            color: #000000;
         }
 
-        .conto-info {
-            display: flex;
-            justify-content: space-between;
-        }
+
 
         ul {
             list-style-type: none;
@@ -119,11 +79,9 @@
             margin-bottom: 10px;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Josefin Sans', sans-serif;
+        body{
+            margin: auto;
+            font-family: Arial, sans-serif;
         }
 
 
@@ -135,11 +93,12 @@
             gap: 15vh;
         }
 
+
         .container2{
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 80vh;
+            gap: 120vh;
         }
 
         .titolo{
@@ -156,61 +115,57 @@
 
 
 
-        @media (max-width: 1800px) {
-            .sectionConto,
-            .sectionTransazioni {
-                width: 50%;
-                margin-left: 65vh;
-            }
-
-            .container2 {
-                flex-direction: row;
-                gap: 10px;
-            }
-
-            .notification-list {
-                max-height: 100px; /* Imposta l'altezza massima del container delle notifiche */
-            }
-
-            header {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-
-            .container2{
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                gap: 30vh;
-            }
-
-            .notifiche-esci {
-                padding: 18px 15px;
-                margin-left: 180px; /* Aggiungi spazio a sinistra del bottone notifiche e di esci */
-            }
-            nav:hover {
-                width: 170px;
-            }
+        .containerDatiConto {
+            text-align: center;
+            background-color:  rgba(208, 208, 208, 0.9); /* Cambia il colore di sfondo se necessario */
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            width: 50%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Aggiungi una leggera ombra se necessario */
         }
+
+
+        .containerDatiTransazioni {
+            text-align: center;
+            background-color:  rgba(208, 208, 208, 0.9); /* Cambia il colore di sfondo se necessario */
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            width: 50%;
+            gap:5vh;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Aggiungi una leggera ombra se necessario */
+        }
+
+        .informazioniConto{
+            background: url('/images/allec-gomes-gJ8VovObjRA-unsplash.jpg') center no-repeat;
+            background-size: cover;
+            align-items: center;
+            padding: 180px;
+            display: flex;
+            flex-direction: column;
+            gap:5vh;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Aggiungi una leggera ombra se necessario */
+        }
+
+
 
     </style>
 </head>
-<body>
-
 <header>
     <div class="containerLogo">
-        <img class="logo" src="/images/logoCM.ico" alt=""></div>
+        <img class="logo" src="/images/logoBanca.png" alt=""></div>
     <div class="container2">
         <h1 class="titolo">Conto Corrente Personale</h1>
         <div class="notifiche-esci">
-              <a href="#" class="logout">ESCI</a>
+            <a href="#" class="logout">ESCI</a>
         </div>
-      </div>
+    </div>
 </header>
+<body>
   <nav>
       <ul>
-          <li><a><img class="imageButton" src="/images/userProfileImage.png" alt=""></a></li>
+          <li><a href="link1.html"><img class="imageButton" src="/images/userProfileImage.png" alt=""></a></li>
           <li><a><img class="imageButton" src="/images/credit.png" alt=""></a></li>
           <li><a><img class="imageButton" src="/images/payment.png" alt=""></a></li>
       </ul>
@@ -218,28 +173,22 @@
           <img class="arrow" src="/images/arrow-right.png" alt="">
       </div>
   </nav>
-
-  <section class="sectionConto">
-      <h2>Informazioni sul Conto</h2>
-      <div class="conto-info">
-          <div class="conto-dati">
-              <p>Numero Conto: XXXX-XXXX-XXXX-XXXX</p>
-              <p>Saldo: € 1,000.00</p>
-              <div class="status">
-                  <p>Stato:</p>
-                  <p class="typeStatus"> </p>
-              </div>
-          </div>
-      </div>
-  </section>
-  <section class="sectionTransazioni">
-      <div id="transactions">
-          <h2 id="titleTransaction">Ultime Transazioni</h2>
-          <ul>
-              <li>Spesa - € 50.00</li>
-              <li>Deposito - € 200.00</li>
-        </ul>
+  <div class="informazioniConto">
+    <div class="containerDatiConto">
+        <h1>Benvenuto <span th:text="${utente.getNome()}"></span></h1>
+        <h3>Numero conto: <span th:text="${conto.getNumCC()}"></span></h3>
+        <h3>Saldo: <span th:text="${conto.getSaldo()}"></span></h3>
+        <h3>Stato: <span th:text="${conto.getStatoConto().getValoreStato()}"></span></h3>
     </div>
-</section>
+    <div class="containerDatiTransazioni">
+      <h2>Ultime transazioni</h2>
+        <ul>
+            <li>Spesa - € 50.00</li>
+            <li>Deposito - € 200.00</li>
+            <!-- Aggiungi altre transazioni qui -->
+        </ul>
+</div>
+  </div>
 </body>
+
 </html>

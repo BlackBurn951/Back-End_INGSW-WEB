@@ -15,6 +15,7 @@ import com.example.progettowebtest.Model.Indirizzo.TipoVia;
 import com.example.progettowebtest.Model.Utente_Documenti.*;
 import com.google.api.services.gmail.model.Message;
 import jakarta.mail.MessagingException;
+import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.*;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.springframework.ui.Model;
@@ -52,6 +53,7 @@ public class RegistrazioneServlet extends HttpServlet {
             response.setHeader("Session-ID", session.getId());
             session.setMaxInactiveInterval(1800);
             request.getServletContext().setAttribute(session.getId(), session);
+
         }
         return result;
     }
@@ -62,7 +64,7 @@ public class RegistrazioneServlet extends HttpServlet {
 
         System.out.println("Id sessione inviato: "+ idSess);
         HttpSession session= (HttpSession) request.getServletContext().getAttribute(idSess);
-        //System.out.println("id sessione presa dal context: "+ session.getId());
+        System.out.println("id sessione presa dal context: "+ session.getId());
         long minutiAttuali= TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis());
 
         if(session!=null && ((minutiAttuali - (long) session.getAttribute("TempoInvioOTP")) <= 10)) {
