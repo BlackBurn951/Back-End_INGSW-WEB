@@ -12,6 +12,11 @@ public class DepositoDAOImpl implements DepositoDAO{
     }
 
     @Override
+    public Vector<Transazione> doRetriveAllForCC(String numCC) {
+        return null;
+    }
+
+    @Override
     public Transazione doRetriveByKey(int id, boolean proxy) {
         return null;
     }
