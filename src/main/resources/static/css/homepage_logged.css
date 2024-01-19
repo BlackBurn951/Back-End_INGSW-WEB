@@ -153,8 +153,8 @@ body{
 
 
 .scrollable-list {
-    max-height: 150px; /* Imposta l'altezza massima desiderata */
-    overflow-y: auto; /* Aggiunge la barra di scorrimento verticale se necessario */
+    max-height: 150px;
+    overflow-y: auto;
 }
 
 .additional-info {
@@ -176,7 +176,18 @@ body{
 
 
 
+.oggettoCliccabile {
+    font-size: 2vh;
+    cursor: pointer;
+    width: 50%;
+    border-radius: 10px;
+    margin: auto; /* Aggiunto per centrare l'elemento */
+}
 
+
+.oggettoCliccabile:hover{
+    background-color: white;
+}
 
 
 

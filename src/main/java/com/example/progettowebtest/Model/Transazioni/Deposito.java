@@ -55,4 +55,8 @@ public class Deposito extends DatiTransazione implements Transazione {
 
     @Override
     public String getPaeseDestinatario() {return "ERRORE";}
+    @Override
+    public void setId(int id) {
+        this.idDeposito = id;
+    }
 }

@@ -44,7 +44,28 @@ public class DepositoDAOImpl implements DepositoDAO{
     }
 
     @Override
+    public int retriveLastId(){
+        String query= "select max(id_deposito) as id from deposito";
+        int max;
+
+        try{
+            PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
+            ResultSet queryResult= statement.executeQuery();
+
+            if(queryResult.next()) {
+                max = queryResult.getInt("id");
+                return max;
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    @Override
     public Transazione doRetriveByKey(int id, boolean proxy) {
+        Transazione dep = null;
         String query;
         if(proxy)
             query= "select * from deposito as b, rel_cc_deposito as r where b.id_deposito= r.id_deposito";
@@ -61,9 +82,12 @@ public class DepositoDAOImpl implements DepositoDAO{
                     carta= MagnusDAO.getInstance().getCarteDAO().doRetriveByKey(queryResult.getString("num_carta_credito"), TipiCarte.CREDITO, proxy);
                 else
                     carta= MagnusDAO.getInstance().getCarteDAO().doRetriveByKey(queryResult.getString("num_carta_debito"), TipiCarte.DEBITO, proxy);
-                return new Deposito(queryResult.getDate("data_transazione").toString(), queryResult.getDouble("costo_commissione"),
-                        queryResult.getBoolean("esito"), queryResult.getInt("id_deposito"), queryResult.getDouble("importo"),
+
+                dep = new Deposito(queryResult.getDate("data_transazione").toString(), queryResult.getDouble("costo_commissione"),
+                        queryResult.getBoolean("esito"), queryResult.getDouble("importo"),
                         MagnusDAO.getInstance().getMezzoDAO().doRetriveByKey(queryResult.getInt("id_mezzo")), carta);
+
+                dep.setId(id);
             }
             else if(queryResult.next())
                 return new TransazioneProxy(queryResult.getInt("id_deposito"), queryResult.getDate("data_transazione").toString(), queryResult.getDouble("importo"),
@@ -72,7 +96,7 @@ public class DepositoDAOImpl implements DepositoDAO{
         }catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return dep;
     }
 
     @Override
@@ -93,8 +117,19 @@ public class DepositoDAOImpl implements DepositoDAO{
                 statement.setString(4, depo.getCartaEsecuzione().getNumCarta());
             }
 
-            if(statement.executeUpdate()>0 && inserisciRelazion(depo, numCC))
-                return true;
+            int i = statement.executeUpdate();
+            if(i >0){
+                int id= retriveLastId();
+                if(id!=0)
+                    depo.setId(id);
+                else
+                    return false;
+                if(inserisciRelazion(depo, numCC))
+                    return true;
+                else
+                    return false;
+
+            }
 
         }catch (SQLException e) {
             e.printStackTrace();

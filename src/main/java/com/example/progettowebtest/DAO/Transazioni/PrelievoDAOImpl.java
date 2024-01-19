@@ -41,9 +41,28 @@ public class PrelievoDAOImpl implements PrelievoDAO {
         }
         return result;
     }
+    @Override
+    public int retriveLastId(){
+        String query= "select max(id_prelievo) as id from prelievo";
+        int max;
+        try{
+            PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
+            ResultSet queryResult= statement.executeQuery();
+
+            if(queryResult.next()) {
+                max = queryResult.getInt("id_prelievo");
+                return  max;
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
 
     @Override
     public Transazione doRetriveByKey(int id, boolean proxy) {
+        Transazione prel = null;
         String query;
         if(proxy)
             query= "select * from prelievo as b, rel_cc_prelievo as r where b.id_prelievo= r.id_prelievo";
@@ -61,9 +80,11 @@ public class PrelievoDAOImpl implements PrelievoDAO {
                 else
                     carta= MagnusDAO.getInstance().getCarteDAO().doRetriveByKey(queryResult.getString("num_carta_debito"),TipiCarte.DEBITO, false);
 
-                return new Prelievo(queryResult.getDate("data_transazione").toString(), queryResult.getDouble("costo_commissione"),
-                        queryResult.getBoolean("esito"), queryResult.getInt("id_prelievo"), queryResult.getDouble("importo"),
+                prel = new Prelievo(queryResult.getDate("data_transazione").toString(), queryResult.getDouble("costo_commissione"),
+                        queryResult.getBoolean("esito"), queryResult.getDouble("importo"),
                         MagnusDAO.getInstance().getMezzoDAO().doRetriveByKey(queryResult.getInt("id_mezzo")), carta);
+
+                prel.setId(id);
             }
                 else if(queryResult.next())
                 return new TransazioneProxy(queryResult.getInt("id_prelievo"), queryResult.getDate("data_transazione").toString(), queryResult.getDouble("importo"),
@@ -72,7 +93,7 @@ public class PrelievoDAOImpl implements PrelievoDAO {
         }catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return prel;
     }
 
     @Override
@@ -93,8 +114,19 @@ public class PrelievoDAOImpl implements PrelievoDAO {
                 statement.setString(4, prel.getCartaEsecuzione().getNumCarta());
             }
 
-            if(statement.executeUpdate()>0 && inserisciRelazione(prel, numCC))
-                return true;
+            int i = statement.executeUpdate();
+            if(i >0){
+                int id= retriveLastId();
+                if(id!=0)
+                    prel.setId(id);
+                else
+                    return false;
+                if(inserisciRelazione(prel, numCC))
+                    return true;
+                else
+                    return false;
+
+            }
 
         }catch (SQLException e) {
             e.printStackTrace();
