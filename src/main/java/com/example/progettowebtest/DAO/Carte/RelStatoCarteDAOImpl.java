@@ -3,8 +3,10 @@ package com.example.progettowebtest.DAO.Carte;
 import com.example.progettowebtest.Connection.DbConn;
 import com.example.progettowebtest.DAO.MagnusDAO;
 import com.example.progettowebtest.Model.Carte.RelStatoCarta;
+import com.example.progettowebtest.Model.Carte.TipiCarte;
 import com.example.progettowebtest.Model.ContoCorrente.RelStatoConto;
 import com.example.progettowebtest.Model.Stato;
+import com.example.progettowebtest.Model.Transazioni.TipologiaBollettino;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,12 +26,12 @@ public class RelStatoCarteDAOImpl implements RelStatoCarteDAO{
     }
 
     @Override
-    public Vector<RelStatoCarta> doRetriveByAttribute(String numCarta, boolean tipo) {
+    public Vector<RelStatoCarta> doRetriveByAttribute(String numCarta, TipiCarte tipo) {
         Vector<RelStatoCarta> result= new Vector<>();
         RelStatoCarta rel= null;
         String query= "";
 
-        if(tipo)
+        if(tipo==TipiCarte.CREDITO)
             query= "select * from rel_stato_carta_credito where num_carta= ?";
         else
             query= "select * from rel_stato_carta_debito where num_carta= ?";
@@ -52,11 +54,11 @@ public class RelStatoCarteDAOImpl implements RelStatoCarteDAO{
     }
 
     @Override
-    public Stato doRetriveActualState(String numCarta, boolean tipo) {
+    public Stato doRetriveActualState(String numCarta, TipiCarte tipo) {
         Stato result= null;
         String query= "";
 
-        if(tipo)
+        if(tipo==TipiCarte.CREDITO)
             query= "select * from rel_stato_carta_credito where num_carta= ? and data_fine_stato IS NULL";
         else
             query= "select * from rel_stato_carta_credito where num_carta= ? and data_fine_stato IS NULL";
@@ -77,9 +79,9 @@ public class RelStatoCarteDAOImpl implements RelStatoCarteDAO{
     }
 
     @Override
-    public boolean saveOrUpdate(RelStatoCarta rel, boolean tipo) {
+    public boolean saveOrUpdate(RelStatoCarta rel, TipiCarte tipo) {
         String query= "";
-        if(tipo)
+        if(tipo==TipiCarte.CREDITO)
             query = "INSERT INTO rel_stato_carta_credito (data_inizio_stato, data_fine_stato, num_carta, id_stato) " +
                 "VALUES (?, ?, ?, ?)";
         else
