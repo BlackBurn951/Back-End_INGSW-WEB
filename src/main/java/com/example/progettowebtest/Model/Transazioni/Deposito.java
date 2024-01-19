@@ -1,25 +1,25 @@
 package com.example.progettowebtest.Model.Transazioni;
 
 import com.example.progettowebtest.Model.Carte.Carta;
+import com.example.progettowebtest.Model.Carte.Carte;
 import com.example.progettowebtest.Model.Proxy.Transazione;
 
 public class Deposito extends DatiTransazione implements Transazione {
     private int idDeposito;
     private double importo;
     private Mezzo mezzo;
-    private Carta cartaEsecuzione;
+    private Carte cartaEsecuzione;
 
-    public Deposito(String dataTransazione, double costoTransazione, boolean esito, int idDeposito,
-                    double importo, Mezzo mezzo, Carta cartaEsecuzione) {
+    public Deposito(String dataTransazione, double costoTransazione, boolean esito,
+                    double importo, Mezzo mezzo, Carte cartaEsecuzione) {
         super(dataTransazione, costoTransazione, esito);
-        this.idDeposito = idDeposito;
         this.importo = importo;
         this.mezzo = mezzo;
         this.cartaEsecuzione = cartaEsecuzione;
     }
 
     public Mezzo getMezzo() {return mezzo;}
-    public Carta getCartaEsecuzione() {return cartaEsecuzione;}
+    public Carte getCartaEsecuzione() {return cartaEsecuzione;}
     public double getImporto() {return importo;}
 
 
@@ -54,4 +54,8 @@ public class Deposito extends DatiTransazione implements Transazione {
 
     @Override
     public String getPaeseDestinatario() {return "ERRORE";}
+    @Override
+    public void setId(int id) {
+        this.idDeposito = id;
+    }
 }

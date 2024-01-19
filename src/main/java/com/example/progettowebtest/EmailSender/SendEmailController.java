@@ -32,18 +32,15 @@ public class SendEmailController {
 
         try {
             HttpSession session;
-            System.out.println("PRIMA DELL'EMPTY ID SESSION PASSATO DAL FRONT QUANDO INVIO EMAIL NELLA REGISTRAZIONE: " + idSession);
 
             if(idSession.isEmpty()) {
                 session = request.getSession(true);
                 request.getServletContext().setAttribute(session.getId(), session);
                 response.setHeader("Session-ID", session.getId());
-                System.out.println("Response: " + response.getHeader("Session-ID"));
             }
             else
                 session= (HttpSession) request.getServletContext().getAttribute(idSession);
 
-            System.out.println("DOPO EMPTY ID SESSION PASSATO DAL FRONT QUANDO INVIO EMAIL NELLA REGISTRAZIONE: " + idSession);
 
             if(session==null) {
                 response.setHeader("Attivita", "Scaduta");
@@ -55,18 +52,27 @@ public class SendEmailController {
             String generatedOTP = generateOTP();
             session.setAttribute("control", generatedOTP);
             session.setAttribute("TempoInvioOTP", minuti);
+            String emailTemplate;
+            String htm_otp;
 
-            System.out.println("Response dopo creazione sessione: " + response.getHeader("Session-ID"));
+            emailTemplate = EmailTemplateLoader.loadEmailTemplate("/email_conf_carta_template.html");
+            htm_otp = emailTemplate
+                    .replace("$NOME_COGNOME$", nomeCognome)
+                    .replace("$PIN_CARTA$", generatedOTP)
+                    .replace("$NUMERO_CARTA$", generatedOTP)//DA AGGIUNGERE IL PIN CARTA
+                    .replace("$SCADENZA_CARTA$", generatedOTP)//DA AGGIUNGERE IL PIN CARTA
+                    .replace("$CVV_CARTA$", generatedOTP);//DA AGGIUNGERE IL PIN CARTA
 
-
-            String emailTemplate = EmailTemplateLoader.loadEmailTemplate("/email_otp_template.html");
-            String htm_otp = emailTemplate
+            emailTemplate = EmailTemplateLoader.loadEmailTemplate("/email_otp_template.html");
+            htm_otp = emailTemplate
                     .replace("$NOME_COGNOME$", nomeCognome)
                     .replace("$GENERATED_OTP$", generatedOTP);
+
+
+
             Message message = createMessage(emailData.getSender(), emailData.getTo(), emailData.getSubject(), htm_otp);
             sendMessage(getService(), emailData.getUserId(), message);
 
-            System.out.println("Response alla fine del metodo: " + response.getHeader("Session-ID"));
 
 
         } catch (IOException | GeneralSecurityException | MessagingException e) {

@@ -5,60 +5,50 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/images/logoBanca.ico" type="image/x-icon">
     <title>Conto Corrente Personale</title>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Ottieni l'ID della sessione dall'URL
-            var urlParams = new URLSearchParams(window.location.search);
-            var idSession = urlParams.get("IDSession");
+    
+    <script src="/javaScripts/funzioniHomepage.js"></script>
 
-            // Modifica l'href del link con l'ID della sessione
-            var linkElement = document.querySelector("#redirect");
-            var linkHref = linkElement.getAttribute("href");
-            linkElement.setAttribute("href", linkHref + '?IDSession='+idSession);
-        });
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Ottieni l'ID della sessione dall'URL
-            var urlParams = new URLSearchParams(window.location.search);
-            var idSession = urlParams.get("IDSession");
 
-            // Modifica l'href del link con l'ID della sessione
-            var linkElement = document.querySelector("#redirect2");
-            var linkHref = linkElement.getAttribute("href");
-            linkElement.setAttribute("href", linkHref + '?IDSession='+idSession);
-        });
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Ottieni l'ID della sessione dall'URL
-            var urlParams = new URLSearchParams(window.location.search);
-            var idSession = urlParams.get("IDSession");
-
-            // Modifica l'href del link con l'ID della sessione
-            var linkElement = document.querySelector("#redirect3");
-            var linkHref = linkElement.getAttribute("href");
-            linkElement.setAttribute("href", linkHref + '?IDSession='+idSession);
-        });
-    </script>
 </head>
 <header>
     <div class="containerLogo">
         <img class="logo" src="/images/logoBanca.png" alt=""></div>
-    <div class="container2">
-        <h1 class="titolo">Conto Corrente Personale</h1>
-        <div class="notifiche-esci">
-            <a href="/redirect/tornaHomepage" class="logout">ESCI</a>
+        <div class="container2">
+            <div class="notifiche-esci">
+            <h1 class="titolo">Conto Corrente Personale</h1>
+                <a href="/redirect/tornaHomepage" class="logout">
+                    <img class="esciImage" src="/images/iconaEsci.png" alt="">
+                </a>
+            </div>
         </div>
     </div>
+    <!--
+    <div class="centroNotifiche">
+        <div class="notificheIcona" onclick="toggleNotifiche()">
+            <img src="/images/notificheIcona.png" alt="Notifiche">
+            <span class="notificheCounter" th:text="${numeroNotificheNonLette}"></span>
+        </div>
+        <div class="notificheMenu" id="notificheMenu">
+            Notifiche verranno visualizzate qui
+            <span th:if="${notifiche.isEmpty()}">Nessuna notifica</span>
+            <ul th:if="${notifiche.size() > 0}">
+                <li th:each="notifica : ${notifiche}">
+                    <span th:text="${notifica.testo}"></span>
+                    <img src="/images/eliminaIcona.png" alt="Elimina" onclick="eliminaNotifica(${notifica.id})">
+                </li>
+            </ul>
+        </div>-->
+
+
 </header>
 <body>
   <nav>
       <ul>
-          <li><a id="redirect" href="/personal_data"><img class="imageButton" src="/images/userProfileImage.png" alt=""></a></li>
-          <li><a id="redirect2" href="/redirect/vaiPaginaCarte"><img class="imageButton" src="/images/credit.png" alt=""></a></li>
-          <li><a id="redirect3" href="/redirect/vaiPaginaPagamenti"><img class="imageButton" src="/images/payment.png" alt=""></a></li>
+          <li><a id="redirect" href="/personal_data"><img class="imageButton" src="/images/iconaProfilo.png" alt=""></a></li>
+          <li><a id="redirect2" href="/redirect/vaiPaginaCarte"><img class="imageButton" src="/images/iconaLeTueCarte.png" alt=""></a></li>
+          <li><a id="redirect3" href="/redirect/vaiPaginaPagamenti"><img class="imageButton" src="/images/iconaPagamenti.png" alt=""></a></li>
       </ul>
       <div class="picture">
           <img class="arrow" src="/images/arrow-right.png" alt="">
@@ -71,15 +61,50 @@
         <h3>Saldo: <span th:text="${conto.getSaldo()}"></span></h3>
         <h3>Stato: <span th:text="${conto.getStatoConto().getValoreStato()}"></span></h3>
     </div>
-    <div class="containerDatiTransazioni">
-      <h2>Ultime transazioni</h2>
-        <ul>
-            <li>Spesa - € 50.00</li>
-            <li>Deposito - € 200.00</li>
-            <!-- Aggiungi altre transazioni qui -->
-        </ul>
-</div>
+
+      <div class="containerDatiTransazioni">
+          <h2 id="titleTrans">Ultime transazioni</h2>
+
+          <table id="transazioniTable">
+              <thead>
+              <tr>
+                  <th>Data</th>
+                  <th>Importo</th>
+                  <th>Causale</th>
+              </tr>
+              </thead>
+              <tbody>
+                  <tr class="item" th:each="item, iterStat : ${conto.getMovimenti()}" onclick="mostraNascondiDettagli('trans')">
+                      <td th:text="${item.getDataTransazione()}"></td>
+                      <td th:text="${item.getImporto()}"></td>
+                      <td th:text="${item.getCausale()}"></td>
+
+                      <div id="popup" class="popup">
+                          <div id="trans" class="additional-info">
+                              <p th:text="${item.getCostoTransazione()}">Costo transazione:</p>
+                              <p th:if="${item.getEsito()}" th:text="Eseguita" style="color: green;"></p>
+                              <p th:unless="${item.getEsito()}" th:text="Rifiutata" style="color: red;"></p>
+                              <p th:if="${item.getTipoBol()} ne 'ERRORE' " th:text="${item.getTipoBol()}"></p>
+                              <p th:if="${item.getNomeBeneficiario()} ne 'ERRORE' " th:text="${item.getNomeBeneficiario()}"></p>
+                              <p th:if="${item.getCognomeBeneficiario()} ne 'ERRORE' " th:text="${item.getCognomeBeneficiario()}"></p>
+                              <p th:if="${item.getIbanDestinatario()} ne 'ERRORE' " th:text="${item.getIbanDestinatario()}"></p>
+                              <p th:if="${item.getValutaPagamento()} ne 'ERRORE' " th:text="${item.getValutaPagamento()}"></p>
+                              <p th:if="${item.getPaeseDestinatario()} ne 'ERRORE' " th:text="${item.getPaeseDestinatario()}"></p>
+                              <p th:if="${item.getNumCcDest()} ne 'ERRORE' " th:text="${item.getNumCcDest()}"></p>
+                          </div>
+
+                          <button onclick="mostraNascondiDettagli('trans')">Chiudi</button>
+
+                      </div>
+                  </tr>
+
+              </tbody>
+
+          </table>
+      </div>
+
   </div>
+
 </body>
 
 </html>

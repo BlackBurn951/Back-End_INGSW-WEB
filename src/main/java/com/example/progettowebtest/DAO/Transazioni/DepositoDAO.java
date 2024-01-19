@@ -8,7 +8,9 @@ import java.util.Vector;
 public interface DepositoDAO {
     Vector<Transazione> doRetriveAll();
     Vector<Transazione> doRetriveAllForCC(String numCC);
+    int retriveLastId();
+
     Transazione doRetriveByKey(int id, boolean proxy);
-    boolean saveOrUpdate(Deposito depo);
-    boolean delete(Deposito depo);
+    boolean saveOrUpdate(Deposito depo, String numCC);
+    boolean delete(Transazione depo);
 }

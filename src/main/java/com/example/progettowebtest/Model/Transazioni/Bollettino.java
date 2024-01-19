@@ -1,6 +1,7 @@
 package com.example.progettowebtest.Model.Transazioni;
 
 import com.example.progettowebtest.Model.Carte.Carta;
+import com.example.progettowebtest.Model.Carte.Carte;
 import com.example.progettowebtest.Model.Proxy.Transazione;
 
 public class Bollettino extends DatiTransazione implements Transazione {
@@ -10,10 +11,9 @@ public class Bollettino extends DatiTransazione implements Transazione {
     private String numCcDest;
     private TipologiaBollettino tipoBol;
 
-    public Bollettino(String dataTransazione, double costoTransazione, boolean esito, int idBollettino,
+    public Bollettino(String dataTransazione, double costoTransazione, boolean esito,
                       double importo, String causale, String numCcDest, TipologiaBollettino tipoBol) {
         super(dataTransazione, costoTransazione, esito);
-        this.idBollettino = idBollettino;
         this.importo = importo;
         this.causale = causale;
         this.numCcDest = numCcDest;
@@ -53,8 +53,12 @@ public class Bollettino extends DatiTransazione implements Transazione {
     }
 
     @Override
-    public Carta getCartaEsecuzione() {
-        Carta result= null;
+    public Carte getCartaEsecuzione() {
+        Carte result= null;
         return result;
+    }
+    @Override
+    public void setId(int id) {
+        this.idBollettino = id;
     }
 }

@@ -1,29 +1,31 @@
 package com.example.progettowebtest.Model.Transazioni;
 
-import com.example.progettowebtest.Model.Carte.Carta;
+import com.example.progettowebtest.Model.Carte.Carte;
 import com.example.progettowebtest.Model.Proxy.Transazione;
 
 public class Prelievo extends DatiTransazione implements Transazione {
     private int idPrelievo;
     private double importo;
-    private String causale;
     private Mezzo mezzo;
-    private Carta cartaEsecuzione;
+    private Carte cartaEsecuzione;
 
-    public Prelievo(String dataTransazione, double costoTransazione, boolean esito, int idPrelievo,
-                    double importo, String causale, Mezzo mezzo, Carta cartaEsecuzione) {
+    public Prelievo(String dataTransazione, double costoTransazione, boolean esito,
+                    double importo, Mezzo mezzo, Carte cartaEsecuzione) {
         super(dataTransazione, costoTransazione, esito);
-        this.idPrelievo = idPrelievo;
         this.importo = importo;
-        this.causale = causale;
         this.mezzo = mezzo;
         this.cartaEsecuzione = cartaEsecuzione;
     }
 
     public double getImporto() {return importo;}
     public Mezzo getMezzo() {return mezzo;}
-    public Carta getCartaEsecuzione() {return cartaEsecuzione;}
+    public Carte getCartaEsecuzione() {return cartaEsecuzione;}
 
+    @Override
+    public void setId(int id) {
+        this.idPrelievo = id;
+
+    }
 
     //Metodi implementati per il proxy
 
@@ -31,7 +33,7 @@ public class Prelievo extends DatiTransazione implements Transazione {
     public int getId() {return idPrelievo;}
 
     @Override
-    public String getCausale() {return causale;}
+    public String getCausale() {return "ERRORE";}
 
     @Override
     public String getNomeBeneficiario() {return "ERRORE";}
@@ -56,4 +58,6 @@ public class Prelievo extends DatiTransazione implements Transazione {
 
     @Override
     public String getPaeseDestinatario() {return "ERRORE";}
+
+
 }
