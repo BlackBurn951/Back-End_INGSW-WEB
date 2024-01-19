@@ -47,8 +47,8 @@ public class MagnusDAO {
         bollettinoDAO= new BollettinoDAOImpl();
         bonificoInterDAO= new BonificoInterDAOImpl();
         bonificoSepaDAO= new BonificoSepaDAOImpl();
-        depositoDAO= new DepositoDAOImpl();
-        prelievoDAO= new PrelievoDAOImpl();
+        //depositoDAO= new DepositoDAOImpl();
+        //prelievoDAO= new PrelievoDAOImpl();
         tipologiaBollettinoDAO= new TipologiaBollettinoDAOImpl();
         mezzoDAO= new MezzoDAOImpl();
         carteDAO= new CarteDAOImpl();

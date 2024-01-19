@@ -1,5 +1,5 @@
 package com.example.progettowebtest.DAO.Transazioni;
-
+/*
 import com.example.progettowebtest.Connection.DbConn;
 import com.example.progettowebtest.DAO.MagnusDAO;
 import com.example.progettowebtest.Model.Carte.Carta;
@@ -163,3 +163,4 @@ public class PrelievoDAOImpl implements PrelievoDAO {
         return false;
     }
 }
+*/
