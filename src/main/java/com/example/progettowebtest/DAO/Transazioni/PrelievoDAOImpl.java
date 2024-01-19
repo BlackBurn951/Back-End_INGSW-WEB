@@ -57,9 +57,9 @@ public class PrelievoDAOImpl implements PrelievoDAO {
             if(proxy && queryResult.next()) {
                 Carta carta;
                 if(queryResult.getString("num_carta_credito")==null)
-                    carta= MagnusDAO.getInstance().getCarteDAO().doRetriveByKey(queryResult.getString("num_carta_credito"), true);
+                    carta= MagnusDAO.getInstance().getCarteDAO().doRetriveByKey(queryResult.getString("num_carta_credito"), true, false);
                 else
-                    carta= MagnusDAO.getInstance().getCarteDAO().doRetriveByKey(queryResult.getString("num_carta_debito"),false);
+                    carta= MagnusDAO.getInstance().getCarteDAO().doRetriveByKey(queryResult.getString("num_carta_debito"),false, false);
 
                 return new Prelievo(queryResult.getDate("data_transazione").toString(), queryResult.getDouble("costo_commissione"),
                         queryResult.getBoolean("esito"), queryResult.getInt("id_prelievo"), queryResult.getDouble("importo"),
@@ -93,7 +93,7 @@ public class PrelievoDAOImpl implements PrelievoDAO {
                 statement.setString(4, prel.getCartaEsecuzione().getNumCarta());
             }
 
-            if(statement.executeUpdate()>0 && inserisciRelazion(prel, numCC))
+            if(statement.executeUpdate()>0 && inserisciRelazione(prel, numCC))
                 return true;
 
         }catch (SQLException e) {
@@ -125,7 +125,7 @@ public class PrelievoDAOImpl implements PrelievoDAO {
 
 
     //Metodi di servizio
-    private boolean inserisciRelazion(Prelievo prel, String numCC) {
+    private boolean inserisciRelazione(Prelievo prel, String numCC) {
         String query= "insert into rel_cc_prelievo(data_transazione, costo_commissione, esito, id_prelievo, num_cc) " +
                 "values (?, ?, ?, ?, ?)";
 
@@ -142,6 +142,22 @@ public class PrelievoDAOImpl implements PrelievoDAO {
                 return true;
 
         }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private boolean eliminaTransazione(Transazione prel) {
+        String prelievoQuery = "DELETE FROM prelievo WHERE id_prelievo = ?";
+
+        try {
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(prelievoQuery);
+            statement.setInt(1, prel.getId());
+
+            if (statement.executeUpdate() > 0)
+                return true;
+
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;

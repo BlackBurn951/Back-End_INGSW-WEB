@@ -131,21 +131,18 @@ public class UtenteDAOImpl implements UtenteDAO {
 
     @Override
     public boolean delete(Utente ut) {
-        boolean result = false;
 
         try {
             String query = "DELETE FROM utente WHERE cf= "+ut.getCodiceFiscale();
             PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
 
-            int tupleCancellate = statement.executeUpdate();
-
-            if (tupleCancellate > 0)
-                result = true;
+            if (statement.executeUpdate()>0)
+                return true;
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return result;
+        return false;
     }
 
 

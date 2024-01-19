@@ -3,6 +3,7 @@ package com.example.progettowebtest.DAO.Carte;
 import com.example.progettowebtest.Connection.DbConn;
 import com.example.progettowebtest.Model.Carte.Carta;
 import com.example.progettowebtest.Model.Carte.CartaCredito;
+import com.example.progettowebtest.Model.Carte.Carte;
 import com.example.progettowebtest.Model.Proxy.TipoTransazione;
 import com.example.progettowebtest.Model.Proxy.Transazione;
 import com.example.progettowebtest.Model.Proxy.TransazioneProxy;
@@ -14,13 +15,13 @@ import java.util.Vector;
 
 public class CarteDAOImpl implements CarteDAO{
     @Override
-    public Vector<Carta> doRetriveAll() {
+    public Vector<Carte> doRetriveAll() {
         return null;
     }
 
     @Override
-    public Vector<Carta> doRetriveAllForCC(String numCC) {
-        Vector<Carta> result= new Vector<>();
+    public Vector<Carte> doRetriveAllForCC(String numCC) {
+        Vector<Carte> result= new Vector<>();
 
         prendiCarteCredito(result, numCC);
         prendicarteDebito(result, numCC);
@@ -29,23 +30,24 @@ public class CarteDAOImpl implements CarteDAO{
     }
 
     @Override
-    public Carta doRetriveByKey(String numCarta, boolean tipo) {
+    public Carte doRetriveByKey(String numCarta, boolean tipo, boolean proxy) {
+
         return null;
     }
 
     @Override
-    public boolean saveOrUpdate(CartaCredito cartaCred) {
+    public boolean saveOrUpdate(Carte carta) {
         return false;
     }
 
     @Override
-    public boolean delete(CartaCredito cartaCred) {
+    public boolean delete(Carte carta) {
         return false;
     }
 
 
     //Metodi di servizio
-    private void prendiCarteCredito(Vector<Carta> result, String numCC) {
+    private void prendiCarteCredito(Vector<Carte9> result, String numCC) {
         String query= "select r.data_transizione, b.importo, b.causale from bollettino as b, rel_cc_bollettino as r where b.id_bollettino= r.id_bollettino";
 
         try{
@@ -63,7 +65,7 @@ public class CarteDAOImpl implements CarteDAO{
         return result;
     }
 
-    private void prendicarteDebito(Vector<Carta> result, String numCC) {
+    private void prendicarteDebito(Vector<Carte> result, String numCC) {
 
     }
 }
