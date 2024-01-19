@@ -101,9 +101,24 @@ public class DepositoDAOImpl implements DepositoDAO{
     }
 
     @Override
-    public boolean delete(Deposito depo) {
+    public boolean delete(Transazione dep) {
+        String query = "DELETE FROM rel_cc_deposito WHERE id_deposito = ?";
+
+        try {
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
+            statement.setInt(1, dep.getId());
+
+            if (statement.executeUpdate()>0 && eliminaTransazione(dep)) {
+                return true;
+            }
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return false;
     }
+
 
 
     //Metodi di servizio
@@ -124,6 +139,22 @@ public class DepositoDAOImpl implements DepositoDAO{
                 return true;
 
         }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private boolean eliminaTransazione(Transazione dep) {
+        String depositoQuery = "DELETE FROM deposito WHERE id_deposito= ?";
+
+        try {
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(depositoQuery);
+            statement.setInt(1, dep.getId());
+
+            if (statement.executeUpdate() > 0)
+                return true;
+
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
