@@ -47,7 +47,7 @@ public class CarteDAOImpl implements CarteDAO{
 
 
     //Metodi di servizio
-    private void prendiCarteCredito(Vector<Carte9> result, String numCC) {
+    private void prendiCarteCredito(Vector<Carte> result, String numCC) {
         String query= "select r.data_transizione, b.importo, b.causale from bollettino as b, rel_cc_bollettino as r where b.id_bollettino= r.id_bollettino";
 
         try{
