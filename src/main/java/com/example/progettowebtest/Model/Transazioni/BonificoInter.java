@@ -1,6 +1,7 @@
 package com.example.progettowebtest.Model.Transazioni;
 
 import com.example.progettowebtest.Model.Carte.Carta;
+import com.example.progettowebtest.Model.Carte.Carte;
 import com.example.progettowebtest.Model.Proxy.Transazione;
 
 public class BonificoInter extends DatiTransazione implements Transazione {
@@ -13,10 +14,9 @@ public class BonificoInter extends DatiTransazione implements Transazione {
     private String valutaPagamento;
     private String paeseDestinatario;
 
-    public BonificoInter(String dataTransazione, double costoTransazione, boolean esito, int idInter, String nomeBeneficiario,
+    public BonificoInter(String dataTransazione, double costoTransazione, boolean esito, String nomeBeneficiario,
                          String cognomeBeneficiario, double importo, String causale, String ibanDestinatario, String valutaPagamento, String paeseDestinatario) {
         super(dataTransazione, costoTransazione, esito);
-        this.idInter = idInter;
         this.nomeBeneficiario = nomeBeneficiario;
         this.cognomeBeneficiario = cognomeBeneficiario;
         this.importo = importo;
@@ -56,8 +56,12 @@ public class BonificoInter extends DatiTransazione implements Transazione {
     }
 
     @Override
-    public Carta getCartaEsecuzione() {
-        Carta result= null;
+    public Carte getCartaEsecuzione() {
+        Carte result= null;
         return result;
+    }
+    @Override
+    public void setId(int id) {
+        this.idInter = id;
     }
 }

@@ -40,30 +40,51 @@ public class BonificoSepaDAOImpl implements BonificoSepaDAO {
 
     @Override
     public Transazione doRetriveByKey(int id, boolean proxy) {
+        Transazione bonSep = null;
         String query;
         if(proxy)
             query= "select * from bonifico_area_sepa as b, rel_cc_bon_sepa as r where b.id_sepa= r.id_sepa";
         else
             query= "select r.data_transazione, b.importo, b.causale from bonifico_area_sepa as b, rel_cc_bon_sepa as r where b.id_sepa=r.id_sepa";
 
-        try{
-            PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
-            ResultSet queryResult= statement.executeQuery();
+        try {
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
+            ResultSet queryResult = statement.executeQuery();
 
-            if(proxy)
-                return new BonificoSepa(queryResult.getDate("data_transazione").toString(), queryResult.getDouble("costo_commissione"),
-                        queryResult.getBoolean("esito"), queryResult.getInt("id_sepa"), queryResult.getString("nome_beneficiario"), queryResult.getString("cognome_beneficiario"),
+            if (proxy && queryResult.next()){
+                bonSep = new BonificoSepa(queryResult.getDate("data_transazione").toString(), queryResult.getDouble("costo_commissione"),
+                        queryResult.getBoolean("esito"), queryResult.getString("nome_beneficiario"), queryResult.getString("cognome_beneficiario"),
                         queryResult.getDouble("importo"), queryResult.getString("causale"), queryResult.getString("iban_destinatario"));
+            bonSep.setId(id);
+            }
             else
-                return new TransazioneProxy(queryResult.getInt("id_internazionale"), queryResult.getDate("data_transazione").toString(), queryResult.getDouble("importo"),
+                return new TransazioneProxy(queryResult.getInt("id_sepa"), queryResult.getDate("data_transazione").toString(), queryResult.getDouble("importo"),
                         queryResult.getString("causale"), TipoTransazione.BONIFICOSEPA);
 
         }catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return bonSep;
     }
 
+    @Override
+    public int retriveLastId(){
+        String query= "select max(id_sepa) as id from bonifico_area_sepa";
+        int max;
+        try{
+            PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
+            ResultSet queryResult= statement.executeQuery();
+
+            if(queryResult.next()) {
+                max = queryResult.getInt("id");
+                return max;
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
     @Override
     public boolean saveOrUpdate(BonificoSepa bonSepa, String numCC) {
         String query="insert into bonifico_area_sepa(nome_beneficiario, cognome_beneficiario, importo, causale, iban_destinatario) values(?, ?, ?, ?, ?)";
@@ -77,8 +98,19 @@ public class BonificoSepaDAOImpl implements BonificoSepaDAO {
             statement.setString(4, bonSepa.getCausale());
             statement.setString(5, bonSepa.getIbanDestinatario());
 
-            if(statement.executeUpdate()>0 && inserisciRelazion(bonSepa, numCC))
-                return true;
+            int i = statement.executeUpdate();
+            if(i >0){
+                int id= retriveLastId();
+                if(id!=0)
+                    bonSepa.setId(id);
+                else
+                    return false;
+                if(inserisciRelazion(bonSepa, numCC))
+                    return true;
+                else
+                    return false;
+
+            }
 
         }catch (SQLException e) {
             e.printStackTrace();

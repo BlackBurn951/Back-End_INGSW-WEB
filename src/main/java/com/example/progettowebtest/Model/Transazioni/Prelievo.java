@@ -1,6 +1,5 @@
 package com.example.progettowebtest.Model.Transazioni;
 
-import com.example.progettowebtest.Model.Carte.Carta;
 import com.example.progettowebtest.Model.Carte.Carte;
 import com.example.progettowebtest.Model.Proxy.Transazione;
 
@@ -10,10 +9,9 @@ public class Prelievo extends DatiTransazione implements Transazione {
     private Mezzo mezzo;
     private Carte cartaEsecuzione;
 
-    public Prelievo(String dataTransazione, double costoTransazione, boolean esito, int idPrelievo,
+    public Prelievo(String dataTransazione, double costoTransazione, boolean esito,
                     double importo, Mezzo mezzo, Carte cartaEsecuzione) {
         super(dataTransazione, costoTransazione, esito);
-        this.idPrelievo = idPrelievo;
         this.importo = importo;
         this.mezzo = mezzo;
         this.cartaEsecuzione = cartaEsecuzione;
@@ -23,6 +21,11 @@ public class Prelievo extends DatiTransazione implements Transazione {
     public Mezzo getMezzo() {return mezzo;}
     public Carte getCartaEsecuzione() {return cartaEsecuzione;}
 
+    @Override
+    public void setId(int id) {
+        this.idPrelievo = id;
+
+    }
 
     //Metodi implementati per il proxy
 
@@ -55,4 +58,6 @@ public class Prelievo extends DatiTransazione implements Transazione {
 
     @Override
     public String getPaeseDestinatario() {return "ERRORE";}
+
+
 }

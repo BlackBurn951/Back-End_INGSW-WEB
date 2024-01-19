@@ -9,6 +9,8 @@ import java.util.Vector;
 public interface BonificoSepaDAO {
     Vector<Transazione> doRetriveAll();
     Vector<Transazione> doRetriveAllForCC(String numCC);
+    int retriveLastId();
+
     Transazione doRetriveByKey(int id, boolean proxy);
     boolean saveOrUpdate(BonificoSepa bonSepa, String numCC);
     boolean delete(Transazione bonSepa);
