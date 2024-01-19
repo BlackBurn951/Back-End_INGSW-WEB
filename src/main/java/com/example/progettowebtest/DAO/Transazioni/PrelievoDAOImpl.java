@@ -1,14 +1,13 @@
 package com.example.progettowebtest.DAO.Transazioni;
-/*
+
 import com.example.progettowebtest.Connection.DbConn;
 import com.example.progettowebtest.DAO.MagnusDAO;
 import com.example.progettowebtest.Model.Carte.Carta;
+import com.example.progettowebtest.Model.Carte.Carte;
 import com.example.progettowebtest.Model.Carte.TipiCarte;
 import com.example.progettowebtest.Model.Proxy.TipoTransazione;
 import com.example.progettowebtest.Model.Proxy.Transazione;
 import com.example.progettowebtest.Model.Proxy.TransazioneProxy;
-import com.example.progettowebtest.Model.Transazioni.BonificoInter;
-import com.example.progettowebtest.Model.Transazioni.Deposito;
 import com.example.progettowebtest.Model.Transazioni.Prelievo;
 
 import java.sql.PreparedStatement;
@@ -56,7 +55,7 @@ public class PrelievoDAOImpl implements PrelievoDAO {
             ResultSet queryResult= statement.executeQuery();
 
             if(proxy && queryResult.next()) {
-                Carta carta;
+                Carte carta;
                 if(queryResult.getString("num_carta_credito")==null)
                     carta= MagnusDAO.getInstance().getCarteDAO().doRetriveByKey(queryResult.getString("num_carta_credito"), TipiCarte.CREDITO, false);
                 else
@@ -164,4 +163,3 @@ public class PrelievoDAOImpl implements PrelievoDAO {
         return false;
     }
 }
-*/

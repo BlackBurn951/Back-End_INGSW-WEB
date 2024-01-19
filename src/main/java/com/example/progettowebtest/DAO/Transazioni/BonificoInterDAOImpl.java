@@ -79,7 +79,7 @@ public class BonificoInterDAOImpl implements BonificoInterDAO{
             statement.setString(6, bonInt.getValutaPagamento());
             statement.setString(7, bonInt.getPaeseDestinatario());
 
-            if(statement.executeUpdate()>0 && inserisciRelazion(bonInt, numCC))
+            if(statement.executeUpdate()>0 && inserisciRelazione(bonInt, numCC))
                 return true;
 
         }catch (SQLException e) {
@@ -108,7 +108,7 @@ public class BonificoInterDAOImpl implements BonificoInterDAO{
     }
 
     //Metodi di servizio
-    private boolean inserisciRelazion(BonificoInter bon, String numCC) {
+    private boolean inserisciRelazione(BonificoInter bon, String numCC) {
         String query= "insert into rel_cc_bon_int(data_transazione, costo_commissione, esito, id_internazionale, num_cc) " +
                 "values (?, ?, ?, ?, ?)";
 
