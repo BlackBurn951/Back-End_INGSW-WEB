@@ -1,9 +1,8 @@
 package com.example.progettowebtest.DAO.Carte;
 
 import com.example.progettowebtest.Connection.DbConn;
-import com.example.progettowebtest.Model.Carte.Carta;
-import com.example.progettowebtest.Model.Carte.CartaCredito;
-import com.example.progettowebtest.Model.Carte.Carte;
+import com.example.progettowebtest.DAO.MagnusDAO;
+import com.example.progettowebtest.Model.Carte.*;
 import com.example.progettowebtest.Model.Proxy.TipoTransazione;
 import com.example.progettowebtest.Model.Proxy.Transazione;
 import com.example.progettowebtest.Model.Proxy.TransazioneProxy;
@@ -48,24 +47,42 @@ public class CarteDAOImpl implements CarteDAO{
 
     //Metodi di servizio
     private void prendiCarteCredito(Vector<Carte> result, String numCC) {
-        String query= "select r.data_transizione, b.importo, b.causale from bollettino as b, rel_cc_bollettino as r where b.id_bollettino= r.id_bollettino";
+        String query= "select * from carta_di_credito where num_cc= ?";
 
         try{
             PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
+            statement.setString(1, numCC);
+
             ResultSet queryResult= statement.executeQuery();
 
             while(queryResult.next()) {
-                result.add(new TransazioneProxy(queryResult.getInt("id_bollettino"), queryResult.getDate("data_transazione").toString(), queryResult.getDouble("importo"),
-                        queryResult.getString("causale"), TipoTransazione.BOLLETTINO));
+                result.add(new CartaProxy(queryResult.getString("num_carta_credito"), queryResult.getBoolean("stato_pagamento_online"), queryResult.getDate("data_creazione").toString(),
+                        queryResult.getDate("data_scadenza").toString(), queryResult.getString("cvv"), queryResult.getBoolean("carta_fisica"), queryResult.getInt("canone_mensile"),
+                        queryResult.getString("pin"), MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualState(queryResult.getString("num_carta_credito"), true), TipiCarte.CREDITO));
             }
 
         }catch (SQLException e) {
             e.printStackTrace();
         }
-        return result;
     }
 
     private void prendicarteDebito(Vector<Carte> result, String numCC) {
+        String query= "select * from carta_di_debito where num_cc= ?";
 
+        try{
+            PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
+            statement.setString(1, numCC);
+
+            ResultSet queryResult= statement.executeQuery();
+
+            while(queryResult.next()) {
+                result.add(new CartaProxy(queryResult.getString("num_carta_credito"), queryResult.getBoolean("stato_pagamento_online"), queryResult.getDate("data_creazione").toString(),
+                        queryResult.getDate("data_scadenza").toString(), queryResult.getString("cvv"), queryResult.getBoolean("carta_fisica"), queryResult.getInt("canone_mensile"),
+                        queryResult.getString("pin"), MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualState(queryResult.getString("num_carta_credito"), true), TipiCarte.CREDITO));
+            }
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

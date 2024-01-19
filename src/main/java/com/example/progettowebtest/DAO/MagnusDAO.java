@@ -2,6 +2,7 @@ package com.example.progettowebtest.DAO;
 
 import com.example.progettowebtest.DAO.Carte.CarteDAO;
 import com.example.progettowebtest.DAO.Carte.CarteDAOImpl;
+import com.example.progettowebtest.DAO.Carte.RelStatoCarteDAO;
 import com.example.progettowebtest.DAO.ContoCorrente_StatoConto.ContoCorrenteDAO;
 import com.example.progettowebtest.DAO.ContoCorrente_StatoConto.ContoCorrenteDAOImpl;
 import com.example.progettowebtest.DAO.ContoCorrente_StatoConto.RelStatoContoDAO;
@@ -30,6 +31,7 @@ public class MagnusDAO {
     private TipologiaBollettinoDAO tipologiaBollettinoDAO;
     private MezzoDAO mezzoDAO;
     private CarteDAO carteDAO;
+    private RelStatoCarteDAO relStatoCarteDAO;
 
     public MagnusDAO() {
         utenteDAO= new UtenteDAOImpl();
@@ -50,6 +52,7 @@ public class MagnusDAO {
         tipologiaBollettinoDAO= new TipologiaBollettinoDAOImpl();
         mezzoDAO= new MezzoDAOImpl();
         carteDAO= new CarteDAOImpl();
+        relStatoContoDAO= new RelStatoContoDAOImpl();
     }
 
     public static MagnusDAO getInstance() {
@@ -74,4 +77,5 @@ public class MagnusDAO {
     public TipologiaBollettinoDAO getTipologiaBollettinoDAO() {return tipologiaBollettinoDAO;}
     public MezzoDAO getMezzoDAO() {return mezzoDAO;}
     public CarteDAO getCarteDAO() {return carteDAO;}
+    public RelStatoCarteDAO getRelStatoCarteDAO() {return relStatoCarteDAO;}
 }
