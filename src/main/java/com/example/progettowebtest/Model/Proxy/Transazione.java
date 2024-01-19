@@ -14,7 +14,7 @@ public interface Transazione {
     double getCostoTransazione();
     boolean getEsito();
     String getNomeBeneficiario();
-    public String getCognomeBeneficiario();
+    String getCognomeBeneficiario();
     int getId();
     String getIbanDestinatario();
     String getNumCcDest();
@@ -23,4 +23,5 @@ public interface Transazione {
     String getPaeseDestinatario();
     Mezzo getMezzo();
     Carte getCartaEsecuzione();
+    void setId(int id);
 }

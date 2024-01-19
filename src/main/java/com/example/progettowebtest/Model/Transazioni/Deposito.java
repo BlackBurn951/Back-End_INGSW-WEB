@@ -10,10 +10,9 @@ public class Deposito extends DatiTransazione implements Transazione {
     private Mezzo mezzo;
     private Carte cartaEsecuzione;
 
-    public Deposito(String dataTransazione, double costoTransazione, boolean esito, int idDeposito,
+    public Deposito(String dataTransazione, double costoTransazione, boolean esito,
                     double importo, Mezzo mezzo, Carte cartaEsecuzione) {
         super(dataTransazione, costoTransazione, esito);
-        this.idDeposito = idDeposito;
         this.importo = importo;
         this.mezzo = mezzo;
         this.cartaEsecuzione = cartaEsecuzione;

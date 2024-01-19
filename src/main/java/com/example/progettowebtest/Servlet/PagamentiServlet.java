@@ -43,13 +43,13 @@ public class PagamentiServlet {
         HttpSession session= (HttpSession) request.getServletContext().getAttribute(idSess);
         ContoCorrente cc= (ContoCorrente) session.getAttribute("Conto");
 
-        if((cc.getSaldo()+1.0)<dati.getImporto()) {
+        if(cc.getSaldo()>=(dati.getImporto()+1.0)) {
             cc.setSaldo(cc.getSaldo() - (dati.getImporto()+1.0));
             MagnusDAO.getInstance().getContoCorrenteDAO().saveOrUpdate(cc, false);
-            result = false;
+            result = true;
         }
         else
-            result= true;
+            result= false;
 
         TipologiaBollettino tipo= MagnusDAO.getInstance().getTipologiaBollettinoDAO().doRetriveByAttribute(dati.getTipologiaBollettino());
         Bollettino bol= new Bollettino(LocalDate.now().toString(), 1.0, result, dati.getImporto(), dati.getCausale(), cc.getNumCC(), tipo);

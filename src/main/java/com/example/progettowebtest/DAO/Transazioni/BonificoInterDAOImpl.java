@@ -20,7 +20,7 @@ public class BonificoInterDAOImpl implements BonificoInterDAO{
     @Override
     public Vector<Transazione> doRetriveAllForCC(String numCC) {
         Vector<Transazione> result= new Vector<>();
-        String query= "select r.data_transazione, b.importo, b.causale from bonifico_internazionale as b, rel_cc_bon_int as r where b.id_internazionale= r.id_internazionale";
+        String query= "select b.id_internazionale, r.data_transazione, b.importo, b.causale from bonifico_internazionale as b, rel_cc_bon_int as r where b.id_internazionale= r.id_internazionale";
 
         try{
             PreparedStatement statement= DbConn.getConnection().prepareStatement(query);

@@ -127,9 +127,9 @@ public class RegistrazioneServlet extends HttpServlet {
             if(!MagnusDAO.getInstance().getIndirizzoDAO().saveOrUpdate(res))
                 return false;
 
-            assert ut != null;
             ut.addAddress(res);
-            if(dati.getCittaDom()!=null) {
+            System.out.println("citta dom: "+dati.getCittaDom());
+            if(!dati.getCittaDom().isEmpty()) {
                 tipo= MagnusDAO.getInstance().getTipoViaDAO().doRetriveByAttribute(dati.getTipoStradaDom());
                 queryDatiComune= MagnusDAO.getInstance().getDatiComuneDAO().doRetriveByAttribute(dati.getCittaDom(), ColonneDatiComune.NOME_COMUNE);
                 comune= queryDatiComune.get(0);
@@ -146,7 +146,7 @@ public class RegistrazioneServlet extends HttpServlet {
 
             ContoCorrente cc= new ContoCorrente();
 
-            if(dati.getCittaFat() != null){
+            if(!dati.getCittaFat().isEmpty()){
                 tipo= MagnusDAO.getInstance().getTipoViaDAO().doRetriveByAttribute(dati.getTipoStradaFat());
                 queryDatiComune= MagnusDAO.getInstance().getDatiComuneDAO().doRetriveByAttribute(dati.getCittaFat(), ColonneDatiComune.NOME_COMUNE);
                 comune = queryDatiComune.get(0);

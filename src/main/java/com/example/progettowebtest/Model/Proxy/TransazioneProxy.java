@@ -154,10 +154,19 @@ public class TransazioneProxy implements Transazione {
     private void instanzaTransazione() {
         if (tipo == TipoTransazione.BOLLETTINO) {
             transazioneReale = MagnusDAO.getInstance().getBollettinoDAO().doRetriveByKey(id, true);
+            if(transazioneReale!= null){
+                System.out.println("ISTANZIATO BOLLETTINO");
+            }
         } else if (tipo == TipoTransazione.BONIFICOINTER) {
             transazioneReale = MagnusDAO.getInstance().getBonificoInterDAO().doRetriveByKey(id, true);
+            if(transazioneReale!= null){
+                System.out.println("ISTANZIATO BONSEPA");
+            }
         } else if (tipo == TipoTransazione.BONIFICOSEPA) {
             transazioneReale = MagnusDAO.getInstance().getBonificoSepaDAO().doRetriveByKey(id, true);
+            if(transazioneReale!= null){
+                System.out.println("ISTANZIATO BONINT");
+            }
         } else if (tipo == TipoTransazione.DEPOSITO) {
             transazioneReale = MagnusDAO.getInstance().getDepositoDAO().doRetriveByKey(id, true);
         } else if (tipo == TipoTransazione.PRELIEVO) {

@@ -23,14 +23,14 @@ public class BollettinoDAOImpl implements BollettinoDAO{
     @Override
     public Vector<Transazione> doRetriveAllForCC(String numCC) {
         Vector<Transazione> result= new Vector<>();
-        String query= "select r.data_transizione, b.importo, b.causale from bollettino as b, rel_cc_bollettino as r where b.id_bollettino= r.id_bollettino";
+        String query= "select b.id_bollettino, r.data_transizione, b.importo, b.causale from bollettino as b, rel_cc_bollettino as r where b.id_bollettino= r.id_bollettino";
 
         try{
             PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
             ResultSet queryResult= statement.executeQuery();
 
             while(queryResult.next()) {
-                result.add(new TransazioneProxy(queryResult.getInt("id_bollettino"), queryResult.getDate("data_transazione").toString(), queryResult.getDouble("importo"),
+                result.add(new TransazioneProxy(queryResult.getInt("id_bollettino"), queryResult.getDate("data_transizione").toString(), queryResult.getDouble("importo"),
                         queryResult.getString("causale"), TipoTransazione.BOLLETTINO));
             }
 
@@ -101,6 +101,7 @@ public class BollettinoDAOImpl implements BollettinoDAO{
         try{
             PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
 
+
             statement.setDouble(1, bol.getImporto());
             statement.setString(2, bol.getCausale());
             statement.setString(3, bol.getNumCcDest());
@@ -161,8 +162,11 @@ public class BollettinoDAOImpl implements BollettinoDAO{
             statement.setInt(4, bol.getId());
             statement.setString(5, numCC);
 
-            if(statement.executeUpdate()>0)
+            if(statement.executeUpdate()>0) {
+                System.out.println("Relazione inserita");
                 return true;
+            }
+
 
         }catch (SQLException e) {
             e.printStackTrace();
