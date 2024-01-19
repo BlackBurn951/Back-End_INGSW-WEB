@@ -1,6 +1,7 @@
 package com.example.progettowebtest.Model.Transazioni;
 
 import com.example.progettowebtest.Model.Carte.Carta;
+import com.example.progettowebtest.Model.Carte.Carte;
 import com.example.progettowebtest.Model.Proxy.Transazione;
 
 public class Bollettino extends DatiTransazione implements Transazione {
@@ -53,8 +54,8 @@ public class Bollettino extends DatiTransazione implements Transazione {
     }
 
     @Override
-    public Carta getCartaEsecuzione() {
-        Carta result= null;
+    public Carte getCartaEsecuzione() {
+        Carte result= null;
         return result;
     }
 }

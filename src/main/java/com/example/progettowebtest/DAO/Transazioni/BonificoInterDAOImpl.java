@@ -38,7 +38,28 @@ public class BonificoInterDAOImpl implements BonificoInterDAO{
     }
 
     @Override
+    public int retriveLastId(){
+        String query= "select max(id_internazionale) as id from bonifico_internazionale";
+        int max;
+        try{
+            PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
+            ResultSet queryResult= statement.executeQuery();
+
+            if(queryResult.next()){
+                max = queryResult.getInt("id");
+                return max;
+
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    @Override
     public Transazione doRetriveByKey(int id, boolean proxy) {
+        Transazione bonInt= null;
         String query;
         if(proxy)
             query= "select * from bonifico_internazionale as b, rel_cc_bon_int as r where b.id_internazionale= r.id_internazionale";
@@ -49,10 +70,12 @@ public class BonificoInterDAOImpl implements BonificoInterDAO{
             PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
             ResultSet queryResult= statement.executeQuery();
 
-            if(proxy && queryResult.next())
-                return new BonificoInter(queryResult.getDate("data_transazione").toString(), queryResult.getDouble("costo_commissione"),
-                        queryResult.getBoolean("esito"), queryResult.getInt("id_internazionale"), queryResult.getString("nome_beneficiario"), queryResult.getString("cognome_beneficiario"),
+            if(proxy && queryResult.next()) {
+                bonInt = new BonificoInter(queryResult.getDate("data_transazione").toString(), queryResult.getDouble("costo_commissione"),
+                        queryResult.getBoolean("esito"), queryResult.getString("nome_beneficiario"), queryResult.getString("cognome_beneficiario"),
                         queryResult.getDouble("importo"), queryResult.getString("causale"), queryResult.getString("iban_destinatario"), queryResult.getString("valuta_pagamento"), queryResult.getString("paese_destinatario"));
+                bonInt.setId(queryResult.getInt("id_internazionale"));
+            }
             else if(queryResult.next())
                 return new TransazioneProxy(queryResult.getInt("id_internazionale"), queryResult.getDate("data_transazione").toString(), queryResult.getDouble("importo"),
                         queryResult.getString("causale"), TipoTransazione.BONIFICOINTER);
@@ -79,8 +102,19 @@ public class BonificoInterDAOImpl implements BonificoInterDAO{
             statement.setString(6, bonInt.getValutaPagamento());
             statement.setString(7, bonInt.getPaeseDestinatario());
 
-            if(statement.executeUpdate()>0 && inserisciRelazione(bonInt, numCC))
-                return true;
+            int i = statement.executeUpdate();
+            if(i >0){
+                int id= retriveLastId();
+                if(id!=0)
+                    bonInt.setId(id);
+                else
+                    return false;
+                if(inserisciRelazione(bonInt, numCC))
+                    return true;
+                else
+                    return false;
+
+            }
 
         }catch (SQLException e) {
             e.printStackTrace();

@@ -65,25 +65,30 @@
       <h2 id="titleTrans">Ultime transazioni</h2>
 
         <div class="scrollable-list">
-            <div>
+            <div th:each="item, iterStat : ${conto.getMovimenti()}">
                 <!-- Visualizza i dati dal database -->
 
-
-                <p class="item" onclick="mostraNascondiDettagli('dettagli-${item.id}')"> 2024/18/02 100€ Pagamento debito</p>
-                <p class="item" onclick="mostraNascondiDettagli('dettagli-${item.id}')"> 2024/18/02 104€ Pagamento debito</p>
-                <p class="item" onclick="mostraNascondiDettagli('dettagli-${item.id}')"> 2024/18/02 1345€ Pagamento debito</p>
-                <p class="item" onclick="mostraNascondiDettagli('dettagli-${item.id}')"> 2024/18/02 3233€ Pagamento debito</p>
-                <p class="item" onclick="mostraNascondiDettagli('dettagli-${item.id}')"> 2024/18/02 10€ Pagamento debito</p>
-
-
-
+                <p class="oggettoCliccabile" th:text="${item.getDataTransazione()+' '+item.getImporto()+' '+item.getCausale()}" onclick="mostraNascondiDettagli('oggettoID' + ${iterStat.index})"></p>
 
                 <!-- Elementi aggiuntivi nascosti inizialmente -->
-                <div id="dettagli-${item.id}" class="additional-info">
-                    <p>Dettagli aggiuntivi per ${item.nome}</p>
+                <div id="oggettoID${iterStat.index}" class="additional-info">
+                    <!-- Aggiungi qui gli elementi aggiuntivi -->
+                        <p th:text="${item.getCostoTransazione()}"></p>
+                        <p th:if="${item.getEsito()}" th:text="Eseguita" style="color: green;"></p>
+                        <p th:unless="${item.getEsito()}" th:text="Rifiutata" style="color: red;"></p>
+
+
+                    <p th:if="${item.getNomeBeneficiario() ne 'ERRORE'}" th:text="${item.getNomeBeneficiario()}"></p>
+                        <p th:if="${item.getCognomeBeneficiario() ne 'ERRORE'}" th:text="${item.getCognomeBeneficiario()}"></p>
+                        <p th:if="${item.getIbanDestinatario() ne 'ERRORE'}" th:text="${item.getIbanDestinatario()}"></p>
+                        <p th:if="${item.getValutaPagamento() ne 'ERRORE'}" th:text="${item.getValutaPagamento()}"></p>
+                        <p th:if="${item.getPaeseDestinatario() ne 'ERRORE'}" th:text="${item.getPaeseDestinatario()}"></p>
+                    </div>
+
                 </div>
             </div>
         </div>
+
     </div>
   </div>
 </body>

@@ -4,9 +4,9 @@ public class DatiBonificoInter{
 
     private String nomeBeneficiarioI;
     private String cognomeBeneficiarioI;
-    private double importoSepaI;
-    private String causaleSepaI;
-    private String ibanDestinatarioSepaI;
+    private double importoI;
+    private String causaleI;
+    private String ibanDestinatarioI;
     private String valuta;
     private String paeseDest;
 
@@ -18,16 +18,16 @@ public class DatiBonificoInter{
         return cognomeBeneficiarioI;
     }
 
-    public double getImportoSepaI() {
-        return importoSepaI;
+    public double getImportoI() {
+        return importoI;
     }
 
-    public String getCausaleSepaI() {
-        return causaleSepaI;
+    public String getCausaleI() {
+        return causaleI;
     }
 
-    public String getIbanDestinatarioSepaI() {
-        return ibanDestinatarioSepaI;
+    public String getIbanDestinatarioI() {
+        return ibanDestinatarioI;
     }
 
     public String getValuta() {
