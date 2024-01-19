@@ -3,6 +3,7 @@ package com.example.progettowebtest.DAO;
 import com.example.progettowebtest.DAO.Carte.CarteDAO;
 import com.example.progettowebtest.DAO.Carte.CarteDAOImpl;
 import com.example.progettowebtest.DAO.Carte.RelStatoCarteDAO;
+import com.example.progettowebtest.DAO.Carte.RelStatoCarteDAOImpl;
 import com.example.progettowebtest.DAO.ContoCorrente_StatoConto.ContoCorrenteDAO;
 import com.example.progettowebtest.DAO.ContoCorrente_StatoConto.ContoCorrenteDAOImpl;
 import com.example.progettowebtest.DAO.ContoCorrente_StatoConto.RelStatoContoDAO;
@@ -47,12 +48,12 @@ public class MagnusDAO {
         bollettinoDAO= new BollettinoDAOImpl();
         bonificoInterDAO= new BonificoInterDAOImpl();
         bonificoSepaDAO= new BonificoSepaDAOImpl();
-        //depositoDAO= new DepositoDAOImpl();
-        //prelievoDAO= new PrelievoDAOImpl();
+        depositoDAO= new DepositoDAOImpl();
+        prelievoDAO= new PrelievoDAOImpl();
         tipologiaBollettinoDAO= new TipologiaBollettinoDAOImpl();
         mezzoDAO= new MezzoDAOImpl();
         carteDAO= new CarteDAOImpl();
-        relStatoContoDAO= new RelStatoContoDAOImpl();
+        relStatoCarteDAO= new RelStatoCarteDAOImpl();
     }
 
     public static MagnusDAO getInstance() {

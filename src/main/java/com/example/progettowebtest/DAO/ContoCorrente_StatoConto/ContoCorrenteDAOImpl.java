@@ -12,6 +12,7 @@ import com.example.progettowebtest.DAO.Utente_Documenti.UtenteDAOImpl;
 import com.example.progettowebtest.Model.ContoCorrente.ContoCorrente;
 import com.example.progettowebtest.Model.ContoCorrente.RelStatoConto;
 import com.example.progettowebtest.Model.Indirizzo.Indirizzo;
+import com.example.progettowebtest.Model.Proxy.Transazione;
 import com.example.progettowebtest.Model.Stato;
 import com.example.progettowebtest.Model.Utente_Documenti.*;
 import com.example.progettowebtest.Model.ValoriStato;
@@ -60,7 +61,34 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO{
                 result= new ContoCorrente(queryResult.getString("num_cc"), queryResult.getString("iban"), queryResult.getString("pin_sicurezza"), queryResult.getDate("data_apertura").toString(),
                         queryResult.getDouble("saldo"), queryResult.getInt("tasso_interesse"), queryResult.getInt("tariffa_annuale"), indFatturazione, intestatario);
                 result.setStatoConto(state);
-                //AGGIUNTA DEI PROXY
+
+                Vector<Transazione> bollettino= MagnusDAO.getInstance().getBollettinoDAO().doRetriveAllForCC(queryResult.getString("num_cc"));
+                Vector<Transazione> bonificoSepa= MagnusDAO.getInstance().getBonificoSepaDAO().doRetriveAllForCC(queryResult.getString("num_cc"));
+                Vector<Transazione> bonificoInt= MagnusDAO.getInstance().getBonificoInterDAO().doRetriveAllForCC(queryResult.getString("num_cc"));
+                Vector<Transazione> deposito= MagnusDAO.getInstance().getDepositoDAO().doRetriveAllForCC(queryResult.getString("num_cc"));
+                Vector<Transazione> prelievo= MagnusDAO.getInstance().getPrelievoDAO().doRetriveAllForCC(queryResult.getString("num_cc"));
+
+
+                if(!bollettino.isEmpty()) {
+                    for(Transazione trans: bollettino)
+                        result.addTransazione(trans);
+                }
+                if(!bonificoSepa.isEmpty()) {
+                    for(Transazione trans: bonificoSepa)
+                        result.addTransazione(trans);
+                }
+                if(!bonificoInt.isEmpty()) {
+                    for(Transazione trans: bonificoInt)
+                        result.addTransazione(trans);
+                }
+                if(!deposito.isEmpty()) {
+                    for(Transazione trans: deposito)
+                        result.addTransazione(trans);
+                }
+                if(!prelievo.isEmpty()) {
+                    for(Transazione trans: prelievo)
+                        result.addTransazione(trans);
+                }
             }
 
         }catch (SQLException e) {
@@ -92,7 +120,34 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO{
                 result= new ContoCorrente(queryResult.getString("num_cc"), queryResult.getString("iban"), queryResult.getString("pin_sicurezza"), queryResult.getDate("data_apertura").toString(),
                         queryResult.getDouble("saldo"), queryResult.getInt("tasso_interesse"), queryResult.getInt("tariffa_annuale"), indFatturazione, intestatario);
                 result.setStatoConto(state);
-                //AGGIUNTA DEI PROXY
+
+                Vector<Transazione> bollettino= MagnusDAO.getInstance().getBollettinoDAO().doRetriveAllForCC(queryResult.getString("num_cc"));
+                Vector<Transazione> bonificoSepa= MagnusDAO.getInstance().getBonificoSepaDAO().doRetriveAllForCC(queryResult.getString("num_cc"));
+                Vector<Transazione> bonificoInt= MagnusDAO.getInstance().getBonificoInterDAO().doRetriveAllForCC(queryResult.getString("num_cc"));
+                Vector<Transazione> deposito= MagnusDAO.getInstance().getDepositoDAO().doRetriveAllForCC(queryResult.getString("num_cc"));
+                Vector<Transazione> prelievo= MagnusDAO.getInstance().getPrelievoDAO().doRetriveAllForCC(queryResult.getString("num_cc"));
+
+
+                if(!bollettino.isEmpty()) {
+                    for(Transazione trans: bollettino)
+                        result.addTransazione(trans);
+                }
+                if(!bonificoSepa.isEmpty()) {
+                    for(Transazione trans: bonificoSepa)
+                        result.addTransazione(trans);
+                }
+                if(!bonificoInt.isEmpty()) {
+                    for(Transazione trans: bonificoInt)
+                        result.addTransazione(trans);
+                }
+                if(!deposito.isEmpty()) {
+                    for(Transazione trans: deposito)
+                        result.addTransazione(trans);
+                }
+                if(!prelievo.isEmpty()) {
+                    for(Transazione trans: prelievo)
+                        result.addTransazione(trans);
+                }
             }
 
         }catch (SQLException e) {
