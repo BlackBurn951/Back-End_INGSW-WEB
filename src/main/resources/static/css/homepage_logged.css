@@ -155,7 +155,7 @@ body{
 .scrollable-list {
     margin-top: -20%;
     max-height: 150px;
-    overflow-y: auto;
+    overflow-y: visible;
 }
 
 
@@ -186,6 +186,7 @@ button:hover {
     border-radius: 2vh ;
     border: 2px solid #000000;
     padding: 20px;
+    height: 100%;
     z-index: 2;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }

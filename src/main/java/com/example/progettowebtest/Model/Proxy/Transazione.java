@@ -14,7 +14,7 @@ public interface Transazione {
     double getCostoTransazione();
     boolean getEsito();
     String getNomeBeneficiario();
-    public String getCognomeBeneficiario();
+    String getCognomeBeneficiario();
     int getId();
     String getIbanDestinatario();
     String getNumCcDest();

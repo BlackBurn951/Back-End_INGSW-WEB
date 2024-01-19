@@ -84,21 +84,20 @@
                               <p th:text="${item.getCostoTransazione()}">Costo transazione:</p>
                               <p th:if="${item.getEsito()}" th:text="Eseguita" style="color: green;"></p>
                               <p th:unless="${item.getEsito()}" th:text="Rifiutata" style="color: red;"></p>
-                              <p th:if="${item.getNomeBeneficiario() ne 'ERRORE'}" th:text="${item.getNomeBeneficiario()}"></p>
-                              <p th:if="${item.getCognomeBeneficiario() ne 'ERRORE'}" th:text="${item.getCognomeBeneficiario()}"></p>
-                              <p th:if="${item.getIbanDestinatario() ne 'ERRORE'}" th:text="${item.getIbanDestinatario()}"></p>
-                              <p th:if="${item.getValutaPagamento() ne 'ERRORE'}" th:text="${item.getValutaPagamento()}"></p>
-                              <p th:if="${item.getPaeseDestinatario() ne 'ERRORE'}" th:text="${item.getPaeseDestinatario()}"></p>
+                              <p th:if="${item.getTipoBol()} ne 'ERRORE' " th:text="${item.getTipoBol()}"></p>
+                              <p th:if="${item.getNomeBeneficiario()} ne 'ERRORE' " th:text="${item.getNomeBeneficiario()}"></p>
+                              <p th:if="${item.getCognomeBeneficiario()} ne 'ERRORE' " th:text="${item.getCognomeBeneficiario()}"></p>
+                              <p th:if="${item.getIbanDestinatario()} ne 'ERRORE' " th:text="${item.getIbanDestinatario()}"></p>
+                              <p th:if="${item.getValutaPagamento()} ne 'ERRORE' " th:text="${item.getValutaPagamento()}"></p>
+                              <p th:if="${item.getPaeseDestinatario()} ne 'ERRORE' " th:text="${item.getPaeseDestinatario()}"></p>
+                              <p th:if="${item.getNumCcDest()} ne 'ERRORE' " th:text="${item.getNumCcDest()}"></p>
                           </div>
+                          
                           <button onclick="mostraNascondiDettagli('trans')">Chiudi</button>
 
                       </div>
-
-
                   </tr>
                   <div>
-
-                      </td>
                   </div>
               </div>
               </tbody>
