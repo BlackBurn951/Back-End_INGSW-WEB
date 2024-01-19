@@ -125,12 +125,11 @@ body{
 }
 
 .item{
-    height: 2vh;
     cursor: pointer;
 
 }
 
-#titleTrans{
+.titleTrans{
     margin-bottom: -3vh;
 }
 
@@ -139,6 +138,7 @@ body{
 }
 
 .containerDatiTransazioni {
+    margin-top: -2vh;
     transform: translateY(-50%);
     max-height: 38vh;
     text-align: center;
@@ -153,9 +153,43 @@ body{
 
 
 .scrollable-list {
+    margin-top: -20%;
     max-height: 150px;
     overflow-y: auto;
 }
+
+
+button {
+    width: 30%;
+    background-color: #3498db;
+    color: #ffffff;
+    padding: 10px 10px;
+    font-size: 18px;
+    font-weight: 540;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+}
+
+
+.popup {
+    display: none;
+    position: fixed;
+    left: 50%;
+    width: 50%;
+    transform: translate(-50%, -100%);
+    background: rgb(217, 217, 217);
+    border-radius: 2vh ;
+    border: 2px solid #000000;
+    padding: 20px;
+    z-index: 2;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
 
 .additional-info {
     display: none; /* Inizialmente nascondi gli elementi aggiuntivi */
@@ -171,22 +205,6 @@ body{
     flex-direction: column;
     gap:5vh;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-
-
-
-.oggettoCliccabile {
-    font-size: 2vh;
-    cursor: pointer;
-    width: 50%;
-    border-radius: 10px;
-    margin: auto; /* Aggiunto per centrare l'elemento */
-}
-
-
-.oggettoCliccabile:hover{
-    background-color: white;
 }
 
 
