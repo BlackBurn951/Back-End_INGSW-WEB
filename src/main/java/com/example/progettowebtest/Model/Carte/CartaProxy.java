@@ -15,12 +15,13 @@ public class CartaProxy implements Carte{
     private boolean cartaFisica;
     private double canoneMensile;
     private String pin;
+    private double fido;
     private Stato statoCarta;
     private Carte cartaReale;
     private TipiCarte tipo;
 
-    public CartaProxy(String numCarta, boolean pagamentoOnline, String dataCreazione, String dataScadenza, String cvv, boolean cartaFisica,
-                 double canoneMensile, String pin, Stato statoCarta, TipiCarte tipo) {
+    public CartaProxy(String numCarta, boolean pagamentoOnline, String dataCreazione, String dataScadenza,
+                      String cvv, boolean cartaFisica, double canoneMensile, String pin, double fido, Stato statoCarta, TipiCarte tipo) {
         this.numCarta = numCarta;
         this.pagamentoOnline = pagamentoOnline;
         this.dataCreazione = Date.valueOf(dataCreazione);
@@ -29,10 +30,10 @@ public class CartaProxy implements Carte{
         this.cartaFisica = cartaFisica;
         this.canoneMensile = canoneMensile;
         this.pin = pin;
+        this.fido = fido;
         this.statoCarta = statoCarta;
-        this.tipo= tipo;
+        this.tipo = tipo;
     }
-
 
     @Override
     public String getNumCarta() {return numCarta;}
@@ -53,24 +54,22 @@ public class CartaProxy implements Carte{
     public boolean isCartaFisica() {return cartaFisica;}
 
     @Override
-    public double getCanoneMensile() {
-        if(tipo==TipiCarte.DEBITO)
-            return 0.60;
-        else
-            return 10.0;
-    }
+    public double getCanoneMensile() {return canoneMensile;}
 
     @Override
     public String getPin() {return pin;}
 
     @Override
+    public Double getFido() {return fido;}
+
+    @Override
     public ContoCorrente getContoRiferimento() {
         if(tipo==TipiCarte.DEBITO) {
-            cartaReale = MagnusDAO.getInstance().getCarteDAO().doRetriveByKey(numCarta, false, true);
+            cartaReale = MagnusDAO.getInstance().getCarteDAO().doRetriveByKey(numCarta, TipiCarte.DEBITO, true);
             return cartaReale.getContoRiferimento();
         }
         else{
-            cartaReale = MagnusDAO.getInstance().getCarteDAO().doRetriveByKey(numCarta, true, true);
+            cartaReale = MagnusDAO.getInstance().getCarteDAO().doRetriveByKey(numCarta, TipiCarte.CREDITO, true);
             return cartaReale.getContoRiferimento();
         }
     }

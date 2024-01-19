@@ -8,4 +8,7 @@ public class CartaDebito extends Carta implements Carte{
                        double canoneMensile, String pin, Stato statoCarta, ContoCorrente contoRiferimento) {
         super(numCarta, pagamentoOnline, dataCreazione, dataScadenza, cvv, cartaFisica, canoneMensile, pin, statoCarta, contoRiferimento);
     }
+
+    @Override
+    public Double getFido() {return null;}
 }

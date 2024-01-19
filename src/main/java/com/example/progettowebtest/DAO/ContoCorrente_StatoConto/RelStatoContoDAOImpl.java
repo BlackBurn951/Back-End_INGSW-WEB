@@ -14,8 +14,6 @@ import java.sql.Types;
 import java.util.Vector;
 
 public class RelStatoContoDAOImpl implements RelStatoContoDAO{
-
-
     public RelStatoContoDAOImpl() {}
 
 

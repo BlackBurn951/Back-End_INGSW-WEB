@@ -11,4 +11,9 @@ public class CartaCredito extends Carta implements Carte{
         super(numCarta, pagamentoOnline, dataCreazione, dataScadenza, cvv, cartaFisica, canoneMensile, pin, statoCarta, contoRiferimento);
         this.fido = fido;
     }
+
+    @Override
+    public Double getFido() {
+        return null;
+    }
 }

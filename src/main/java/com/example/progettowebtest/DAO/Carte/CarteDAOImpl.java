@@ -3,9 +3,6 @@ package com.example.progettowebtest.DAO.Carte;
 import com.example.progettowebtest.Connection.DbConn;
 import com.example.progettowebtest.DAO.MagnusDAO;
 import com.example.progettowebtest.Model.Carte.*;
-import com.example.progettowebtest.Model.Proxy.TipoTransazione;
-import com.example.progettowebtest.Model.Proxy.Transazione;
-import com.example.progettowebtest.Model.Proxy.TransazioneProxy;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,44 +20,108 @@ public class CarteDAOImpl implements CarteDAO{
         Vector<Carte> result= new Vector<>();
 
         prendiCarteCredito(result, numCC);
-        prendicarteDebito(result, numCC);
+        prendiCarteDebito(result, numCC);
 
         return result;
     }
 
     @Override
-    public Carte doRetriveByKey(String numCarta, boolean tipo, boolean proxy) {
+    public Carte doRetriveByKey(String numCarta, TipiCarte tipo, boolean proxy) {
+        Carte carta= null;
+        String query= "";
 
-        return null;
-    }
+        if(tipo==TipiCarte.CREDITO)
+            query= "select * from carta_di_credito where num_carta_credito= ?";
+        else
+            query= "select * from carta_di_debito where num_carta_debito= ?";
 
-    @Override
-    public boolean saveOrUpdate(Carte carta) {
-        return false;
-    }
 
-    @Override
-    public boolean delete(Carte carta, boolean tipo) {
-        String query;
-        if(tipo){
-            query = "DELETE FROM rel_stato_carta_credito WHERE num_carta = ?";
-        }else{
-            query = "DELETE FROM rel_stato_carta_debito WHERE num_carta = ?";
+        try{
+            PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
+            statement.setString(1, numCarta);
 
-        }
+            ResultSet queryResult= statement.executeQuery();
 
-        try {
-            PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
-            statement.setString(1, carta.getNumCarta());
-
-            if (statement.executeUpdate()>0  && eliminaCarta(carta, tipo)){
-                return true;
+            if(queryResult.next()) {
+                if(tipo==TipiCarte.CREDITO) {
+                    if(proxy)
+                        carta= new CartaCredito(queryResult.getString("num_carta_credito"), queryResult.getBoolean("stato_pagamento_online"), queryResult.getDate("data_creazione").toString(),
+                                queryResult.getDate("data_scadenza").toString(), queryResult.getString("cvv"), queryResult.getBoolean("carta_fisica"),
+                                queryResult.getDouble("canone_mensile"), queryResult.getString("pin"),
+                                MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualState(queryResult.getString("num_carta_credito"), TipiCarte.CREDITO),
+                                MagnusDAO.getInstance().getContoCorrenteDAO().doRetriveByKey(queryResult.getString("num_cc")),
+                                queryResult.getDouble("fido"));
+                    else
+                        carta= new CartaProxy(queryResult.getString("num_carta_credito"), queryResult.getBoolean("stato_pagamento_online"), queryResult.getDate("data_creazione").toString(),
+                                queryResult.getDate("data_scadenza").toString(), queryResult.getString("cvv"), queryResult.getBoolean("carta_fisica"),
+                                queryResult.getDouble("canone_mensile"), queryResult.getString("pin"), queryResult.getDouble("fido"),
+                                MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualState(queryResult.getString("num_carta_credito"), TipiCarte.CREDITO), TipiCarte.CREDITO);
+                }
+                else {
+                    if(proxy)
+                        carta= new CartaDebito(queryResult.getString("num_carta_debito"), queryResult.getBoolean("stato_pagamento_online"), queryResult.getDate("data_creazione").toString(),
+                                queryResult.getDate("data_scadenza").toString(), queryResult.getString("cvv"), queryResult.getBoolean("carta_fisica"),
+                                queryResult.getDouble("canone_mensile"), queryResult.getString("pin"),
+                                MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualState(queryResult.getString("num_carta_debito"), TipiCarte.DEBITO),
+                                MagnusDAO.getInstance().getContoCorrenteDAO().doRetriveByKey(queryResult.getString("num_cc")));
+                    else
+                        carta= new CartaProxy(queryResult.getString("num_carta_debito"), queryResult.getBoolean("stato_pagamento_online"), queryResult.getDate("data_creazione").toString(),
+                                queryResult.getDate("data_scadenza").toString(), queryResult.getString("cvv"), queryResult.getBoolean("carta_fisica"),
+                                queryResult.getDouble("canone_mensile"), queryResult.getString("pin"), 0.0,
+                                MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualState(queryResult.getString("num_carta_credito"), TipiCarte.DEBITO), TipiCarte.DEBITO);
+                }
             }
 
         }catch (SQLException e) {
             e.printStackTrace();
         }
+        return carta;
+    }
 
+    @Override
+    public boolean saveOrUpdate(Carte carta, TipiCarte tipo) {
+        String query= "";
+
+        if(tipo==TipiCarte.CREDITO)
+            query= "insert into carta_di_credito(num_carta_credito, stato_pagamento_online, data_creazione, data_scadenza, cvv, carta_fisica, canone_mensile, num_cc, pin, fido) " +
+                    "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) on conflict (num_carta_credito) do update set stato_pagamento_online = EXCLUDED.stato_pagamento_online," +
+                    "data_creazione = EXCLUDED.data_creazione, data_scadenza = EXCLUDED.data_scadenza, cvv = EXCLUDED.cvv, carta_fisica = EXCLUDED.carta_fisica, canone_mensile = EXCLUDED.canone_mensile, " +
+                    "pin = EXCLUDED.pin, num_cc = EXCLUDED.num_cc, fido = EXCLUDED.fido";
+        else
+            query= "insert into carta_di_debito (num_carta_debito, stato_pagamento_online, data_creazione, data_scadenza, cvv, carta_fisica, canone_mensile, pin, num_cc) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) " +
+                    "ON CONFLICT (num_carta_debito) DO UPDATE SET stato_pagamento_online = EXCLUDED.stato_pagamento_online, data_creazione = EXCLUDED.data_creazione, data_scadenza = EXCLUDED.data_scadenza, " +
+                    "cvv = EXCLUDED.cvv, carta_fisica = EXCLUDED.carta_fisica, canone_mensile = EXCLUDED.canone_mensile, pin = EXCLUDED.pin, num_cc = EXCLUDED.num_cc";
+
+        try{
+            PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
+
+            statement.setString(1, carta.getNumCarta());
+            statement.setBoolean(2, carta.isPagamentoOnline());
+            statement.setDate(3, carta.getDataCreazione());
+            statement.setDate(4, carta.getDataScadenza());
+            statement.setString(5, carta.getCvv());
+            statement.setBoolean(6, carta.isCartaFisica());
+            statement.setDouble(7, carta.getCanoneMensile());
+            statement.setString(8, carta.getPin());
+
+            if (tipo == TipiCarte.CREDITO) {
+                statement.setDouble(9, carta.getFido());
+                statement.setInt(10, carta.getStatoCarta().getIdStato());
+
+            } else
+                statement.setInt(9, carta.getStatoCarta().getIdStato());
+
+            if(statement.executeUpdate()>0)
+                return true;
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean delete(Carte carta) {
         return false;
     }
 
@@ -77,8 +138,8 @@ public class CarteDAOImpl implements CarteDAO{
 
             while(queryResult.next()) {
                 result.add(new CartaProxy(queryResult.getString("num_carta_credito"), queryResult.getBoolean("stato_pagamento_online"), queryResult.getDate("data_creazione").toString(),
-                        queryResult.getDate("data_scadenza").toString(), queryResult.getString("cvv"), queryResult.getBoolean("carta_fisica"), queryResult.getInt("canone_mensile"),
-                        queryResult.getString("pin"), MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualState(queryResult.getString("num_carta_credito"), true), TipiCarte.CREDITO));
+                        queryResult.getDate("data_scadenza").toString(), queryResult.getString("cvv"), queryResult.getBoolean("carta_fisica"), queryResult.getDouble("canone_mensile"),
+                        queryResult.getString("pin"), queryResult.getDouble("fido"), MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualState(queryResult.getString("num_carta_credito"), TipiCarte.CREDITO), TipiCarte.CREDITO));
             }
 
         }catch (SQLException e) {
@@ -86,7 +147,7 @@ public class CarteDAOImpl implements CarteDAO{
         }
     }
 
-    private void prendicarteDebito(Vector<Carte> result, String numCC) {
+    private void prendiCarteDebito(Vector<Carte> result, String numCC) {
         String query= "select * from carta_di_debito where num_cc= ?";
 
         try{
@@ -96,9 +157,9 @@ public class CarteDAOImpl implements CarteDAO{
             ResultSet queryResult= statement.executeQuery();
 
             while(queryResult.next()) {
-                result.add(new CartaProxy(queryResult.getString("num_carta_credito"), queryResult.getBoolean("stato_pagamento_online"), queryResult.getDate("data_creazione").toString(),
-                        queryResult.getDate("data_scadenza").toString(), queryResult.getString("cvv"), queryResult.getBoolean("carta_fisica"), queryResult.getInt("canone_mensile"),
-                        queryResult.getString("pin"), MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualState(queryResult.getString("num_carta_credito"), true), TipiCarte.CREDITO));
+                result.add(new CartaProxy(queryResult.getString("num_carta_debito"), queryResult.getBoolean("stato_pagamento_online"), queryResult.getDate("data_creazione").toString(),
+                        queryResult.getDate("data_scadenza").toString(), queryResult.getString("cvv"), queryResult.getBoolean("carta_fisica"), queryResult.getDouble("canone_mensile"),
+                        queryResult.getString("pin"), 0.0, MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualState(queryResult.getString("num_carta_credito"), TipiCarte.DEBITO), TipiCarte.DEBITO));
             }
 
         }catch (SQLException e) {
@@ -106,25 +167,4 @@ public class CarteDAOImpl implements CarteDAO{
         }
     }
 
-    private boolean eliminaCarta(Carte carta, boolean tipo) {
-        String carteQuery;
-
-        if(tipo) {
-            carteQuery = "DELETE FROM carta_di_credito WHERE num_carta_credito = ?";
-        }else{
-            carteQuery = "DELETE FROM carta_di_debito WHERE num_carta_debito = ?";
-
-        }
-        try {
-            PreparedStatement statement = DbConn.getConnection().prepareStatement(carteQuery);
-            statement.setString(1, carta.getNumCarta());
-
-            if (statement.executeUpdate() > 0)
-                return true;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
 }
