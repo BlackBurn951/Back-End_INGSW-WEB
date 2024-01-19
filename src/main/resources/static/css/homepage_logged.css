@@ -1,9 +1,35 @@
 header {
+    display: flex;
+    justify-content: space-between; /* Aggiunto per spostare gli elementi a destra */
+    align-items: center;
     background-color: #3498db;
     color: #fff;
     text-align: center;
+}
+
+.notifiche-esci {
     display: flex;
-    justify-content: center;
+    align-items: center; /* Aggiunto per allineare verticalmente l'iconaEsci */
+    gap:30vh;
+}
+
+.esciImage {
+    max-width: 80px; /* Modificato le dimensioni dell'iconaEsci a tuo piacimento */
+    max-height: 80px;
+    margin-left: 100vh; /* Aggiunto margine a sinistra per separare dall'elemento precedente */
+}
+
+.containerLogo {
+    margin-left: 10%;
+    display: flex;
+    align-items: center;
+}
+
+.container2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px; /* Ridotto il valore di gap */
 }
 
 
@@ -29,7 +55,7 @@ nav:hover {
     }
     .imageButton{
         align-items: center;
-        margin-left: 30px;
+        margin-left: 20px;
         margin-bottom: 10px;
     }
 }
@@ -44,8 +70,10 @@ nav:hover {
     max-height: 100%;
 }
 .imageButton{
-    max-width: 50%;
+    max-width: 70%;
 }
+
+
 
 .logo {
     width: 90px;
@@ -72,19 +100,6 @@ body{
     font-family: Arial, sans-serif;
 }
 
-.notifiche-esci{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15vh;
-}
-
-.container2{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 120vh;
-}
 
 .titolo{
     font-size: 4vh;
@@ -99,7 +114,7 @@ body{
 
 
 .containerDatiConto {
-    margin-top: -13%;
+    transform: translateY(-50%);
     text-align: center;
     background-color:  rgba(208, 208, 208, 0.9);
     border-radius: 10px;
@@ -109,8 +124,8 @@ body{
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-#item{
-    height: 4vh;
+.item{
+    height: 2vh;
     cursor: pointer;
 
 }
@@ -119,11 +134,12 @@ body{
     margin-bottom: -3vh;
 }
 
-#item:hover{
+.item:hover{
     background-color: white;
 }
 
 .containerDatiTransazioni {
+    transform: translateY(-50%);
     max-height: 38vh;
     text-align: center;
     background-color:  rgba(208, 208, 208, 0.9);
@@ -137,7 +153,7 @@ body{
 
 
 .scrollable-list {
-    max-height: 300px; /* Imposta l'altezza massima desiderata */
+    max-height: 150px; /* Imposta l'altezza massima desiderata */
     overflow-y: auto; /* Aggiunge la barra di scorrimento verticale se necessario */
 }
 

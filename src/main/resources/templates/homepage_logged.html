@@ -16,9 +16,11 @@
     <div class="containerLogo">
         <img class="logo" src="/images/logoBanca.png" alt=""></div>
         <div class="container2">
-            <h1 class="titolo">Conto Corrente Personale</h1>
             <div class="notifiche-esci">
-                <a href="/redirect/tornaHomepage" class="logout">ESCI</a>
+            <h1 class="titolo">Conto Corrente Personale</h1>
+                <a href="/redirect/tornaHomepage" class="logout">
+                    <img class="esciImage" src="/images/iconaEsci.png" alt="">
+                </a>
             </div>
         </div>
     </div>
@@ -44,9 +46,9 @@
 <body>
   <nav>
       <ul>
-          <li><a id="redirect" href="/personal_data"><img class="imageButton" src="/images/userProfileImage.png" alt=""></a></li>
-          <li><a id="redirect2" href="/redirect/vaiPaginaCarte"><img class="imageButton" src="/images/credit.png" alt=""></a></li>
-          <li><a id="redirect3" href="/redirect/vaiPaginaPagamenti"><img class="imageButton" src="/images/payment.png" alt=""></a></li>
+          <li><a id="redirect" href="/personal_data"><img class="imageButton" src="/images/iconaProfilo.png" alt=""></a></li>
+          <li><a id="redirect2" href="/redirect/vaiPaginaCarte"><img class="imageButton" src="/images/iconaLeTueCarte.png" alt=""></a></li>
+          <li><a id="redirect3" href="/redirect/vaiPaginaPagamenti"><img class="imageButton" src="/images/iconaPagamenti.png" alt=""></a></li>
       </ul>
       <div class="picture">
           <img class="arrow" src="/images/arrow-right.png" alt="">
@@ -66,7 +68,15 @@
             <div>
                 <!-- Visualizza i dati dal database -->
 
-                <p id="item" onclick="mostraNascondiDettagli('dettagli-${item.id}')"> transazione</p>
+
+                <p class="item" onclick="mostraNascondiDettagli('dettagli-${item.id}')"> 2024/18/02 100€ Pagamento debito</p>
+                <p class="item" onclick="mostraNascondiDettagli('dettagli-${item.id}')"> 2024/18/02 104€ Pagamento debito</p>
+                <p class="item" onclick="mostraNascondiDettagli('dettagli-${item.id}')"> 2024/18/02 1345€ Pagamento debito</p>
+                <p class="item" onclick="mostraNascondiDettagli('dettagli-${item.id}')"> 2024/18/02 3233€ Pagamento debito</p>
+                <p class="item" onclick="mostraNascondiDettagli('dettagli-${item.id}')"> 2024/18/02 10€ Pagamento debito</p>
+
+
+
 
                 <!-- Elementi aggiuntivi nascosti inizialmente -->
                 <div id="dettagli-${item.id}" class="additional-info">
