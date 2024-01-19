@@ -13,10 +13,14 @@ document.addEventListener("DOMContentLoaded", modifyLinks);
 
 function mostraNascondiDettagli(elementId) {
     var element = document.getElementById(elementId);
-    if (element.style.display === "none") {
+    var popup = document.getElementById("popup");
+
+    if (element.style.display === "none" || element.style.display === "") {
         element.style.display = "block";
+        popup.style.display = "block";
     } else {
         element.style.display = "none";
+        popup.style.display = "none";
     }
 }
 
