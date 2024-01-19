@@ -3,6 +3,8 @@ package com.example.progettowebtest.DAO.Transazioni;
 import com.example.progettowebtest.Connection.DbConn;
 import com.example.progettowebtest.DAO.MagnusDAO;
 import com.example.progettowebtest.Model.Carte.Carta;
+import com.example.progettowebtest.Model.Carte.Carte;
+import com.example.progettowebtest.Model.Carte.TipiCarte;
 import com.example.progettowebtest.Model.Proxy.TipoTransazione;
 import com.example.progettowebtest.Model.Proxy.Transazione;
 import com.example.progettowebtest.Model.Proxy.TransazioneProxy;
@@ -54,11 +56,11 @@ public class DepositoDAOImpl implements DepositoDAO{
             ResultSet queryResult= statement.executeQuery();
 
             if(proxy && queryResult.next()) {
-                Carta carta;
+                Carte carta;
                 if(queryResult.getString("num_carta_credito")==null)
-                    carta= MagnusDAO.getInstance().getCarteDAO().doRetriveByKey(queryResult.getString("num_carta_credito"), true);
+                    carta= MagnusDAO.getInstance().getCarteDAO().doRetriveByKey(queryResult.getString("num_carta_credito"), TipiCarte.CREDITO, proxy);
                 else
-                    carta= MagnusDAO.getInstance().getCarteDAO().doRetriveByKey(queryResult.getString("num_carta_debito"),false);
+                    carta= MagnusDAO.getInstance().getCarteDAO().doRetriveByKey(queryResult.getString("num_carta_debito"), TipiCarte.DEBITO, proxy);
                 return new Deposito(queryResult.getDate("data_transazione").toString(), queryResult.getDouble("costo_commissione"),
                         queryResult.getBoolean("esito"), queryResult.getInt("id_deposito"), queryResult.getDouble("importo"),
                         MagnusDAO.getInstance().getMezzoDAO().doRetriveByKey(queryResult.getInt("id_mezzo")), carta);
@@ -75,7 +77,7 @@ public class DepositoDAOImpl implements DepositoDAO{
 
     @Override
     public boolean saveOrUpdate(Deposito depo, String numCC) {
-        String query="insert into deposito(importo, id_mezzo, num_carta_credito, num_carta_debito) values(?, ?, ?, ?, ?)";
+        String query="insert into deposito(importo, id_mezzo, num_carta_credito, num_carta_debito) values(?, ?, ?, ?)";
 
         try{
             PreparedStatement statement= DbConn.getConnection().prepareStatement(query);

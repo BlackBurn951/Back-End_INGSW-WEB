@@ -54,12 +54,7 @@ public class CartaProxy implements Carte{
     public boolean isCartaFisica() {return cartaFisica;}
 
     @Override
-    public double getCanoneMensile() {
-        if(tipo==TipiCarte.DEBITO)
-            return 0.60;
-        else
-            return 10.0;
-    }
+    public double getCanoneMensile() {return canoneMensile;}
 
     @Override
     public String getPin() {return pin;}
@@ -70,11 +65,11 @@ public class CartaProxy implements Carte{
     @Override
     public ContoCorrente getContoRiferimento() {
         if(tipo==TipiCarte.DEBITO) {
-            cartaReale = MagnusDAO.getInstance().getCarteDAO().doRetriveByKey(numCarta, false, true);
+            cartaReale = MagnusDAO.getInstance().getCarteDAO().doRetriveByKey(numCarta, TipiCarte.DEBITO, true);
             return cartaReale.getContoRiferimento();
         }
         else{
-            cartaReale = MagnusDAO.getInstance().getCarteDAO().doRetriveByKey(numCarta, true, true);
+            cartaReale = MagnusDAO.getInstance().getCarteDAO().doRetriveByKey(numCarta, TipiCarte.CREDITO, true);
             return cartaReale.getContoRiferimento();
         }
     }

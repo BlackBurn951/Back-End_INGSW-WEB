@@ -60,7 +60,7 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO{
                 result= new ContoCorrente(queryResult.getString("num_cc"), queryResult.getString("iban"), queryResult.getString("pin_sicurezza"), queryResult.getDate("data_apertura").toString(),
                         queryResult.getDouble("saldo"), queryResult.getInt("tasso_interesse"), queryResult.getInt("tariffa_annuale"), indFatturazione, intestatario);
                 result.setStatoConto(state);
-                //aggiunta dei proxy
+                //AGGIUNTA DEI PROXY
             }
 
         }catch (SQLException e) {
@@ -92,7 +92,7 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO{
                 result= new ContoCorrente(queryResult.getString("num_cc"), queryResult.getString("iban"), queryResult.getString("pin_sicurezza"), queryResult.getDate("data_apertura").toString(),
                         queryResult.getDouble("saldo"), queryResult.getInt("tasso_interesse"), queryResult.getInt("tariffa_annuale"), indFatturazione, intestatario);
                 result.setStatoConto(state);
-                //aggiunta dei proxy
+                //AGGIUNTA DEI PROXY
             }
 
         }catch (SQLException e) {
