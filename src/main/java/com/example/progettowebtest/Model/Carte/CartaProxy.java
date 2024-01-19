@@ -16,7 +16,7 @@ public class CartaProxy implements Carte{
     private double canoneMensile;
     private String pin;
     private Stato statoCarta;
-    private Carta cartaReale;
+    private Carte cartaReale;
     private TipiCarte tipo;
 
     public CartaProxy(String numCarta, boolean pagamentoOnline, String dataCreazione, String dataScadenza, String cvv, boolean cartaFisica,

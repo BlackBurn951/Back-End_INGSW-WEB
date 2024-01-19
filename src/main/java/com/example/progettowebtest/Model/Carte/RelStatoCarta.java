@@ -10,9 +10,9 @@ public class RelStatoCarta {
     private Date dataInizioStato;
     private Date dataFineStato;
     private Stato st;
-    private Carta carta;
+    private Carte carta;
 
-    public RelStatoCarta(int id, String dataInizioStato, String dataFineStato, Stato st, Carta carta) {
+    public RelStatoCarta(int id, String dataInizioStato, String dataFineStato, Stato st, Carte carta) {
         this.id = id;
         this.dataInizioStato = Date.valueOf(dataInizioStato);
         this.dataFineStato = Date.valueOf(dataFineStato);
@@ -23,6 +23,8 @@ public class RelStatoCarta {
     public int getId() {return id;}
     public Date getDataInizioStato() {return dataInizioStato;}
     public Date getDataFineStato() {return dataFineStato;}
-    public Stato getSt() {return st;}
-    public Carta getCarta() {return carta;}
+    public Stato getStato() {return st;}
+    public Carte getCarta() {return carta;}
+
+    public void setDataFineStato(Date dataFineStato) {this.dataFineStato = dataFineStato;}
 }
