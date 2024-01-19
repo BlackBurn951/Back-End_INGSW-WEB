@@ -7,6 +7,7 @@ public class EmailData {
     private String subject;
     private String userId;
 
+
     public String getNomeCognome() {
         return nomeCognome;
     }

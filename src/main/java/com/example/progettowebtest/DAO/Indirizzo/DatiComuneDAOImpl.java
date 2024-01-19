@@ -73,7 +73,7 @@ public class DatiComuneDAOImpl implements DatiComuneDAO{
                 break;
         }
 
-        String query = "SELECT * FROM dati_comune WHERE "+ columnName+" = ?";
+        String query = "SELECT * FROM dati_comune WHERE " + columnName + " = ?";
         try {
             PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
             statement.setString(1, att);

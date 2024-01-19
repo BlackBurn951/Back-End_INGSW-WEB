@@ -10,6 +10,7 @@ public interface TipologiaBollettinoDAO {
     Vector<TipologiaBollettino> doRetriveAll();
     Vector<Transazione> doRetriveAllForCC(String numCC);
     TipologiaBollettino doRetriveByKey(int id);
-    boolean saveOrUpdate(TipologiaBollettino bol);
+    TipologiaBollettino doRetriveByAttribute(String tipo);
+    boolean saveOrUpdate(TipologiaBollettino bol, String numCC);
     boolean delete(TipologiaBollettino bol);
 }

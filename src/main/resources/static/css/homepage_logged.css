@@ -1,10 +1,37 @@
 header {
+    display: flex;
+    justify-content: space-between; /* Aggiunto per spostare gli elementi a destra */
+    align-items: center;
     background-color: #3498db;
     color: #fff;
     text-align: center;
-    display: flex;
-    justify-content: center;
 }
+
+.notifiche-esci {
+    display: flex;
+    align-items: center; /* Aggiunto per allineare verticalmente l'iconaEsci */
+    gap:30vh;
+}
+
+.esciImage {
+    max-width: 80px; /* Modificato le dimensioni dell'iconaEsci a tuo piacimento */
+    max-height: 80px;
+    margin-left: 100vh; /* Aggiunto margine a sinistra per separare dall'elemento precedente */
+}
+
+.containerLogo {
+    margin-left: 10%;
+    display: flex;
+    align-items: center;
+}
+
+.container2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px; /* Ridotto il valore di gap */
+}
+
 
 nav {
     background-color: whitesmoke;
@@ -28,7 +55,7 @@ nav:hover {
     }
     .imageButton{
         align-items: center;
-        margin-left: 30px;
+        margin-left: 20px;
         margin-bottom: 10px;
     }
 }
@@ -43,12 +70,14 @@ nav:hover {
     max-height: 100%;
 }
 .imageButton{
-    max-width: 50%;
+    max-width: 70%;
 }
 
+
+
 .logo {
-    width: 90px; /* Imposta la larghezza desiderata */
-    height: auto; /* Imposta l'altezza automaticamente in base all'aspetto originale */
+    width: 90px;
+    height: auto;
     margin-left: -40px;
 }
 
@@ -66,23 +95,11 @@ li {
 }
 
 body{
+    overflow: hidden;
     margin: auto;
     font-family: Arial, sans-serif;
 }
 
-.notifiche-esci{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15vh;
-}
-
-.container2{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 120vh;
-}
 
 .titolo{
     font-size: 4vh;
@@ -95,34 +112,134 @@ body{
     font-size: 3vh;
 }
 
+
 .containerDatiConto {
+    transform: translateY(-50%);
     text-align: center;
-    background-color:  rgba(208, 208, 208, 0.9); /* Cambia il colore di sfondo se necessario */
+    background-color:  rgba(208, 208, 208, 0.9);
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     width: 50%;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Aggiungi una leggera ombra se necessario */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.item{
+    cursor: pointer;
+
+}
+h2#titleTrans {
+    margin-bottom: 0; /* Rimuovi il margine inferiore dell'h2 */
+}
+/*
+.titleTrans{
+    margin-bottom: -3vh;
+}*/
+
+.item:hover{
+    background-color: white;
+}
+
+#transazioniTable {
+    overflow-y: auto;
 }
 
 .containerDatiTransazioni {
+    margin-top: -2vh;
+    transform: translateY(-50%);
+    max-height: 38vh;
     text-align: center;
-    background-color:  rgba(208, 208, 208, 0.9); /* Cambia il colore di sfondo se necessario */
+    background-color: rgba(208, 208, 208, 0.9);
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     width: 50%;
-    gap:5vh;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Aggiungi una leggera ombra se necessario */
+    gap: 5vh;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    /* Aggiungi queste regole per abilitare lo scrolling */
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+
+
+.scrollable-list {
+    margin-top: -20%;
+    max-height: 150px;
+}
+
+
+button {
+    width: 30%;
+    background-color: #3498db;
+    color: #ffffff;
+    padding: 10px 10px;
+    font-size: 18px;
+    font-weight: 540;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+}
+
+
+.popup {
+    display: none;
+    position: fixed;
+    left: 50%;
+    width: 50%;
+    transform: translate(-50%, -100%);
+    background: rgb(217, 217, 217);
+    border-radius: 2vh ;
+    border: 2px solid #000000;
+    padding: 20px;
+    height: 100%;
+    z-index: 2;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+
+.additional-info {
+    display: none; /* Inizialmente nascondi gli elementi aggiuntivi */
+    margin-top: 10px; /* Aggiungi uno spazio sopra gli elementi aggiuntivi */
 }
 
 .informazioniConto{
-    background: url('/images/allec-gomes-gJ8VovObjRA-unsplash.jpg') center no-repeat;
+    background: url('../images/allec-gomes-gJ8VovObjRA-unsplash.jpg') center no-repeat;
     background-size: cover;
     align-items: center;
     padding: 180px;
     display: flex;
     flex-direction: column;
     gap:5vh;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Aggiungi una leggera ombra se necessario */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+
+/*CENTRO NOTIFICHE DA IMPLEMENTARE*/
+
+
+.centroNotifiche {
+    position: relative;
+    cursor: pointer;
+}
+
+.notificheMenu {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    z-index: 1;
+}
+
+.notificheMenu li {
+    list-style: none;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
 }

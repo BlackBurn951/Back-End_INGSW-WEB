@@ -1,6 +1,7 @@
 package com.example.progettowebtest.Model.Proxy;
 
 import com.example.progettowebtest.Model.Carte.Carta;
+import com.example.progettowebtest.Model.Carte.Carte;
 import com.example.progettowebtest.Model.Transazioni.Mezzo;
 import com.example.progettowebtest.Model.Transazioni.TipologiaBollettino;
 
@@ -13,7 +14,7 @@ public interface Transazione {
     double getCostoTransazione();
     boolean getEsito();
     String getNomeBeneficiario();
-    public String getCognomeBeneficiario();
+    String getCognomeBeneficiario();
     int getId();
     String getIbanDestinatario();
     String getNumCcDest();
@@ -21,5 +22,6 @@ public interface Transazione {
     String getValutaPagamento();
     String getPaeseDestinatario();
     Mezzo getMezzo();
-    Carta getCartaEsecuzione();
+    Carte getCartaEsecuzione();
+    void setId(int id);
 }

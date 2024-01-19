@@ -5,20 +5,11 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Title</title>
+  <link rel="icon" href="/images/logoBanca.ico" type="image/x-icon">
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      // Ottieni l'ID della sessione dall'URL
-      var urlParams = new URLSearchParams(window.location.search);
-      var idSession = urlParams.get("IDSession");
+  <title>Dati personali</title>
+  <script src="/javaScripts/funzioniDatiProfilo.js"></script>
 
-      // Modifica l'href del link con l'ID della sessione
-      var linkElement = document.querySelector("#buttonGoBack");
-      var linkHref = linkElement.getAttribute("href");
-      linkElement.setAttribute("href", linkHref + '?IDSession='+idSession);
-    });
-  </script>
 </head>
 <body>
 <header>
@@ -116,12 +107,63 @@
             </div>
           </form>
           <div class="bottoni">
-            <button type="button">Modifica email</button>
-            <button type="button">Modifica password</button>
-            <button type="button">Sospendi conto</button>
-            <button type="button">Chiudi conto</button>
+            <button onclick="openPopup()" type="button">Modifica email</button>
+            <button onclick="openPassPopup()" type="button">Modifica password</button>
+            <button onclick="openSosPopup(1, 'sospendi')" type="button">Sospendi conto</button>
+            <button onclick="openSosPopup(2, 'chiudi')" type="button">Chiudi conto</button>
 
           </div>
   </div>
+
+<div id="popup" class="popup">
+  <div class="popup-content">
+    <label class="labelPop" for="nuovaEmail">Nuova email</label>
+    <input class="inputPopUp" id="nuovaEmail" type="text">
+    <div class="error-message" id="errorEmailMessage" style="color: red; display: none;">Formato email non valido</div>
+    <div class="contBott">
+      <button class="bottonePopUp" onclick="closePopup()">Annulla</button>
+      <button class="bottonePopUp" onclick="validateEmail()">Conferma</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<div id="popupSospensione" class="popup">
+  <div id="sosPopup-content">
+    <label class="labelPop" for="passwordSosp"></label>
+    <input class="inputPasPopUp" id="passwordSosp" type="password" placeholder="Inserisci la password">
+    <img id="confermaPassIcon" class="show-password2" src="/images/hide.png" alt="" onclick="confermaToggleNuovaPass()">
+    <div class="error-message" id="errorPassword" style="color: red; display: none;">Password errata</div>
+    <div class="contBott">
+      <button class="bottonePopUp" onclick="closePopup()">Annulla</button>
+      <button class="bottonePopUp" onclick="sospendiChiudi()">Conferma</button>
+    </div>
+  </div>
+</div>
+
+
+<div id="popupPasword" class="popup">
+  <div id="passPopup-content">
+    <label class="labelPop" for="nuovaPass">Nuova password</label>
+    <input class="inputPopUp" id="nuovaPass" type="password">
+    <img id="nuovaPassIcon" class="show-password" src="/images/hide.png" alt="" onclick="toggleNuovaPass()">
+    <span id="nuovaPassError" class="error"></span>
+
+    <label class="labelPop" for="confPass">Conferma password</label>
+    <input class="inputPopUp" id="confPass" type="password">
+    <img id="confPassIcon" class="show-password" src="/images/hide.png" alt="" onclick="toggleConfPass()">
+    <span id="confPassError" class="error"></span>
+
+    <div class="contBott">
+      <button class="bottonePopUp" onclick="closePopup()">Annulla</button>
+      <button class="bottonePopUp" onclick="validatePassword()" >Conferma</button>
+    </div>
+  </div>
+</div>
+
+
 </body>
 </html>
