@@ -25,7 +25,7 @@ public class PrelievoDAOImpl implements PrelievoDAO {
     @Override
     public Vector<Transazione> doRetriveAllForCC(String numCC) {
         Vector<Transazione> result= new Vector<>();
-        String query= "select r.data_transazione, b.importo from prelievo as b, rel_cc_prelievo as r where b.id_prelievo=r.id_prelievo";
+        String query= "select b.id_prelievo, r.data_transazione, b.importo from prelievo as b, rel_cc_prelievo as r where b.id_prelievo=r.id_prelievo";
 
         try{
             PreparedStatement statement= DbConn.getConnection().prepareStatement(query);

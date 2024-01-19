@@ -21,14 +21,14 @@ public class BonificoSepaDAOImpl implements BonificoSepaDAO {
     @Override
     public Vector<Transazione> doRetriveAllForCC(String numCC) {
         Vector<Transazione> result= new Vector<>();
-        String query= "select r.data_transazione, b.importo, b.causale from bonifico_area_sepa as b, rel_cc_bon_sepa as r where b.id_sepa= r.id_sepa";
+        String query= "select b.id_sepa, r.data_transazione, b.importo, b.causale from bonifico_area_sepa as b, rel_cc_bon_sepa as r where b.id_sepa= r.id_sepa";
 
         try{
             PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
             ResultSet queryResult= statement.executeQuery();
 
             while(queryResult.next()) {
-                result.add(new TransazioneProxy(queryResult.getInt("id_internazionale"), queryResult.getDate("data_transazione").toString(), queryResult.getDouble("importo"),
+                result.add(new TransazioneProxy(queryResult.getInt("id_sepa"), queryResult.getDate("data_transazione").toString(), queryResult.getDouble("importo"),
                         queryResult.getString("causale"), TipoTransazione.BONIFICOSEPA));
             }
 

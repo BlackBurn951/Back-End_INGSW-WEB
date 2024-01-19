@@ -201,29 +201,33 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO{
                 statement.setInt(7, contoCorr.getTariffaAnnuale());
                 statement.setString(8, contoCorr.getIndFatturazione().getNomeVia());
                 statement.setString(9, contoCorr.getIndFatturazione().getNumCivico());
+                statement.setString(10, contoCorr.getIntestatario().getCodiceFiscale());
                 statement.setInt(11, contoCorr.getIndFatturazione().getComune().getIdComune());
                 statement.setInt(12, contoCorr.getIndFatturazione().getTipologiaVia().getIdVia());
             }
-            statement.executeUpdate();
+            int i= statement.executeUpdate();
+            System.out.println(i);
+            if(i>0) {
 
-            if (fristTime) {
-                Stato attivo= MagnusDAO.getInstance().getStatoDAO().doRetriveByAttribute(ValoriStato.ATTIVO);
-                contoCorr.setStatoConto(attivo);
+                if (fristTime) {
+                    Stato attivo = MagnusDAO.getInstance().getStatoDAO().doRetriveByAttribute(ValoriStato.ATTIVO);
+                    contoCorr.setStatoConto(attivo);
 
-                contoCorr.setNumCC(numConto);
-                contoCorr.setIban(iban);
-                contoCorr.setPin(pin);
-                contoCorr.setStatoConto(attivo);
-                contoCorr.setSaldo(500.0);
-                contoCorr.setTariffaAnnuale(20);
-                contoCorr.setTassoInteresse(3);
+                    contoCorr.setNumCC(numConto);
+                    contoCorr.setIban(iban);
+                    contoCorr.setPin(pin);
+                    contoCorr.setStatoConto(attivo);
+                    contoCorr.setSaldo(500.0);
+                    contoCorr.setTariffaAnnuale(20);
+                    contoCorr.setTassoInteresse(3);
 
-                RelStatoConto relazione= new RelStatoConto(contoCorr.getDataApertura().toString(), attivo, contoCorr);
-                if(!MagnusDAO.getInstance().getRelStatoContoDAO().saveOrUpdate(relazione))
-                    result= false;
+                    RelStatoConto relazione = new RelStatoConto(contoCorr.getDataApertura().toString(), attivo, contoCorr);
+                    if (!MagnusDAO.getInstance().getRelStatoContoDAO().saveOrUpdate(relazione))
+                        result = false;
+                }
+
+                result = true;
             }
-
-            result= true;
 
         }catch (SQLException e) {
             e.printStackTrace();

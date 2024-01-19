@@ -23,4 +23,5 @@ public interface Transazione {
     String getPaeseDestinatario();
     Mezzo getMezzo();
     Carte getCartaEsecuzione();
+    void setId(int id);
 }
