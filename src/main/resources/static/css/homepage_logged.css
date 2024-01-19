@@ -128,13 +128,20 @@ body{
     cursor: pointer;
 
 }
-
+h2#titleTrans {
+    margin-bottom: 0; /* Rimuovi il margine inferiore dell'h2 */
+}
+/*
 .titleTrans{
     margin-bottom: -3vh;
-}
+}*/
 
 .item:hover{
     background-color: white;
+}
+
+#transazioniTable {
+    overflow-y: auto;
 }
 
 .containerDatiTransazioni {
@@ -142,20 +149,24 @@ body{
     transform: translateY(-50%);
     max-height: 38vh;
     text-align: center;
-    background-color:  rgba(208, 208, 208, 0.9);
+    background-color: rgba(208, 208, 208, 0.9);
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     width: 50%;
-    gap:5vh;
+    gap: 5vh;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    /* Aggiungi queste regole per abilitare lo scrolling */
+    overflow-y: auto;
+    overflow-x: hidden;
 }
+
 
 
 .scrollable-list {
     margin-top: -20%;
     max-height: 150px;
-    overflow-y: visible;
 }
 
 

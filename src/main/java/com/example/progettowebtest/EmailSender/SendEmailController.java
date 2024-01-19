@@ -54,21 +54,21 @@ public class SendEmailController {
             session.setAttribute("TempoInvioOTP", minuti);
             String emailTemplate;
             String htm_otp;
-            if(emailData.iseConfermaCarta()){
-                emailTemplate = EmailTemplateLoader.loadEmailTemplate("/email_conf_carta_template.html");
-                htm_otp = emailTemplate
-                        .replace("$NOME_COGNOME$", nomeCognome)
-                        .replace("$PIN_CARTA$", generatedOTP)//DA AGGIUNGERE IL PIN CARTA
-                        .replace("$NUMERO_CARTA$", generatedOTP)//DA AGGIUNGERE IL PIN CARTA
-                        .replace("$SCADENZA_CARTA$", generatedOTP)//DA AGGIUNGERE IL PIN CARTA
-                        .replace("$CVV_CARTA$", generatedOTP);//DA AGGIUNGERE IL PIN CARTA
-            }else{
-                emailTemplate = EmailTemplateLoader.loadEmailTemplate("/email_otp_template.html");
-                htm_otp = emailTemplate
-                        .replace("$NOME_COGNOME$", nomeCognome)
-                        .replace("$GENERATED_OTP$", generatedOTP);
 
-            }
+            emailTemplate = EmailTemplateLoader.loadEmailTemplate("/email_conf_carta_template.html");
+            htm_otp = emailTemplate
+                    .replace("$NOME_COGNOME$", nomeCognome)
+                    .replace("$PIN_CARTA$", generatedOTP)
+                    .replace("$NUMERO_CARTA$", generatedOTP)//DA AGGIUNGERE IL PIN CARTA
+                    .replace("$SCADENZA_CARTA$", generatedOTP)//DA AGGIUNGERE IL PIN CARTA
+                    .replace("$CVV_CARTA$", generatedOTP);//DA AGGIUNGERE IL PIN CARTA
+
+            emailTemplate = EmailTemplateLoader.loadEmailTemplate("/email_otp_template.html");
+            htm_otp = emailTemplate
+                    .replace("$NOME_COGNOME$", nomeCognome)
+                    .replace("$GENERATED_OTP$", generatedOTP);
+
+
 
             Message message = createMessage(emailData.getSender(), emailData.getTo(), emailData.getSubject(), htm_otp);
             sendMessage(getService(), emailData.getUserId(), message);

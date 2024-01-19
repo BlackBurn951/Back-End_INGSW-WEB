@@ -61,6 +61,7 @@
         <h3>Saldo: <span th:text="${conto.getSaldo()}"></span></h3>
         <h3>Stato: <span th:text="${conto.getStatoConto().getValoreStato()}"></span></h3>
     </div>
+
       <div class="containerDatiTransazioni">
           <h2 id="titleTrans">Ultime transazioni</h2>
 
@@ -73,7 +74,6 @@
               </tr>
               </thead>
               <tbody>
-              <div class="scrollable-list">
                   <tr class="item" th:each="item, iterStat : ${conto.getMovimenti()}" onclick="mostraNascondiDettagli('trans')">
                       <td th:text="${item.getDataTransazione()}"></td>
                       <td th:text="${item.getImporto()}"></td>
@@ -92,14 +92,12 @@
                               <p th:if="${item.getPaeseDestinatario()} ne 'ERRORE' " th:text="${item.getPaeseDestinatario()}"></p>
                               <p th:if="${item.getNumCcDest()} ne 'ERRORE' " th:text="${item.getNumCcDest()}"></p>
                           </div>
-                          
+
                           <button onclick="mostraNascondiDettagli('trans')">Chiudi</button>
 
                       </div>
                   </tr>
-                  <div>
-                  </div>
-              </div>
+
               </tbody>
 
           </table>
