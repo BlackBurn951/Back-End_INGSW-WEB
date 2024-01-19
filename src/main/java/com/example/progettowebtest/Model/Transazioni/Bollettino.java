@@ -11,10 +11,9 @@ public class Bollettino extends DatiTransazione implements Transazione {
     private String numCcDest;
     private TipologiaBollettino tipoBol;
 
-    public Bollettino(String dataTransazione, double costoTransazione, boolean esito, int idBollettino,
+    public Bollettino(String dataTransazione, double costoTransazione, boolean esito,
                       double importo, String causale, String numCcDest, TipologiaBollettino tipoBol) {
         super(dataTransazione, costoTransazione, esito);
-        this.idBollettino = idBollettino;
         this.importo = importo;
         this.causale = causale;
         this.numCcDest = numCcDest;
@@ -57,5 +56,9 @@ public class Bollettino extends DatiTransazione implements Transazione {
     public Carte getCartaEsecuzione() {
         Carte result= null;
         return result;
+    }
+    @Override
+    public void setId(int id) {
+        this.idBollettino = id;
     }
 }

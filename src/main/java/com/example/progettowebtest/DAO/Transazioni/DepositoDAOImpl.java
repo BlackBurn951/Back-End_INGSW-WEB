@@ -26,7 +26,7 @@ public class DepositoDAOImpl implements DepositoDAO{
     @Override
     public Vector<Transazione> doRetriveAllForCC(String numCC) {
         Vector<Transazione> result= new Vector<>();
-        String query= "select r.data_transazione, b.importo from deposito as b, rel_cc_deposito as r where b.id_deposito=r.id_deposito";
+        String query= "select  b.id_deposito ,r.data_transazione, b.importo from deposito as b, rel_cc_deposito as r where b.id_deposito=r.id_deposito";
 
         try{
             PreparedStatement statement= DbConn.getConnection().prepareStatement(query);

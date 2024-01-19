@@ -2,14 +2,12 @@ package com.example.progettowebtest.ClassiRequest;
 
 public class DatiBollettino {
 
-    private int tipologiaBollettino;
-
+    private String tipologiaBollettino;
     private String numCCDest;
-
     private double importo;
     private String causale;
 
-    public int getTipologiaBollettino() {
+    public String getTipologiaBollettino() {
         return tipologiaBollettino;
     }
 

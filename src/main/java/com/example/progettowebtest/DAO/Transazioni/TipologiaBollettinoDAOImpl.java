@@ -42,6 +42,26 @@ public class TipologiaBollettinoDAOImpl implements TipologiaBollettinoDAO{
     }
 
     @Override
+    public TipologiaBollettino doRetriveByAttribute(String tipo) {
+        TipologiaBollettino result= null;
+        String query= "select * from tipologia_bollettino where tipo= ?";
+
+        try{
+            PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
+            statement.setString(1, tipo);
+
+            ResultSet queryResult= statement.executeQuery();
+
+            if(queryResult.next())
+                result= new TipologiaBollettino(queryResult.getInt("id_tipologia_bollettino"), queryResult.getString("tipo"));
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
     public boolean saveOrUpdate(TipologiaBollettino bol, String numCC) {
         return false;
     }
