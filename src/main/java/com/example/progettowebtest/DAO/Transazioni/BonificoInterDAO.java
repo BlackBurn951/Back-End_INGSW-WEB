@@ -11,5 +11,5 @@ public interface BonificoInterDAO {
     Vector<Transazione> doRetriveAllForCC(String numCC);
     Transazione doRetriveByKey(int id, boolean proxy);
     boolean saveOrUpdate(BonificoInter bonInt, String numCC);
-    boolean delete(BonificoInter bonInt);
+    boolean delete(Transazione bonInt);
 }

@@ -6,14 +6,14 @@ import com.example.progettowebtest.Model.Stato;
 import java.sql.Date;
 
 public interface Carte {
-    String getNumCarta() {return numCarta;}
-    boolean isPagamentoOnline() {return pagamentoOnline;}
-    Date getDataCreazione() {return dataCreazione;}
-    Date getDataScadenza() {return dataScadenza;}
-    String getCvv() {return cvv;}
-    boolean isCartaFisica() {return cartaFisica;}
-    double getCanoneMensile() {return canoneMensile;}
-    String getPin() {return pin;}
-    ContoCorrente getContoRiferimento() {return contoRiferimento;}
-    Stato getStatoCarta() {return statoCarta;}
+    String getNumCarta();
+    boolean isPagamentoOnline();
+    Date getDataCreazione();
+    Date getDataScadenza();
+    String getCvv();
+    boolean isCartaFisica();
+    double getCanoneMensile();
+    String getPin();
+    ContoCorrente getContoRiferimento();
+    Stato getStatoCarta();
 }

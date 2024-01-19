@@ -87,10 +87,23 @@ public class BonificoSepaDAOImpl implements BonificoSepaDAO {
     }
 
     @Override
-    public boolean delete(BonificoSepa bonSepa) {
+    public boolean delete(Transazione bon) {
+        String query = "DELETE FROM rel_cc_bon_sepa WHERE id_sepa = ?";
+
+        try {
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
+            statement.setInt(1, bon.getId());
+
+            if (statement.executeUpdate()>0  && eliminaTransazione(bon)) {
+                return true;
+            }
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return false;
     }
-
 
     //Metodi di servizio
     private boolean inserisciRelazion(BonificoSepa bon, String numCC) {
@@ -110,6 +123,22 @@ public class BonificoSepaDAOImpl implements BonificoSepaDAO {
                 return true;
 
         }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private boolean eliminaTransazione(Transazione bon) {
+        String bonificoQuery = "DELETE FROM bonifico_area_sepa WHERE id_sepa = ?";
+
+        try {
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(bonificoQuery);
+            statement.setInt(1, bon.getId());
+
+            if (statement.executeUpdate() > 0)
+                return true;
+
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;

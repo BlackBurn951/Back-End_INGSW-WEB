@@ -11,5 +11,5 @@ public interface BollettinoDAO{
     Vector<Transazione> doRetriveAllForCC(String numCC);
     Transazione doRetriveByKey(int id, boolean proxy);
     boolean saveOrUpdate(Bollettino bol, String numCC);
-    boolean delete(Bollettino bol);
+    boolean delete(Transazione bol);
 }
