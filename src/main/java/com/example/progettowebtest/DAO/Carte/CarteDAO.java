@@ -9,6 +9,6 @@ public interface CarteDAO {
     Vector<Carte> doRetriveAllForCC(String numCC);
     Carte doRetriveByKey(String numCarta, boolean tipo, boolean proxy);
     boolean saveOrUpdate(Carte carta);
-    boolean delete(Carte carta);
+    boolean delete(Carte carta, boolean tipo);
 
 }

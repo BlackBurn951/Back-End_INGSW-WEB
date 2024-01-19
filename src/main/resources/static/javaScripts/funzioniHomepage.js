@@ -11,6 +11,17 @@ function modifyLinks() {
 document.addEventListener("DOMContentLoaded", modifyLinks);
 
 
+function mostraNascondiDettagli(elementId) {
+    var element = document.getElementById(elementId);
+    if (element.style.display === "none") {
+        element.style.display = "block";
+    } else {
+        element.style.display = "none";
+    }
+}
+
+
+
 
 
 
@@ -27,3 +38,8 @@ function eliminaNotifica(notificaId) {
     // Puoi fare una chiamata AJAX al backend per gestire l'eliminazione
     alert("Notifica eliminata: " + notificaId);
 }
+
+
+
+
+
