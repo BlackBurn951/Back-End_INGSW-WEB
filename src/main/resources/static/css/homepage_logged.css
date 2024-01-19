@@ -67,6 +67,7 @@ li {
 }
 
 body{
+    overflow: hidden;
     margin: auto;
     font-family: Arial, sans-serif;
 }
@@ -96,7 +97,9 @@ body{
     font-size: 3vh;
 }
 
+
 .containerDatiConto {
+    margin-top: -13%;
     text-align: center;
     background-color:  rgba(208, 208, 208, 0.9);
     border-radius: 10px;
@@ -106,7 +109,22 @@ body{
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+#item{
+    height: 4vh;
+    cursor: pointer;
+
+}
+
+#titleTrans{
+    margin-bottom: -3vh;
+}
+
+#item:hover{
+    background-color: white;
+}
+
 .containerDatiTransazioni {
+    max-height: 38vh;
     text-align: center;
     background-color:  rgba(208, 208, 208, 0.9);
     border-radius: 10px;
@@ -117,8 +135,19 @@ body{
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+
+.scrollable-list {
+    max-height: 300px; /* Imposta l'altezza massima desiderata */
+    overflow-y: auto; /* Aggiunge la barra di scorrimento verticale se necessario */
+}
+
+.additional-info {
+    display: none; /* Inizialmente nascondi gli elementi aggiuntivi */
+    margin-top: 10px; /* Aggiungi uno spazio sopra gli elementi aggiuntivi */
+}
+
 .informazioniConto{
-    background: url('/static/images/allec-gomes-gJ8VovObjRA-unsplash.jpg') center no-repeat;
+    background: url('../images/allec-gomes-gJ8VovObjRA-unsplash.jpg') center no-repeat;
     background-size: cover;
     align-items: center;
     padding: 180px;

@@ -16,4 +16,5 @@ public interface CarteDAO {
 
     boolean delete(Carte carta);
 
+
 }

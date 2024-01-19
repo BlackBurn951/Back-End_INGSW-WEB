@@ -102,7 +102,27 @@ public class CarteDAOImpl implements CarteDAO{
     }
 
     @Override
-    public boolean delete(Carte carta) {
+    public boolean delete(Carte carta, boolean tipo) {
+        String query;
+        if(tipo){
+            query = "DELETE FROM rel_stato_carta_credito WHERE num_carta = ?";
+        }else{
+            query = "DELETE FROM rel_stato_carta_debito WHERE num_carta = ?";
+
+        }
+
+        try {
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
+            statement.setString(1, carta.getNumCarta());
+
+            if (statement.executeUpdate()>0  && eliminaCarta(carta, tipo)){
+                return true;
+            }
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return false;
     }
 
@@ -146,5 +166,27 @@ public class CarteDAOImpl implements CarteDAO{
         }catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private boolean eliminaCarta(Carte carta, boolean tipo) {
+        String carteQuery;
+
+        if(tipo) {
+            carteQuery = "DELETE FROM carta_di_credito WHERE num_carta_credito = ?";
+        }else{
+            carteQuery = "DELETE FROM carta_di_debito WHERE num_carta_debito = ?";
+
+        }
+        try {
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(carteQuery);
+            statement.setString(1, carta.getNumCarta());
+
+            if (statement.executeUpdate() > 0)
+                return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
