@@ -14,12 +14,31 @@
 <header>
     <div class="containerLogo">
         <img class="logo" src="/images/logoBanca.png" alt=""></div>
-    <div class="container2">
-        <h1 class="titolo">Conto Corrente Personale</h1>
-        <div class="notifiche-esci">
-            <a href="/redirect/tornaHomepage" class="logout">ESCI</a>
+        <div class="container2">
+            <h1 class="titolo">Conto Corrente Personale</h1>
+            <div class="notifiche-esci">
+                <a href="/redirect/tornaHomepage" class="logout">ESCI</a>
+            </div>
         </div>
     </div>
+    <!--
+    <div class="centroNotifiche">
+        <div class="notificheIcona" onclick="toggleNotifiche()">
+            <img src="/images/notificheIcona.png" alt="Notifiche">
+            <span class="notificheCounter" th:text="${numeroNotificheNonLette}"></span>
+        </div>
+        <div class="notificheMenu" id="notificheMenu">
+            Notifiche verranno visualizzate qui
+            <span th:if="${notifiche.isEmpty()}">Nessuna notifica</span>
+            <ul th:if="${notifiche.size() > 0}">
+                <li th:each="notifica : ${notifiche}">
+                    <span th:text="${notifica.testo}"></span>
+                    <img src="/images/eliminaIcona.png" alt="Elimina" onclick="eliminaNotifica(${notifica.id})">
+                </li>
+            </ul>
+        </div>-->
+
+
 </header>
 <body>
   <nav>

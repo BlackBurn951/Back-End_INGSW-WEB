@@ -63,7 +63,7 @@ label {
 
 .formDati .form-control {
     margin-left: 50%;
-    transform: translateX(-50%); /* Centra l'input rispetto al 50% */
+    transform: translateX(-50%);
 }
 
 header{
@@ -99,7 +99,7 @@ header{
     box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 4px;
-    background-color: #f8f9fa; /* Light Gray */
+    background-color: #f8f9fa;
 }
 
 
@@ -272,7 +272,7 @@ label{
     box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 4px;
-    background-color: #f8f9fa; /* Light Gray */
+    background-color: #f8f9fa;
 }
 
 
@@ -284,7 +284,7 @@ label{
     box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 4px;
-    background-color: #f8f9fa; /* Light Gray */
+    background-color: #f8f9fa;
 }
 
 .error{

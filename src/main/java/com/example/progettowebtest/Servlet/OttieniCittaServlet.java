@@ -1,6 +1,5 @@
 package com.example.progettowebtest.Servlet;
 
-import com.example.progettowebtest.DAO.Indirizzo.DatiComuneDAOImpl;
 import com.example.progettowebtest.DAO.MagnusDAO;
 import com.example.progettowebtest.Model.Indirizzo.*;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +9,7 @@ import java.util.Vector;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-public class OttieniCittaController {
+public class OttieniCittaServlet {
 
     @GetMapping("/getCitta")
     public List<String> getSuggerimentoCitta(@RequestParam("sugg") String sugg) {

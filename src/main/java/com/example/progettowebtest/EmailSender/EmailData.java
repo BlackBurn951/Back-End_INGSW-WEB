@@ -7,6 +7,10 @@ public class EmailData {
     private String subject;
     private String userId;
 
+    private boolean eConfermaCarta;
+
+    public boolean iseConfermaCarta() {return eConfermaCarta;}
+
     public String getNomeCognome() {
         return nomeCognome;
     }

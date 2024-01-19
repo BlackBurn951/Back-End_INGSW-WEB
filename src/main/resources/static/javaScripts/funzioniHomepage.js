@@ -9,3 +9,21 @@ function modifyLinks() {
 }
 
 document.addEventListener("DOMContentLoaded", modifyLinks);
+
+
+
+
+
+
+
+
+function toggleNotifiche() {
+    var notificheMenu = document.getElementById("notificheMenu");
+    notificheMenu.style.display = (notificheMenu.style.display === "block") ? "none" : "block";
+}
+
+function eliminaNotifica(notificaId) {
+    // Aggiungi qui la logica per eliminare la notifica con l'ID specificato
+    // Puoi fare una chiamata AJAX al backend per gestire l'eliminazione
+    alert("Notifica eliminata: " + notificaId);
+}

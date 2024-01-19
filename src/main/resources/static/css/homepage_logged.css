@@ -6,6 +6,7 @@ header {
     justify-content: center;
 }
 
+
 nav {
     background-color: whitesmoke;
     padding: 20px;
@@ -47,8 +48,8 @@ nav:hover {
 }
 
 .logo {
-    width: 90px; /* Imposta la larghezza desiderata */
-    height: auto; /* Imposta l'altezza automaticamente in base all'aspetto originale */
+    width: 90px;
+    height: auto;
     margin-left: -40px;
 }
 
@@ -97,32 +98,62 @@ body{
 
 .containerDatiConto {
     text-align: center;
-    background-color:  rgba(208, 208, 208, 0.9); /* Cambia il colore di sfondo se necessario */
+    background-color:  rgba(208, 208, 208, 0.9);
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     width: 50%;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Aggiungi una leggera ombra se necessario */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .containerDatiTransazioni {
     text-align: center;
-    background-color:  rgba(208, 208, 208, 0.9); /* Cambia il colore di sfondo se necessario */
+    background-color:  rgba(208, 208, 208, 0.9);
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     width: 50%;
     gap:5vh;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Aggiungi una leggera ombra se necessario */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .informazioniConto{
-    background: url('/images/allec-gomes-gJ8VovObjRA-unsplash.jpg') center no-repeat;
+    background: url('/static/images/allec-gomes-gJ8VovObjRA-unsplash.jpg') center no-repeat;
     background-size: cover;
     align-items: center;
     padding: 180px;
     display: flex;
     flex-direction: column;
     gap:5vh;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Aggiungi una leggera ombra se necessario */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+
+
+
+
+
+
+/*CENTRO NOTIFICHE DA IMPLEMENTARE*/
+
+
+.centroNotifiche {
+    position: relative;
+    cursor: pointer;
+}
+
+.notificheMenu {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    z-index: 1;
+}
+
+.notificheMenu li {
+    list-style: none;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
 }
