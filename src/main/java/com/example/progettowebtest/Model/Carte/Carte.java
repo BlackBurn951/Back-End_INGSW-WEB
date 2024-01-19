@@ -14,6 +14,7 @@ public interface Carte {
     boolean isCartaFisica();
     double getCanoneMensile();
     String getPin();
+    Double getFido();
     ContoCorrente getContoRiferimento();
     Stato getStatoCarta();
 }
