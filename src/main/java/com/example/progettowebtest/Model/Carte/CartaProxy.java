@@ -15,12 +15,13 @@ public class CartaProxy implements Carte{
     private boolean cartaFisica;
     private double canoneMensile;
     private String pin;
+    private double fido;
     private Stato statoCarta;
     private Carte cartaReale;
     private TipiCarte tipo;
 
-    public CartaProxy(String numCarta, boolean pagamentoOnline, String dataCreazione, String dataScadenza, String cvv, boolean cartaFisica,
-                 double canoneMensile, String pin, Stato statoCarta, TipiCarte tipo) {
+    public CartaProxy(String numCarta, boolean pagamentoOnline, String dataCreazione, String dataScadenza,
+                      String cvv, boolean cartaFisica, double canoneMensile, String pin, double fido, Stato statoCarta, TipiCarte tipo) {
         this.numCarta = numCarta;
         this.pagamentoOnline = pagamentoOnline;
         this.dataCreazione = Date.valueOf(dataCreazione);
@@ -29,10 +30,10 @@ public class CartaProxy implements Carte{
         this.cartaFisica = cartaFisica;
         this.canoneMensile = canoneMensile;
         this.pin = pin;
+        this.fido = fido;
         this.statoCarta = statoCarta;
-        this.tipo= tipo;
+        this.tipo = tipo;
     }
-
 
     @Override
     public String getNumCarta() {return numCarta;}
@@ -62,6 +63,9 @@ public class CartaProxy implements Carte{
 
     @Override
     public String getPin() {return pin;}
+
+    @Override
+    public Double getFido() {return fido;}
 
     @Override
     public ContoCorrente getContoRiferimento() {
