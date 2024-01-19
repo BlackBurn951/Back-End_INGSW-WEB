@@ -5,6 +5,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/images/logoBanca.ico" type="image/x-icon">
     <title>Conto Corrente Personale</title>
     
     <script src="/javaScripts/funzioniHomepage.js"></script>
@@ -59,13 +60,21 @@
         <h3>Stato: <span th:text="${conto.getStatoConto().getValoreStato()}"></span></h3>
     </div>
     <div class="containerDatiTransazioni">
-      <h2>Ultime transazioni</h2>
-        <ul>
-            <li>Spesa - € 50.00</li>
-            <li>Deposito - € 200.00</li>
-            <!-- Aggiungi altre transazioni qui -->
-        </ul>
-</div>
+      <h2 id="titleTrans">Ultime transazioni</h2>
+
+        <div class="scrollable-list">
+            <div>
+                <!-- Visualizza i dati dal database -->
+
+                <p id="item" onclick="mostraNascondiDettagli('dettagli-${item.id}')"> transazione</p>
+
+                <!-- Elementi aggiuntivi nascosti inizialmente -->
+                <div id="dettagli-${item.id}" class="additional-info">
+                    <p>Dettagli aggiuntivi per ${item.nome}</p>
+                </div>
+            </div>
+        </div>
+    </div>
   </div>
 </body>
 
