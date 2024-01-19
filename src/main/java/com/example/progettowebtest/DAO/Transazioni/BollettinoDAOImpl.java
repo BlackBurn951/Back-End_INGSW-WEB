@@ -89,7 +89,21 @@ public class BollettinoDAOImpl implements BollettinoDAO{
     }
 
     @Override
-    public boolean delete(Bollettino bol) {
+    public boolean delete(Transazione bol) {
+        String query = "DELETE FROM rel_cc_bollettino WHERE id_bollettino = ?";
+
+        try {
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
+            statement.setInt(1, bol.getId());
+
+            if (statement.executeUpdate()>0  && eliminaTransazione(bol)) {
+                return true;
+            }
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return false;
     }
 
@@ -115,5 +129,21 @@ public class BollettinoDAOImpl implements BollettinoDAO{
         }
         return false;
 
+    }
+
+    private boolean eliminaTransazione(Transazione bol) {
+        String bollettinoQuery = "DELETE FROM bollettino WHERE id_bollettino = ?";
+
+        try {
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(bollettinoQuery);
+            statement.setInt(1, bol.getId());
+
+            if (statement.executeUpdate() > 0)
+                return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

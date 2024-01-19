@@ -1,11 +1,9 @@
 package com.example.progettowebtest.DAO.Transazioni;
-/*
+
 import com.example.progettowebtest.Connection.DbConn;
-import com.example.progettowebtest.DAO.MagnusDAO;
 import com.example.progettowebtest.Model.Proxy.TipoTransazione;
 import com.example.progettowebtest.Model.Proxy.Transazione;
 import com.example.progettowebtest.Model.Proxy.TransazioneProxy;
-import com.example.progettowebtest.Model.Transazioni.Bollettino;
 import com.example.progettowebtest.Model.Transazioni.BonificoInter;
 
 import java.sql.PreparedStatement;
@@ -91,10 +89,23 @@ public class BonificoInterDAOImpl implements BonificoInterDAO{
     }
 
     @Override
-    public boolean delete(BonificoInter bonInt) {
+    public boolean delete(Transazione bon) {
+        String query = "DELETE FROM rel_cc_bon_int WHERE id_internazionale = ?";
+
+        try {
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
+            statement.setInt(1, bon.getId());
+
+            if (statement.executeUpdate()>0  && eliminaTransazione(bon)) {
+                return true;
+            }
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return false;
     }
-
 
     //Metodi di servizio
     private boolean inserisciRelazion(BonificoInter bon, String numCC) {
@@ -118,5 +129,20 @@ public class BonificoInterDAOImpl implements BonificoInterDAO{
         }
         return false;
     }
+
+    private boolean eliminaTransazione(Transazione bon) {
+        String bonificoQuery = "DELETE FROM bonifico_internazionale WHERE id_internazionale= ?";
+
+        try {
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(bonificoQuery);
+            statement.setInt(1, bon.getId());
+
+            if (statement.executeUpdate() > 0)
+                return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
-*/

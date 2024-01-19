@@ -104,9 +104,24 @@ public class PrelievoDAOImpl implements PrelievoDAO {
 
 
     @Override
-    public boolean delete(Prelievo prel) {
+    public boolean delete(Transazione prel) {
+        String query = "DELETE FROM rel_cc_prelievo WHERE id_prelievo = ?";
+
+        try {
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
+            statement.setInt(1, prel.getId());
+
+            if (statement.executeUpdate()>0 && eliminaTransazione(prel)) {
+                return true;
+            }
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return false;
     }
+
 
 
     //Metodi di servizio

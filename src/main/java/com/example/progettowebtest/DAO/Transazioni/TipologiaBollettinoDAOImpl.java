@@ -42,9 +42,10 @@ public class TipologiaBollettinoDAOImpl implements TipologiaBollettinoDAO{
     }
 
     @Override
-    public boolean saveOrUpdate(TipologiaBollettino bol) {
+    public boolean saveOrUpdate(TipologiaBollettino bol, String numCC) {
         return false;
     }
+
 
     @Override
     public boolean delete(TipologiaBollettino bol) {
