@@ -124,27 +124,18 @@ body{
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.item{
-    cursor: pointer;
-
-}
 h2#titleTrans {
     margin-bottom: 0; /* Rimuovi il margine inferiore dell'h2 */
 }
-/*
-.titleTrans{
-    margin-bottom: -3vh;
-}*/
 
-.item:hover{
-    background-color: white;
-}
 
-#transazioniTable {
-    overflow-y: auto;
-}
 
 .containerDatiTransazioni {
+    width: 80%;
+    height: 300px;
+    overflow: auto;
+
+
     margin-top: -2vh;
     transform: translateY(-50%);
     max-height: 38vh;
@@ -153,13 +144,8 @@ h2#titleTrans {
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    width: 50%;
     gap: 5vh;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-
-    /* Aggiungi queste regole per abilitare lo scrolling */
-    overflow-y: auto;
-    overflow-x: hidden;
 }
 
 
@@ -171,10 +157,10 @@ h2#titleTrans {
 
 
 button {
-    width: 30%;
+    width: 70%;
     background-color: #3498db;
     color: #ffffff;
-    padding: 10px 10px;
+    padding: 5px 5px;
     font-size: 18px;
     font-weight: 540;
     border-radius: 5px;
@@ -187,26 +173,7 @@ button:hover {
 }
 
 
-.popup {
-    display: none;
-    position: fixed;
-    left: 50%;
-    width: 50%;
-    transform: translate(-50%, -100%);
-    background: rgb(217, 217, 217);
-    border-radius: 2vh ;
-    border: 2px solid #000000;
-    padding: 20px;
-    height: 100%;
-    z-index: 2;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-}
 
-
-.additional-info {
-    display: none; /* Inizialmente nascondi gli elementi aggiuntivi */
-    margin-top: 10px; /* Aggiungi uno spazio sopra gli elementi aggiuntivi */
-}
 
 .informazioniConto{
     background: url('../images/allec-gomes-gJ8VovObjRA-unsplash.jpg') center no-repeat;
@@ -218,6 +185,59 @@ button:hover {
     gap:5vh;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+/*-----------------*/
+
+
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20%;
+    height: 60%;
+    background: rgb(217, 217, 217);
+    border-radius: 2vh;
+    border: 2px solid #08090B;
+    z-index: 1;
+}
+
+.contenutoPopup{
+    align-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.popup-btn {
+    width: 40%;
+    background-color: #3498db;
+    color: #ffffff;
+    padding: 5px 5px;
+    font-size: 18px;
+    font-weight: 540;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 
 
 
