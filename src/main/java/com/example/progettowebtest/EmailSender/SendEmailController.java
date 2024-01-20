@@ -1,4 +1,5 @@
 package com.example.progettowebtest.EmailSender;
+import com.example.progettowebtest.ClassiEmail.InvioOTP;
 import com.google.api.services.gmail.model.Message;
 import java.io.*;
 import java.security.GeneralSecurityException;
@@ -30,38 +31,33 @@ public class SendEmailController {
             nomeCognome = emailData.getNomeCognome();
         }
 
-        try {
-            HttpSession session;
+        HttpSession session;
 
-            if(idSession.isEmpty()) {
-                session = request.getSession(true);
-                request.getServletContext().setAttribute(session.getId(), session);
-                response.setHeader("Session-ID", session.getId());
-            }
-            else
-                session= (HttpSession) request.getServletContext().getAttribute(idSession);
+        if (idSession.isEmpty()) {
+            session = request.getSession(true);
+            request.getServletContext().setAttribute(session.getId(), session);
+            response.setHeader("Session-ID", session.getId());
+        } else
+            session = (HttpSession) request.getServletContext().getAttribute(idSession);
 
 
-            if(session==null) {
-                response.setHeader("Attivita", "Scaduta");
-                return;
-            }
+        if (session == null) {
+            response.setHeader("Attivita", "Scaduta");
+            return;
+        }
 
-            long minuti= TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis());
+        long minuti = TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis());
 
-            String generatedOTP = generateOTP();
-            session.setAttribute("control", generatedOTP);
-            session.setAttribute("TempoInvioOTP", minuti);
+        String generatedOTP = generateOTP();
+        session.setAttribute("control", generatedOTP);
+        session.setAttribute("TempoInvioOTP", minuti);
+
+        InvioOTP datiOTP= new InvioOTP(nomeCognome, generatedOTP);
+        SenderEmail.sendEmails(datiOTP, null, null, emailData.getTo());
+
+            /*
             String emailTemplate;
             String htm_otp;
-
-            emailTemplate = EmailTemplateLoader.loadEmailTemplate("/email_conf_carta_template.html");
-            htm_otp = emailTemplate
-                    .replace("$NOME_COGNOME$", nomeCognome)
-                    .replace("$PIN_CARTA$", generatedOTP)
-                    .replace("$NUMERO_CARTA$", generatedOTP)//DA AGGIUNGERE IL PIN CARTA
-                    .replace("$SCADENZA_CARTA$", generatedOTP)//DA AGGIUNGERE IL PIN CARTA
-                    .replace("$CVV_CARTA$", generatedOTP);//DA AGGIUNGERE IL PIN CARTA
 
             emailTemplate = EmailTemplateLoader.loadEmailTemplate("/email_otp_template.html");
             htm_otp = emailTemplate
@@ -78,6 +74,7 @@ public class SendEmailController {
         } catch (IOException | GeneralSecurityException | MessagingException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
-        }
+        }*/
+
     }
 }
