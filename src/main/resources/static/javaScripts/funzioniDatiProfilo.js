@@ -33,9 +33,9 @@ function openSosPopup(id, action) {
 
 
 
-function closePopup() {
+function closePopupFunction() {
     document.getElementById('popup').style.display = 'none';
-    document.getElementById('popupPasword').style.display = 'none';
+    document.getElementById('popupPasword').style.display ='none';
     document.getElementById('popupSospensione').style.display = 'none';
 
     var emailInput = document.getElementById('nuovaEmail');
@@ -44,6 +44,8 @@ function closePopup() {
     var errorMessage = document.getElementById('errorEmailMessage');
     var errorPass = document.getElementById('errorPassword');
     var passSops = document.getElementById('passwordSosp');
+    var nuovaPassError = document.getElementById("nuovaPassError");
+    var confPassError = document.getElementById("confPassError");
 
     emailInput.value = '';
     nuovPassInput.value = '';
@@ -51,7 +53,9 @@ function closePopup() {
     passSops.value = '';
 
     errorPass.style.display = 'none';
-    errorMessage.style.display = 'none'; // Nascondi il messaggio di errore
+    errorMessage.style.display = 'none';
+    nuovaPassError.style.display = 'none';
+    confPassError.style.display = 'none';
 }
 
 
@@ -62,10 +66,11 @@ function validateEmail() {
     var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (emailRegex.test(emailInput.value)) {
-    // Se l'email è valida, puoi procedere con la chiamata al server
-    // Aggiungi qui la logica per la chiamata al server
-} else {
-    errorMessage.style.display = 'block';
+        closePopupFunction()
+        confermaOperazione('email')
+
+    } else {
+        errorMessage.style.display = 'block';
     }
 }
 
@@ -81,21 +86,25 @@ function validatePassword() {
     confPassError.innerHTML = "";
 
     if (!nuovaPass.match(passwordPattern)) {
-    nuovaPassError.innerHTML = "La password deve contenere:<br>\n" +
-        "              - Almeno 8 caratteri (massimo 16);<br>\n" +
-        "              - Almeno una lettera maiuscola ed una minuscola;<br>\n" +
-        "              - Almeno un numero;<br>\n" +
-        "              - Almeno un carattere speciale fra i seguenti (!&#64;$#%^&*()_+).";
+        nuovaPassError.style.display = ''
+        nuovaPassError.innerHTML = "La password deve contenere:<br>\n" +
+            "              - Almeno 8 caratteri (massimo 16);<br>\n" +
+            "              - Almeno una lettera maiuscola ed una minuscola;<br>\n" +
+            "              - Almeno un numero;<br>\n" +
+            "              - Almeno un carattere speciale fra i seguenti (!&#64;$#%^&*()_+).";
 }
 
     if (nuovaPass !== confPass) {
-    confPassError.innerHTML = "Le password non coincidono!";
+        confPassError.style.display = ''
+        confPassError.innerHTML = "Le password non coincidono!";
 }
 
     if (nuovaPass.match(passwordPattern) && nuovaPass === confPass) {
-    // Implement further actions if needed
-    alert("Password is valid and matches!");
-}
+        closePopupFunction()
+        showPopup('Aidi');
+
+    }
+
 }
 
 function sospendiChiudi() {
@@ -173,4 +182,68 @@ function toggleConfPass() {
         confPassInput.type = "password";
         confPassIcon.src = "/images/hide.png"; // Sostituisci con l'immagine dell'icona nascosta
     }
+}
+
+
+
+
+
+
+
+    function showPopup(message) {
+        document.getElementById('popup-message').innerHTML = message;
+        document.getElementById('popupConferma').style.display = 'block';
+    }
+
+    function closePopup() {
+        document.getElementById('popupConferma').style.display = 'none';
+    }
+
+
+    function confermaOperazione(tipoModifica) {
+
+        var url = "";  // Inizializza l'URL corretto per la tua operazione
+
+        // Determina l'URL in base al tipo di modifica
+        if (tipoModifica === 'email') {
+            url = '/modificaEmail';
+        } else if (tipoModifica === 'password') {
+            url = '/modificaPassword';
+        } else if (tipoModifica === 'sospendi') {
+            url = '/sospendiConto';
+        } else if (tipoModifica === 'chiudi') {
+            url = '/chiudiConto';
+        }
+
+    // Esempio di chiamata AJAX a Spring Boot (assumendo l'utilizzo di jQuery)
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: { tipoModifica: tipoModifica },
+        success: function (risposta) {
+            // Risposta ottenuta dal server
+            var messaggioConferma = "Operazione riuscita.";
+
+            if (tipoModifica === 'email') {
+                messaggioConferma = "Email modificata con successo.";
+            } else if (tipoModifica === 'password') {
+                messaggioConferma = "Password modificata con successo.";
+            } else if (tipoModifica === 'sospendi') {
+                messaggioConferma = "Conto sospeso con successo.";
+            } else if (tipoModifica === 'chiudi') {
+                messaggioConferma = "Conto chiuso con successo.";
+            }
+
+            // Mostro il popup con il messaggio personalizzato
+            showPopup(messaggioConferma);
+        },
+        error: function () {
+            // Gestisci eventuali errori
+            showPopup("Errore durante l'operazione.");
+        }
+    });
+
+
+
+
 }

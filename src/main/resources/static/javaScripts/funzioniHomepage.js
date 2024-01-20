@@ -11,20 +11,13 @@ function modifyLinks() {
 document.addEventListener("DOMContentLoaded", modifyLinks);
 
 
-function mostraNascondiDettagli(elementId) {
-    var element = document.getElementById(elementId);
-    var popup = document.getElementById("popup");
-
-    if (element.style.display === "none" || element.style.display === "") {
-        element.style.display = "block";
-        popup.style.display = "block";
-    } else {
-        element.style.display = "none";
-        popup.style.display = "none";
-    }
+function openPopup() {
+    document.getElementById('popup').style.display = 'block';
 }
 
-
+function closePopupTrans() {
+    document.getElementById('popup').style.display = 'none';
+}
 
 
 
