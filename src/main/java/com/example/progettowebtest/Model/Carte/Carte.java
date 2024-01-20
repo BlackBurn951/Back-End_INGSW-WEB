@@ -8,13 +8,13 @@ import java.sql.Date;
 public interface Carte {
     String getNumCarta();
     boolean isPagamentoOnline();
-    Date getDataCreazione();
+    Date getDataCreazione(); //NON MANDARE
     Date getDataScadenza();
     String getCvv();
-    boolean isCartaFisica();
+    boolean isCartaFisica(); //NON MANDARE
     double getCanoneMensile();
-    String getPin();
+    String getPin(); //NON MANDARE
     Double getFido();
-    ContoCorrente getContoRiferimento();
+    ContoCorrente getContoRiferimento(); //NON MANDARE
     Stato getStatoCarta();
 }
