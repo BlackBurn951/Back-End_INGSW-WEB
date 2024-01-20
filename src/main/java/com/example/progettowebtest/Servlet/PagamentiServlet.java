@@ -100,6 +100,10 @@ public class PagamentiServlet {
 
         MagnusDAO.getInstance().getBonificoInterDAO().saveOrUpdate(inter, cc.getNumCC());
 
+        Transazione proxy= MagnusDAO.getInstance().getBonificoInterDAO().doRetriveByKey(inter.getId(), false);
+        if(proxy!=null)
+            cc.addTransazione(proxy);
+
         return result;
     }
 }

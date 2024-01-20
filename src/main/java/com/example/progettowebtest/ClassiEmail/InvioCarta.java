@@ -15,6 +15,10 @@ public class InvioCarta {
         this.cvv = cvv;
     }
 
+    public String getTipo() {
+        return tipo;
+    }
+
     public String getNomeCognome() {
         return nomeCognome;
     }
