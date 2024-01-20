@@ -48,7 +48,7 @@ public class TransazioneProxy implements Transazione {
         if (transazioneReale == null) {
             instanzaTransazione();
             if (transazioneReale == null) {
-                return 0.0; // O un altro valore di default a tua scelta, se necessario
+                return 0.0;
             }
         }
         return transazioneReale.getCostoTransazione();

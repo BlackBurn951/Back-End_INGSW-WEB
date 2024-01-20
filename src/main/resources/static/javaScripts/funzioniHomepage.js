@@ -19,21 +19,50 @@ function closePopupTrans() {
     document.getElementById('popup').style.display = 'none';
 }
 
-
-
-
-
-
-
 function toggleNotifiche() {
-    var notificheMenu = document.getElementById("notificheMenu");
-    notificheMenu.style.display = (notificheMenu.style.display === "block") ? "none" : "block";
+    var notificheMenu = document.querySelector('.notificheMenu');
+    notificheMenu.classList.toggle('show');
+
+    // Nascondi il badge quando clicchi sull'icona e ci sono notifiche
+    var badge = document.querySelector('.badge');
+    if (badge.style.display !== 'none') {
+        badge.style.display = 'none';
+    }
 }
 
-function eliminaNotifica(notificaId) {
-    // Aggiungi qui la logica per eliminare la notifica con l'ID specificato
-    // Puoi fare una chiamata AJAX al backend per gestire l'eliminazione
-    alert("Notifica eliminata: " + notificaId);
+    // Chiudi il menu delle notifiche se clicchi al di fuori
+    window.onclick = function (event) {
+        if (!event.target.matches('.notificaImage')) {
+            var notificheMenu = document.querySelector('.notificheMenu');
+            if (notificheMenu.classList.contains('show')) {
+                notificheMenu.classList.remove('show');
+            }
+        }
+};
+
+function eliminaNotifica(element) {
+    // Recupera l'ID della notifica dalla proprietà data-notificaId
+    var notificaId = element.getAttribute('data-notificaId');
+
+    eliminaNotificaAjax(notificaId);
+
+    // Rimuovi visivamente la notifica dalla lista
+    element.parentNode.remove();
+}
+
+function eliminaNotificaAjax(notificaId) {
+    // Invia una richiesta AJAX al server
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/eliminaNotifica', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            // Logica aggiuntiva dopo l'eliminazione (se necessario)
+        }
+    };
+
+    // Invia l'ID della notifica come parte del corpo della richiesta
+    xhr.send(JSON.stringify({ notificaId: notificaId }));
 }
 
 
