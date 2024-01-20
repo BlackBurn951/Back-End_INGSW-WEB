@@ -135,8 +135,6 @@ h2#titleTrans {
     height: 300px;
     overflow: auto;
 
-
-    margin-top: -2vh;
     transform: translateY(-50%);
     max-height: 38vh;
     text-align: center;
@@ -176,7 +174,7 @@ button:hover {
 
 
 .informazioniConto{
-    background: url('../images/allec-gomes-gJ8VovObjRA-unsplash.jpg') center no-repeat;
+    background: url('../images/sfondoGenerale.png') center no-repeat;
     background-size: cover;
     align-items: center;
     padding: 180px;
@@ -220,9 +218,11 @@ th {
 }
 
 .contenutoPopup{
+    margin-top: 8%;
     align-content: center;
     align-items: center;
     display: flex;
+    gap: -5vh;
     flex-direction: column;
 }
 
