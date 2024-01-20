@@ -1,6 +1,7 @@
 package com.example.progettowebtest.Servlet;
 
 import com.example.progettowebtest.ClassiEmail.InvioCarta;
+import com.example.progettowebtest.ClassiRequest.Card;
 import com.example.progettowebtest.DAO.MagnusDAO;
 import com.example.progettowebtest.EmailSender.SenderEmail;
 import com.example.progettowebtest.Model.Carte.CartaCredito;
@@ -99,7 +100,21 @@ public class CarteServlet {
         return result;
     }
 
+    @GetMapping("/prendiCarte")
+    public List<Card> prendiCarte(HttpServletRequest request, @RequestParam("IDSession") String idSession) {
+        Vector<Card> result= new Vector<>();
+        System.out.println("Sessione inviata: "+idSession);
+        HttpSession session = (HttpSession) request.getServletContext().getAttribute(idSession);
+        Utente ut = (Utente) session.getAttribute("Utente");
+        ContoCorrente cc= (ContoCorrente)session.getAttribute("Conto");
 
+        Vector<Carte> carteConto= MagnusDAO.getInstance().getCarteDAO().doRetriveAllForCC(cc.getNumCC());
+
+        for(Carte ct: carteConto) {
+            result.add(new Card(ct.getNumCarta(), ct.isPagamentoOnline(), ut.getNome()+" "+ut.getCognome(), ct.getDataScadenza().toString(), ct.getCvv(), ct.getCanoneMensile(), ct.getFido(), ct.getStatoCarta().getValoreStato()));
+        }
+        return result;
+    }
 
 
     private String generaNumeroCarta() {
