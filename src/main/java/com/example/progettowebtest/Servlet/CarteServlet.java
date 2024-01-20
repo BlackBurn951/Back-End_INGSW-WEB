@@ -1,11 +1,25 @@
 package com.example.progettowebtest.Servlet;
 
+import com.example.progettowebtest.ClassiEmail.InvioCarta;
+import com.example.progettowebtest.DAO.MagnusDAO;
+import com.example.progettowebtest.EmailSender.SenderEmail;
+import com.example.progettowebtest.Model.Carte.CartaCredito;
+import com.example.progettowebtest.Model.Carte.CartaDebito;
+import com.example.progettowebtest.Model.Carte.Carte;
+import com.example.progettowebtest.Model.Carte.TipiCarte;
 import com.example.progettowebtest.Model.ContoCorrente.ContoCorrente;
 import com.example.progettowebtest.Model.Utente_Documenti.Utente;
+import com.example.progettowebtest.Model.ValoriStato;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.cglib.core.Local;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Random;
+import java.util.Vector;
 
 import static com.example.progettowebtest.EmailSender.OTPGenerator.generateOTP;
 
@@ -13,28 +27,34 @@ import static com.example.progettowebtest.EmailSender.OTPGenerator.generateOTP;
 @CrossOrigin(origins = "http://localhost:4200")
 public class CarteServlet {
 
-    @PostMapping("/creaCarta")
-    public boolean creaCarta(HttpServletRequest request, HttpServletResponse response, @RequestParam("IDSession") String idSession) {
+    @GetMapping("/creaCarta")
+    public List<String> creaCarta(HttpServletRequest request, @RequestParam("IDSession") String idSession, @RequestParam("tipoCarta") boolean tipoCarta) {
         HttpSession session = (HttpSession) request.getServletContext().getAttribute(idSession);
-        Utente ut = (Utente) session.getAttribute("Utente");
-        ContoCorrente cc = (ContoCorrente) session.getAttribute("Conto");
-        String generatedOTP = generateOTP();
 
-        /*
-        double canone= 0.0, fido= 0.0;
-        TipiCarte tipo;
-        if(dati.getCredito()) {
-            canone = 10.0;
-            fido= 2000.0;
-            tipo= TipiCarte.CREDITO;
-        }
-        else {
-            canone = 0.60;
-            tipo= TipiCarte.DEBITO;
-        }
-        Carte carta = new CartaProxy(dati.getNumeroCarta(), true, LocalDate.now().toString(), dati.getDataScadenza(), dati.getCvv(), false, canone, generatedOTP, fido, MagnusDAO.getInstance().getStatoDAO().doRetriveByAttribute(ValoriStato.ATTIVO), tipo);
-        */
-        return true;
+        Utente ut = (Utente) session.getAttribute("Utente");
+
+        LocalDate dataAttuale= LocalDate.now();
+        LocalDate dataArrivo = dataAttuale.plusYears(5);
+
+        String numCartaProposto = generaNumeroCarta();
+        String cvvProposto = generaCVV();
+        String dataCreazione= dataAttuale.toString();
+        String dataScadenza= dataArrivo.toString();
+        String pinProposto = generateOTP();
+
+        Vector<String> dati= new Vector<>();
+
+        dati.add(numCartaProposto);
+        dati.add(dataScadenza);
+        dati.add(ut.getNome()+" "+ut.getCognome());
+        dati.add(cvvProposto);
+        dati.add(dataCreazione);
+        dati.add(pinProposto);
+
+        session.setAttribute("Dati carta", dati);
+        session.setAttribute("Tipo carta", tipoCarta);
+
+        return dati;
 
     }
 

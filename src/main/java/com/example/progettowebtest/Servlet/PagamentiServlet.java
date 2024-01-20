@@ -6,6 +6,7 @@ import com.example.progettowebtest.ClassiRequest.DatiBonificoInter;
 import com.example.progettowebtest.ClassiRequest.DatiBonificoSepa;
 import com.example.progettowebtest.DAO.MagnusDAO;
 import com.example.progettowebtest.Model.ContoCorrente.ContoCorrente;
+import com.example.progettowebtest.Model.Proxy.Transazione;
 import com.example.progettowebtest.Model.Transazioni.Bollettino;
 import com.example.progettowebtest.Model.Transazioni.BonificoInter;
 import com.example.progettowebtest.Model.Transazioni.BonificoSepa;
@@ -21,11 +22,9 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 public class PagamentiServlet {
-
+    //FARE CALCOLO DEL FIDO
     @GetMapping("/checkPin")
     public String checkPin(HttpServletRequest request, @RequestParam("pinSend") String pinSend, @RequestParam("IDSession") String idSess) {
-
-
         HttpSession session= (HttpSession) request.getServletContext().getAttribute(idSess);
         ContoCorrente cc= (ContoCorrente) session.getAttribute("Conto");
         String pin= cc.getPin();
@@ -56,6 +55,10 @@ public class PagamentiServlet {
 
         MagnusDAO.getInstance().getBollettinoDAO().saveOrUpdate(bol, cc.getNumCC());
 
+        Transazione proxy= MagnusDAO.getInstance().getBollettinoDAO().doRetriveByKey(bol.getId(), false);
+        if(proxy!=null)
+            cc.addTransazione(proxy);
+
         return result;
     }
 
@@ -77,6 +80,10 @@ public class PagamentiServlet {
         BonificoSepa sepa= new BonificoSepa(LocalDate.now().toString(), 1.0, result, dati.getNomeBeneficiario(), dati.getCognomeBeneficiario(), dati.getImportoSepa(), dati.getCausaleSepa(), dati.getIbanDestinatarioSepa());
 
         MagnusDAO.getInstance().getBonificoSepaDAO().saveOrUpdate(sepa, cc.getNumCC());
+
+        Transazione proxy= MagnusDAO.getInstance().getBonificoSepaDAO().doRetriveByKey(sepa.getId(), false);
+        if(proxy!=null)
+            cc.addTransazione(proxy);
 
         return result;
     }

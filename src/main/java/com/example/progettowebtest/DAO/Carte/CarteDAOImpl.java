@@ -88,7 +88,7 @@ public class CarteDAOImpl implements CarteDAO{
                     "data_creazione = EXCLUDED.data_creazione, data_scadenza = EXCLUDED.data_scadenza, cvv = EXCLUDED.cvv, carta_fisica = EXCLUDED.carta_fisica, canone_mensile = EXCLUDED.canone_mensile, " +
                     "pin = EXCLUDED.pin, num_cc = EXCLUDED.num_cc, fido = EXCLUDED.fido";
         else
-            query= "insert into carta_di_debito (num_carta_debito, stato_pagamento_online, data_creazione, data_scadenza, cvv, carta_fisica, canone_mensile, pin, num_cc) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) " +
+            query= "insert into carta_di_debito (num_carta_debito, stato_pagamento_online, data_creazione, data_scadenza, cvv, carta_fisica, canone_mensile, num_cc, pin) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) " +
                     "ON CONFLICT (num_carta_debito) DO UPDATE SET stato_pagamento_online = EXCLUDED.stato_pagamento_online, data_creazione = EXCLUDED.data_creazione, data_scadenza = EXCLUDED.data_scadenza, " +
                     "cvv = EXCLUDED.cvv, carta_fisica = EXCLUDED.carta_fisica, canone_mensile = EXCLUDED.canone_mensile, pin = EXCLUDED.pin, num_cc = EXCLUDED.num_cc";
 
@@ -102,17 +102,17 @@ public class CarteDAOImpl implements CarteDAO{
             statement.setString(5, carta.getCvv());
             statement.setBoolean(6, carta.isCartaFisica());
             statement.setDouble(7, carta.getCanoneMensile());
-            statement.setString(8, carta.getPin());
+            statement.setString(8, carta.getContoRiferimento().getNumCC());
+            statement.setString(9, carta.getPin());
 
-            if (tipo == TipiCarte.CREDITO) {
-                statement.setDouble(9, carta.getFido());
-                statement.setInt(10, carta.getStatoCarta().getIdStato());
+            if (tipo == TipiCarte.CREDITO)
+                statement.setDouble(10, carta.getFido());
 
-            } else
-                statement.setInt(9, carta.getStatoCarta().getIdStato());
-
-            if(statement.executeUpdate()>0)
-                return true;
+            if(statement.executeUpdate()>0) {
+                RelStatoCarta rel= new RelStatoCarta(carta.getDataCreazione().toString(), carta.getStatoCarta(), carta);
+                if(MagnusDAO.getInstance().getRelStatoCarteDAO().saveOrUpdate(rel, tipo))
+                    return true;
+            }
 
         }catch (SQLException e) {
             e.printStackTrace();

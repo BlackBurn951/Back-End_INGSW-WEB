@@ -6,13 +6,15 @@ public class InvioCarta {
     private String numCarta;
     private String scadenzaCarta;
     private String cvv;
+    private String tipo;
 
-    public InvioCarta(String nomeCognome, String pinCarta, String numCarta, String scadenzaCarta, String cvv) {
+    public InvioCarta(String nomeCognome, String pinCarta, String numCarta, String scadenzaCarta, String cvv, String tipo) {
         this.nomeCognome = nomeCognome;
         this.pinCarta = pinCarta;
         this.numCarta = numCarta;
         this.scadenzaCarta = scadenzaCarta;
         this.cvv = cvv;
+        this.tipo= tipo;
     }
 
     public String getTipo() {
