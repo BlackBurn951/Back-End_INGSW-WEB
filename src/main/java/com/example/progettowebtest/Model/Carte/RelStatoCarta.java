@@ -12,10 +12,8 @@ public class RelStatoCarta {
     private Stato st;
     private Carte carta;
 
-    public RelStatoCarta(int id, String dataInizioStato, String dataFineStato, Stato st, Carte carta) {
-        this.id = id;
+    public RelStatoCarta(String dataInizioStato, Stato st, Carte carta) {
         this.dataInizioStato = Date.valueOf(dataInizioStato);
-        this.dataFineStato = Date.valueOf(dataFineStato);
         this.st = st;
         this.carta = carta;
     }
@@ -26,5 +24,6 @@ public class RelStatoCarta {
     public Stato getStato() {return st;}
     public Carte getCarta() {return carta;}
 
-    public void setDataFineStato(Date dataFineStato) {this.dataFineStato = dataFineStato;}
+    public void setId(int id) {this.id= id;}
+    public void setDataFineStato(String dataFineStato) {this.dataFineStato = Date.valueOf(dataFineStato);}
 }

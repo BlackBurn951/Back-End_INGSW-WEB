@@ -68,10 +68,11 @@ public class SenderEmail {
 
                 emailTemplate = EmailTemplateLoader.loadEmailTemplate("/email_conf_carta_template.html");
                 htm_otp = emailTemplate
+                        .replace("$TIPO_CARTA$", datiCarta.getTipo())
                         .replace("$NOME_COGNOME$", datiCarta.getNomeCognome())
                         .replace("$PIN_CARTA$", datiCarta.getPinCarta())
                         .replace("$NUMERO_CARTA$", datiCarta.getNumCarta())
-                        .replace("$SCADENZA_CARTA$", datiCarta.getScadenzaCarta())
+                        .replace("$SCADENZA_CARTA$", data)
                         .replace("$CVV_CARTA$", datiCarta.getCvv());
 
                 Message message = createMessage(sender, emailUtente,oggettoEmail, htm_otp);

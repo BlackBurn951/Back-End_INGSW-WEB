@@ -41,12 +41,14 @@ public class RelStatoCarteDAOImpl implements RelStatoCarteDAO{
             statement.setString(1, numCarta);
 
             ResultSet queryResult= statement.executeQuery();
-
-            while(queryResult.next())
-                result.add(new RelStatoCarta(queryResult.getInt("id_rel"), queryResult.getDate("data_inizio_stato").toString(), queryResult.getDate("data_fine_stato").toString(),
+            while(queryResult.next()) {
+                rel= new RelStatoCarta(queryResult.getDate("data_inizio_stato").toString(),
                         MagnusDAO.getInstance().getStatoDAO().doRetriveByKey(queryResult.getInt("id_stato")),
-                        MagnusDAO.getInstance().getCarteDAO().doRetriveByKey(queryResult.getString("num_cc"), tipo, false)));
-
+                        MagnusDAO.getInstance().getCarteDAO().doRetriveByKey(queryResult.getString("num_cc"), tipo, false));
+                rel.setId(queryResult.getInt("id_rel"));
+                rel.setDataFineStato(queryResult.getDate("data_fine_stato").toString());
+                result.add(rel);
+            }
         }catch (SQLException e) {
             e.printStackTrace();
         }
@@ -97,8 +99,9 @@ public class RelStatoCarteDAOImpl implements RelStatoCarteDAO{
                 statement.setNull(2, Types.NULL);
             else
                 statement.setDate(2, rel.getDataFineStato());
-            statement.setInt(3, rel.getStato().getIdStato());
-            statement.setString(4, rel.getCarta().getNumCarta());
+            statement.setString(3, rel.getCarta().getNumCarta());
+            statement.setInt(4, rel.getStato().getIdStato());
+
 
             if(statement.executeUpdate()>0)
                 return true;
