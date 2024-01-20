@@ -54,10 +54,7 @@ public class PagamentiServlet {
         TipologiaBollettino tipo= MagnusDAO.getInstance().getTipologiaBollettinoDAO().doRetriveByAttribute(dati.getTipologiaBollettino());
         Bollettino bol= new Bollettino(LocalDate.now().toString(), 1.0, result, dati.getImporto(), dati.getCausale(), cc.getNumCC(), tipo);
 
-        if(MagnusDAO.getInstance().getBollettinoDAO().saveOrUpdate(bol, cc.getNumCC()))
-            System.out.println("BOLLETTINO FATTO!!!");
-        else
-            System.out.println("Else!!!");
+        MagnusDAO.getInstance().getBollettinoDAO().saveOrUpdate(bol, cc.getNumCC());
 
         return result;
     }
