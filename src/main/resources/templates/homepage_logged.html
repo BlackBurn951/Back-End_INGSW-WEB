@@ -52,31 +52,32 @@
         <h3>Stato: <span th:text="${conto.getStatoConto().getValoreStato()}" th:style="${conto.getStatoConto().getValoreStato() eq 'attivo' ? 'color: green;' : 'color: darkred;'}"></span></h3>
     </div>
 
-      <div class="containerDatiTransazioni">
+      <div class="bloccoTransazioni">
           <h2 id="titleTrans">Ultime transazioni</h2>
+          <div class="containerDatiTransazioni">
+              <table id="transazioniTable">
+                  <thead>
+                      <tr>
+                          <th>Data</th>
+                          <th>Importo</th>
+                          <th>Causale</th>
+                          <th>Esito</th>
+                          <th></th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr class="item" th:each="item, iterStat : ${conto.getMovimenti()}">
+                          <td th:text="${item.getDataTransazione()}"></td>
+                          <td th:text="${item.getImporto()}"></td>
+                          <td th:text="${item.getCausale()}"></td>
+                          <td th:if="${item.getEsito()}" th:text="Eseguita" style="color: green;"></td>
+                          <td th:unless="${item.getEsito()}" th:text="Rifiutata" style="color: red;"></td>
+                          <td><button onclick="openPopup()">+</button></td>
+                      </tr>
+                  </tbody>
 
-          <table id="transazioniTable">
-              <thead>
-                  <tr>
-                      <th>Data</th>
-                      <th>Importo</th>
-                      <th>Causale</th>
-                      <th>Esito</th>
-                      <th></th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <tr class="item" th:each="item, iterStat : ${conto.getMovimenti()}">
-                      <td th:text="${item.getDataTransazione()}"></td>
-                      <td th:text="${item.getImporto()}"></td>
-                      <td th:text="${item.getCausale()}"></td>
-                      <td th:if="${item.getEsito()}" th:text="Eseguita" style="color: green;"></td>
-                      <td th:unless="${item.getEsito()}" th:text="Rifiutata" style="color: red;"></td>
-                      <td><button onclick="openPopup()">+</button></td>
-                  </tr>
-              </tbody>
-
-          </table>
+              </table>
+          </div>
       </div>
 
       <div class="popup" id="popup">

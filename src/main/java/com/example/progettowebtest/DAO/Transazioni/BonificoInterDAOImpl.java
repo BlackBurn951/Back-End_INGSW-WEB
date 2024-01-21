@@ -20,7 +20,7 @@ public class BonificoInterDAOImpl implements BonificoInterDAO{
     @Override
     public Vector<Transazione> doRetriveAllForCC(String numCC) {
         Vector<Transazione> result= new Vector<>();
-        String query= "select b.id_internazionale, r.data_transazione, b.importo, b.causale from bonifico_internazionale as b, rel_cc_bon_int as r where b.id_internazionale= r.id_internazionale";
+        String query= "select b.id_internazionale, r.data_transazione, b.importo, r.esito, b.causale from bonifico_internazionale as b, rel_cc_bon_int as r where b.id_internazionale= r.id_internazionale";
 
         try{
             PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
@@ -28,7 +28,7 @@ public class BonificoInterDAOImpl implements BonificoInterDAO{
 
             while(queryResult.next()) {
                 result.add(new TransazioneProxy(queryResult.getInt("id_internazionale"), queryResult.getDate("data_transazione").toString(), queryResult.getDouble("importo"),
-                        queryResult.getString("causale"), TipoTransazione.BONIFICOINTER));
+                        queryResult.getString("causale"), queryResult.getBoolean("esito"), TipoTransazione.BONIFICOINTER));
             }
 
         }catch (SQLException e) {
@@ -64,7 +64,7 @@ public class BonificoInterDAOImpl implements BonificoInterDAO{
         if(proxy)
             query= "select * from bonifico_internazionale as b, rel_cc_bon_int as r where b.id_internazionale= r.id_internazionale";
         else
-            query= "select r.data_transazione, b.importo, b.causale from bonifico_internazionale as b, rel_cc_bon_int as r where b.id_internazionale=r.id_internazionale";
+            query= "select r.data_transazione, b.importo, r.esito, b.causale from bonifico_internazionale as b, rel_cc_bon_int as r where b.id_internazionale=r.id_internazionale";
 
         try{
             PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
@@ -78,7 +78,7 @@ public class BonificoInterDAOImpl implements BonificoInterDAO{
             }
             else if(queryResult.next())
                 return new TransazioneProxy(queryResult.getInt("id_internazionale"), queryResult.getDate("data_transazione").toString(), queryResult.getDouble("importo"),
-                        queryResult.getString("causale"), TipoTransazione.BONIFICOINTER);
+                        queryResult.getString("causale"),queryResult.getBoolean("esito"), TipoTransazione.BONIFICOINTER);
 
         }catch (SQLException e) {
             e.printStackTrace();
