@@ -53,6 +53,7 @@ public class TransazioneProxy implements Transazione {
 
     @Override
     public double getCostoTransazione() {
+        System.out.println("MEtodo chiamato!!!");
         if (transazioneReale == null) {
             instanzaTransazione();
             if (transazioneReale == null) {
@@ -159,17 +160,23 @@ public class TransazioneProxy implements Transazione {
         } else if (tipo == TipoTransazione.BONIFICOINTER) {
             transazioneReale = MagnusDAO.getInstance().getBonificoInterDAO().doRetriveByKey(id, true);
             if(transazioneReale!= null){
-                System.out.println("ISTANZIATO BONSEPA");
+                System.out.println("ISTANZIATO INt");
             }
         } else if (tipo == TipoTransazione.BONIFICOSEPA) {
             transazioneReale = MagnusDAO.getInstance().getBonificoSepaDAO().doRetriveByKey(id, true);
             if(transazioneReale!= null){
-                System.out.println("ISTANZIATO BONINT");
+                System.out.println("ISTANZIATO SEPA");
             }
         } else if (tipo == TipoTransazione.DEPOSITO) {
             transazioneReale = MagnusDAO.getInstance().getDepositoDAO().doRetriveByKey(id, true);
+            if(transazioneReale!= null){
+                System.out.println("ISTANZIATO DEPOSITO");
+            }
         } else if (tipo == TipoTransazione.PRELIEVO) {
             transazioneReale = MagnusDAO.getInstance().getPrelievoDAO().doRetriveByKey(id, true);
+            if(transazioneReale!= null){
+                System.out.println("ISTANZIATO PRELIEVO");
+            }
         }
     }
 
