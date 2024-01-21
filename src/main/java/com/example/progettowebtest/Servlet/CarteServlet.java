@@ -1,14 +1,13 @@
 package com.example.progettowebtest.Servlet;
 
 import com.example.progettowebtest.ClassiEmail.InvioCarta;
+import com.example.progettowebtest.ClassiRequest.CambioStatoCarta;
 import com.example.progettowebtest.ClassiRequest.Card;
 import com.example.progettowebtest.DAO.MagnusDAO;
 import com.example.progettowebtest.EmailSender.SenderEmail;
-import com.example.progettowebtest.Model.Carte.CartaCredito;
-import com.example.progettowebtest.Model.Carte.CartaDebito;
-import com.example.progettowebtest.Model.Carte.Carte;
-import com.example.progettowebtest.Model.Carte.TipiCarte;
+import com.example.progettowebtest.Model.Carte.*;
 import com.example.progettowebtest.Model.ContoCorrente.ContoCorrente;
+import com.example.progettowebtest.Model.Stato;
 import com.example.progettowebtest.Model.Utente_Documenti.Utente;
 import com.example.progettowebtest.Model.ValoriStato;
 import jakarta.servlet.http.HttpServletRequest;
@@ -192,7 +191,7 @@ public class CarteServlet {
     @GetMapping("/prendiCarte")
     public List<Card> prendiCarte(HttpServletRequest request, @RequestParam("IDSession") String idSession) {
         Vector<Card> result= new Vector<>();
-        System.out.println("Sessione inviata: "+idSession);
+
         HttpSession session = (HttpSession) request.getServletContext().getAttribute(idSession);
         Utente ut = (Utente) session.getAttribute("Utente");
         ContoCorrente cc= (ContoCorrente)session.getAttribute("Conto");
