@@ -72,7 +72,12 @@
                           <td th:text="${item.getCausale()}"></td>
                           <td th:if="${item.getEsito()}" th:text="Eseguita" style="color: green;"></td>
                           <td th:unless="${item.getEsito()}" th:text="Rifiutata" style="color: red;"></td>
-                          <td><button onclick="openPopup()">+</button></td>
+
+                          <!--<td><button th:attr="data-costo=${item.getCostoTransazione()}, data-nome-beneficiario=${item.getNomeBeneficiario()}" onclick="openPopup(this)">+</button></td>-->
+
+
+                          <td><button th:attr="data-costo=${item.getCostoTransazione()}, data-nome-beneficiario=${item.getNomeBeneficiario()}" onclick="openPopup(this)">+</button></td>
+
                       </tr>
                   </tbody>
 
@@ -82,13 +87,9 @@
 
       <div class="popup" id="popup">
         <div class="contenutoPopup">
-            <p>Altre cose</p>
-            <p>Altre cose</p>
-            <p>Altre cose</p>
-            <p>Altre cose</p>
-            <p>Altre cose</p>
-            <p>Altre cose</p>
-            <p>Altre cose</p>
+            <p class="costoTransazione"></p>
+            <p class="nomeBeneficiario"></p>
+
             <button class="popup-btn" onclick="closePopupTrans()">Chiudi</button>
 
         </div>

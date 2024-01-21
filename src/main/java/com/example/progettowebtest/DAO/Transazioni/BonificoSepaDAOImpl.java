@@ -45,7 +45,7 @@ public class BonificoSepaDAOImpl implements BonificoSepaDAO {
         if(proxy)
             query= "select * from bonifico_area_sepa as b, rel_cc_bon_sepa as r where b.id_sepa= r.id_sepa";
         else
-            query= "select r.data_transazione, b.importo, r.esito, b.causale from bonifico_area_sepa as b, rel_cc_bon_sepa as r where b.id_sepa=r.id_sepa";
+            query= "select b.id_sepa, r.data_transazione, b.importo, r.esito, b.causale from bonifico_area_sepa as b, rel_cc_bon_sepa as r where b.id_sepa=r.id_sepa";
 
         try {
             PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
