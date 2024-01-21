@@ -10,5 +10,5 @@ public class CartaDebito extends Carta implements Carte{
     }
 
     @Override
-    public Double getFido() {return null;}
+    public Double getFido() {return 0.0;}
 }

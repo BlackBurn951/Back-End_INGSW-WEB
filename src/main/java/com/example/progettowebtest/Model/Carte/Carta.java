@@ -41,4 +41,5 @@ public abstract class Carta {
     public String getPin() {return pin;}
     public ContoCorrente getContoRiferimento() {return contoRiferimento;}
     public Stato getStatoCarta() {return statoCarta;}
+    public void setStatoCarta(Stato stato) {statoCarta= stato;}
 }

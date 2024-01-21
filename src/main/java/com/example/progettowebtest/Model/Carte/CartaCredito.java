@@ -14,6 +14,6 @@ public class CartaCredito extends Carta implements Carte{
 
     @Override
     public Double getFido() {
-        return null;
+        return fido;
     }
 }

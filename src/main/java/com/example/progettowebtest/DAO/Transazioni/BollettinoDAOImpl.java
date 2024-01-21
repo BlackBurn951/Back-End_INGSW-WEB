@@ -23,7 +23,7 @@ public class BollettinoDAOImpl implements BollettinoDAO{
     @Override
     public Vector<Transazione> doRetriveAllForCC(String numCC) {
         Vector<Transazione> result= new Vector<>();
-        String query= "select b.id_bollettino, r.data_transizione, b.importo, b.causale from bollettino as b, rel_cc_bollettino as r where b.id_bollettino= r.id_bollettino";
+        String query= "select b.id_bollettino, r.data_transizione, r.esito, b.importo, b.causale from bollettino as b, rel_cc_bollettino as r where b.id_bollettino= r.id_bollettino";
 
         try{
             PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
@@ -31,7 +31,7 @@ public class BollettinoDAOImpl implements BollettinoDAO{
 
             while(queryResult.next()) {
                 result.add(new TransazioneProxy(queryResult.getInt("id_bollettino"), queryResult.getDate("data_transizione").toString(), queryResult.getDouble("importo"),
-                        queryResult.getString("causale"), TipoTransazione.BOLLETTINO));
+                        queryResult.getString("causale"), queryResult.getBoolean("esito"),TipoTransazione.BOLLETTINO));
             }
 
         }catch (SQLException e) {
@@ -66,7 +66,7 @@ public class BollettinoDAOImpl implements BollettinoDAO{
         if(proxy)
             query= "select * from bollettino as b, rel_cc_bollettino as r where b.id_bollettino= r.id_bollettino";
         else
-            query= "select r.data_transizione, b.importo, b.causale from bollettino as b, rel_cc_bollettino as r where b.id_bollettino= r.id_bollettino";
+            query= "select b.id_bollettino, r.data_transizione, b.importo, r.esito, b.causale from bollettino as b, rel_cc_bollettino as r where b.id_bollettino= r.id_bollettino";
 
         try{
             PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
@@ -80,8 +80,8 @@ public class BollettinoDAOImpl implements BollettinoDAO{
             }
             else{
                 if(queryResult.next())
-                   bol= new TransazioneProxy(queryResult.getInt("id_bollettino"), queryResult.getDate("data_transazione").toString(), queryResult.getDouble("importo"),
-                           queryResult.getString("causale"), TipoTransazione.BOLLETTINO);
+                   bol= new TransazioneProxy(queryResult.getInt("id_bollettino"), queryResult.getDate("data_transizione").toString(), queryResult.getDouble("importo"),
+                           queryResult.getString("causale"), queryResult.getBoolean("esito"), TipoTransazione.BOLLETTINO);
             }
 
 

@@ -1,40 +1,61 @@
 header {
-    display: flex;
-    justify-content: space-between; /* Aggiunto per spostare gli elementi a destra */
-    align-items: center;
     background-color: #3498db;
-    color: #fff;
-    text-align: center;
-}
-
-.notifiche-esci {
     display: flex;
-    align-items: center; /* Aggiunto per allineare verticalmente l'iconaEsci */
-    gap:30vh;
 }
 
 .esciImage {
-    max-width: 80px; /* Modificato le dimensioni dell'iconaEsci a tuo piacimento */
-    max-height: 80px;
-    margin-left: 100vh; /* Aggiunto margine a sinistra per separare dall'elemento precedente */
+    margin-top: 0.5em;
+    max-width: 6vw;
+    max-height: 6vw;
 }
 
-.containerLogo {
+.notificaImage {
+    display: none; /*PER ADESSO NASCOSTA PRIMA DELL'IMPLEMENTAZIONE*/
+    max-width: 4vw;
+    max-height: 4vw;
+}
+
+.iconeNE {
+    position: relative;
+    display: flex;
+    gap: 20vw;
+    align-items: center;
+    margin-left: 33vw;
+}
+
+.containerHeader {
+    display: flex;
     margin-left: 10%;
+}
+
+.logoEtitolo {
     display: flex;
     align-items: center;
 }
 
-.container2 {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px; /* Ridotto il valore di gap */
+.titolo {
+    color: white;
+    margin: 0;
+    white-space: nowrap;
 }
+
+/* Aggiunta di una media query per adattare il layout a schermi più piccoli */
+@media screen and (max-width: 768px) {
+    .containerHeader {
+        flex-direction: column; /* Cambiato il layout a colonna su schermi più piccoli */
+        align-items: center;
+    }
+
+    .iconeNE {
+        margin-top: 10px; /* Aggiunto margine superiore per separare le icone dall'alto */
+        gap: 1vw; /* Ridotto lo spazio tra le icone con vw */
+    }
+}
+
 
 
 nav {
-    background-color: whitesmoke;
+    background-color: rgba(208, 208, 208);
     padding: 20px;
     width: 50px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -47,6 +68,7 @@ nav {
     transition: width 0.3s;
     overflow: hidden;
 }
+
 
 nav:hover {
     width: 130px;
@@ -113,10 +135,13 @@ body{
 }
 
 
+
+
 .containerDatiConto {
+    margin-top: -2%;
     transform: translateY(-50%);
     text-align: center;
-    background-color:  rgba(208, 208, 208, 0.9);
+    background-color: rgba(208, 208, 208, 0.9);
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -124,28 +149,56 @@ body{
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-h2#titleTrans {
-    margin-bottom: 0; /* Rimuovi il margine inferiore dell'h2 */
+
+.bloccoTransazioni {
+    width: 70%;
+    margin-top: -11%;
+    max-height: 38vh;
+    background-color: rgba(208, 208, 208, 0.9);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-
+#titleTrans {
+    margin-bottom: 10px;
+}
 
 .containerDatiTransazioni {
-    width: 80%;
-    height: 300px;
-    overflow: auto;
-
-
-    margin-top: -2vh;
-    transform: translateY(-50%);
+    width: 100%;
     max-height: 38vh;
     text-align: center;
     background-color: rgba(208, 208, 208, 0.9);
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    gap: 5vh;
+    gap: 2%;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: auto;
+
+    scrollbar-width: thin;
+    scrollbar-color: #3498db #f2f2f2;
+}
+
+@media screen and (min-width: 1600px) {
+    .bloccoTransazioni {
+        margin-top: -5%;
+        width: 90%;
+    }
+}
+
+.containerDatiTransazioni::-webkit-scrollbar {
+    width: 12px;
+}
+
+.containerDatiTransazioni::-webkit-scrollbar-thumb {
+    background-color: #3498db;
+    border-radius: 6px;
+}
+
+.containerDatiTransazioni::-webkit-scrollbar-track {
+    background-color: #f2f2f2;
 }
 
 
@@ -160,7 +213,7 @@ button {
     width: 70%;
     background-color: #3498db;
     color: #ffffff;
-    padding: 5px 5px;
+    padding: 0.1vw 0.1vw;
     font-size: 18px;
     font-weight: 540;
     border-radius: 5px;
@@ -176,7 +229,7 @@ button:hover {
 
 
 .informazioniConto{
-    background: url('../images/allec-gomes-gJ8VovObjRA-unsplash.jpg') center no-repeat;
+    background: url('../images/sfondoGenerale.png') center no-repeat;
     background-size: cover;
     align-items: center;
     padding: 180px;
@@ -220,9 +273,11 @@ th {
 }
 
 .contenutoPopup{
+    margin-top: 8%;
     align-content: center;
     align-items: center;
     display: flex;
+    gap: -5vh;
     flex-direction: column;
 }
 
@@ -249,6 +304,18 @@ th {
     cursor: pointer;
 }
 
+.badge {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 6px 8px;
+    font-size: 12px;
+    display: inline-block;
+}
+
 .notificheMenu {
     display: none;
     position: absolute;
@@ -256,6 +323,11 @@ th {
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     padding: 10px;
     z-index: 1;
+    right: 0; /* Posiziona il menu a destra dell'icona */
+}
+
+.notificheMenu.show {
+    display: block;
 }
 
 .notificheMenu li {

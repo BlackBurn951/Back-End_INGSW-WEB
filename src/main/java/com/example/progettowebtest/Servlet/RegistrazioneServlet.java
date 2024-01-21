@@ -171,24 +171,7 @@ public class RegistrazioneServlet extends HttpServlet {
                     dati.getCellulare(), data.toString(), MagnusDAO.getInstance().getContoCorrenteDAO().getPinChiaro());
             SenderEmail.sendEmails(null, datiContratto, null, dati.getEmail());
 
-            //Invio contratto
-            /*String indirizzoRes= dati.getTipoStradaRes()+" "+dati.getNomeStradaRes()+" "+dati.getNumCivicoRes()+" "+dati.getCittaRes()+" "+dati.getCapRes()+" "+dati.getProvinciaRes()+" "+dati.getRegioneRes();
 
-            String emailTemplate = EmailTemplateLoader.loadEmailTemplate("/email_pdf_template.html");
-            String pdf_html = emailTemplate
-                    .replace("EMAIL_DESTINATARIO", dati.getEmail())
-                    .replace("NOME_COGNOME", dati.getNome()+" "+dati.getCognome())
-                    .replace("DATA_NASCITA", dati.getDataNascita())
-                    .replace("INDIRIZZO", indirizzoRes)
-                    .replace("NUMERO_TELEFONO", dati.getCellulare())
-                    .replace("DATA_FIRMA", data.toString())
-                    .replace("PINDASERVER", MagnusDAO.getInstance().getContoCorrenteDAO().getPinChiaro());
-            MagnusDAO.getInstance().getContoCorrenteDAO().setPinChiaro("");
-
-            PDDocument pdfFile = CreaPDFConfermaConto.creaPDFconto(dati.getNome()+" "+dati.getCognome(), dati.getDataNascita(), indirizzoRes, dati.getCellulare(), dati.getEmail(), data.toString());
-            Message message = EmailService.createMessageWithAttachment(pdf_html, "caesar.magnus.info@gmail.com", dati.getEmail(), "Conferma registrazione e dati conto", pdfFile);
-            sendMessage(getService(), "caesar.magnus.info@gmail.com", message);
-            */
 
             //Aggiornamento sessione
             HttpSession session= (HttpSession) request.getServletContext().getAttribute(idSession);

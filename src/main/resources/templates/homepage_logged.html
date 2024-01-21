@@ -13,35 +13,25 @@
 
 </head>
 <header>
-    <div class="containerLogo">
-        <img class="logo" src="/images/logoBanca.png" alt=""></div>
-        <div class="container2">
-            <div class="notifiche-esci">
+    <div class="containerHeader">
+        <div class="logoEtitolo">
+            <img class="logo" src="/images/logoBanca.png" alt="">
             <h1 class="titolo">Conto Corrente Personale</h1>
-                <a href="/redirect/tornaHomepage" class="logout">
-                    <img class="esciImage" src="/images/iconaEsci.png" alt="">
-                </a>
+        </div>
+        <div class="iconeNE">
+            <div class="centroNotifiche">
+                <img class="notificaImage" src="/images/notification.png" alt="" onclick="toggleNotifiche()">
+                <span th:if="${countNotificheNonLette > 0}" class="badge" th:text="${countNotificheNonLette}" onclick="toggleNotifiche()"></span>
+                <li th:each="notifica : ${listaNotifiche}">
+                    <span th:text="${notifica.testo}"></span>
+                    <a href="#" class="eliminaNotifica" th:attr="data-notificaId=${notifica.id}" onclick="eliminaNotifica(this)">x</a>
+                </li>
+
+
             </div>
+            <a href="/redirect/tornaHomepage" class="logout"><img class="esciImage" src="/images/iconaEsci.png" alt=""></a>
         </div>
     </div>
-    <!--
-    <div class="centroNotifiche">
-        <div class="notificheIcona" onclick="toggleNotifiche()">
-            <img src="/images/notificheIcona.png" alt="Notifiche">
-            <span class="notificheCounter" th:text="${numeroNotificheNonLette}"></span>
-        </div>
-        <div class="notificheMenu" id="notificheMenu">
-            Notifiche verranno visualizzate qui
-            <span th:if="${notifiche.isEmpty()}">Nessuna notifica</span>
-            <ul th:if="${notifiche.size() > 0}">
-                <li th:each="notifica : ${notifiche}">
-                    <span th:text="${notifica.testo}"></span>
-                    <img src="/images/eliminaIcona.png" alt="Elimina" onclick="eliminaNotifica(${notifica.id})">
-                </li>
-            </ul>
-        </div>-->
-
-
 </header>
 <body>
   <nav>
@@ -62,42 +52,44 @@
         <h3>Stato: <span th:text="${conto.getStatoConto().getValoreStato()}" th:style="${conto.getStatoConto().getValoreStato() eq 'attivo' ? 'color: green;' : 'color: darkred;'}"></span></h3>
     </div>
 
-      <div class="containerDatiTransazioni">
+      <div class="bloccoTransazioni">
           <h2 id="titleTrans">Ultime transazioni</h2>
+          <div class="containerDatiTransazioni">
+              <table id="transazioniTable">
+                  <thead>
+                      <tr>
+                          <th>Data</th>
+                          <th>Importo</th>
+                          <th>Causale</th>
+                          <th>Esito</th>
+                          <th></th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr class="item" th:each="item, iterStat : ${conto.getMovimenti()}">
+                          <td th:text="${item.getDataTransazione()}"></td>
+                          <td th:text="${item.getImporto()}"></td>
+                          <td th:text="${item.getCausale()}"></td>
+                          <td th:if="${item.getEsito()}" th:text="Eseguita" style="color: green;"></td>
+                          <td th:unless="${item.getEsito()}" th:text="Rifiutata" style="color: red;"></td>
 
-          <table id="transazioniTable">
-              <thead>
-                  <tr>
-                      <th>Data</th>
-                      <th>Importo</th>
-                      <th>Causale</th>
-                      <th>Esito</th>
-                      <th></th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <tr class="item" th:each="item, iterStat : ${conto.getMovimenti()}">
-                      <td th:text="${item.getDataTransazione()}"></td>
-                      <td th:text="${item.getImporto()}"></td>
-                      <td th:text="${item.getCausale()}"></td>
-                      <td th:if="${item.getEsito()}" th:text="Eseguita" style="color: green;"></td>
-                      <td th:unless="${item.getEsito()}" th:text="Rifiutata" style="color: red;"></td>
-                      <td><button onclick="openPopup()">+</button></td>
-                  </tr>
-              </tbody>
+                          <!--<td><button th:attr="data-costo=${item.getCostoTransazione()}, data-nome-beneficiario=${item.getNomeBeneficiario()}" onclick="openPopup(this)">+</button></td>-->
 
-          </table>
+
+                          <td><button th:attr="data-costo=${item.getCostoTransazione()}, data-nome-beneficiario=${item.getNomeBeneficiario()}" onclick="openPopup(this)">+</button></td>
+
+                      </tr>
+                  </tbody>
+
+              </table>
+          </div>
       </div>
 
       <div class="popup" id="popup">
         <div class="contenutoPopup">
-            <p>Altre cose</p>
-            <p>Altre cose</p>
-            <p>Altre cose</p>
-            <p>Altre cose</p>
-            <p>Altre cose</p>
-            <p>Altre cose</p>
-            <p>Altre cose</p>
+            <p class="costoTransazione"></p>
+            <p class="nomeBeneficiario"></p>
+
             <button class="popup-btn" onclick="closePopupTrans()">Chiudi</button>
 
         </div>

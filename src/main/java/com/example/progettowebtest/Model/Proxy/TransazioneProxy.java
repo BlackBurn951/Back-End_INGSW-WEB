@@ -11,15 +11,17 @@ public class TransazioneProxy implements Transazione {
     private Date dataTransazione;
     private double importo;
     private String causale;
+    private boolean esito;
 
     private Transazione transazioneReale = null;
     private TipoTransazione tipo;
 
-    public TransazioneProxy(int id, String dataTransazione, double importo, String causale, TipoTransazione tipo) {
+    public TransazioneProxy(int id, String dataTransazione, double importo, String causale, boolean esito ,TipoTransazione tipo) {
         this.id = id;
         this.dataTransazione = Date.valueOf(dataTransazione);
         this.importo = importo;
         this.causale = causale;
+        this.esito= esito;
         this.tipo = tipo;
     }
 
@@ -44,26 +46,24 @@ public class TransazioneProxy implements Transazione {
     }
 
     @Override
+    public boolean getEsito() {
+        return esito;
+    }
+
+
+    @Override
     public double getCostoTransazione() {
+        System.out.println("MEtodo chiamato!!!");
         if (transazioneReale == null) {
             instanzaTransazione();
             if (transazioneReale == null) {
-                return 0.0; // O un altro valore di default a tua scelta, se necessario
+                return 0.0;
             }
         }
         return transazioneReale.getCostoTransazione();
     }
 
-    @Override
-    public boolean getEsito() {
-        if (transazioneReale == null) {
-            instanzaTransazione();
-            if (transazioneReale == null) {
-                return false; // O un altro valore di default a tua scelta, se necessario
-            }
-        }
-        return transazioneReale.getEsito();
-    }
+
 
     @Override
     public String getNomeBeneficiario() {
@@ -160,17 +160,23 @@ public class TransazioneProxy implements Transazione {
         } else if (tipo == TipoTransazione.BONIFICOINTER) {
             transazioneReale = MagnusDAO.getInstance().getBonificoInterDAO().doRetriveByKey(id, true);
             if(transazioneReale!= null){
-                System.out.println("ISTANZIATO BONSEPA");
+                System.out.println("ISTANZIATO INt");
             }
         } else if (tipo == TipoTransazione.BONIFICOSEPA) {
             transazioneReale = MagnusDAO.getInstance().getBonificoSepaDAO().doRetriveByKey(id, true);
             if(transazioneReale!= null){
-                System.out.println("ISTANZIATO BONINT");
+                System.out.println("ISTANZIATO SEPA");
             }
         } else if (tipo == TipoTransazione.DEPOSITO) {
             transazioneReale = MagnusDAO.getInstance().getDepositoDAO().doRetriveByKey(id, true);
+            if(transazioneReale!= null){
+                System.out.println("ISTANZIATO DEPOSITO");
+            }
         } else if (tipo == TipoTransazione.PRELIEVO) {
             transazioneReale = MagnusDAO.getInstance().getPrelievoDAO().doRetriveByKey(id, true);
+            if(transazioneReale!= null){
+                System.out.println("ISTANZIATO PRELIEVO");
+            }
         }
     }
 
