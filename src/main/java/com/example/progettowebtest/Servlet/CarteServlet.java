@@ -103,7 +103,6 @@ public class CarteServlet {
     public boolean cambiaStato(HttpServletRequest request, @RequestParam("IDSession") String idSession, @RequestBody CambioStatoCarta dati){
         boolean result;  //True -> eliminato  False -> attivata/disattivata
 
-        HttpSession session = (HttpSession) request.getServletContext().getAttribute(idSession);
 
         Carte carta;
         Stato statoCarta;
