@@ -57,10 +57,11 @@ public class BonificoSepaDAOImpl implements BonificoSepaDAO {
                         queryResult.getDouble("importo"), queryResult.getString("causale"), queryResult.getString("iban_destinatario"));
             bonSep.setId(id);
             }
-            else
-                return new TransazioneProxy(queryResult.getInt("id_sepa"), queryResult.getDate("data_transazione").toString(), queryResult.getDouble("importo"),
+            else {
+                if(queryResult.next())
+                    return new TransazioneProxy(queryResult.getInt("id_sepa"), queryResult.getDate("data_transazione").toString(), queryResult.getDouble("importo"),
                         queryResult.getString("causale"), queryResult.getBoolean("esito"), TipoTransazione.BONIFICOSEPA);
-
+            }
         }catch (SQLException e) {
             e.printStackTrace();
         }
