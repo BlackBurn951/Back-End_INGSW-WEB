@@ -10,6 +10,7 @@ header {
 }
 
 .notificaImage {
+    display: none; /*PER ADESSO NASCOSTA PRIMA DELL'IMPLEMENTAZIONE*/
     max-width: 4vw;
     max-height: 4vw;
 }
