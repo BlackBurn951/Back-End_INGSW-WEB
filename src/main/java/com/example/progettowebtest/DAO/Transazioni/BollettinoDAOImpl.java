@@ -81,7 +81,7 @@ public class BollettinoDAOImpl implements BollettinoDAO{
             else{
                 if(queryResult.next())
                    bol= new TransazioneProxy(queryResult.getInt("id_bollettino"), queryResult.getDate("data_transazione").toString(), queryResult.getDouble("importo"),
-                           queryResult.getString("causale"), TipoTransazione.BOLLETTINO);
+                           queryResult.getString("causale"), queryResult.getBoolean("esito"), TipoTransazione.BOLLETTINO);
             }
 
 

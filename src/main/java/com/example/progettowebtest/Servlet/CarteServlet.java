@@ -100,6 +100,95 @@ public class CarteServlet {
         return result;
     }
 
+    @PostMapping("/cambiaStatoCarta")
+    public boolean cambiaStato(HttpServletRequest request, @RequestParam("IDSession") String idSession, @RequestBody CambioStatoCarta dati){
+        boolean result;  //True -> eliminato  False -> attivata/disattivata
+
+        HttpSession session = (HttpSession) request.getServletContext().getAttribute(idSession);
+
+        Carte carta;
+        Stato statoCarta;
+
+        if(dati.isTipoCarta()) {
+            carta = MagnusDAO.getInstance().getCarteDAO().doRetriveByKey(dati.getNumCarta(), TipiCarte.CREDITO, true);
+            if (dati.getStato() == 1) {
+                statoCarta = MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualState(dati.getNumCarta(), TipiCarte.CREDITO);
+
+                if (statoCarta.getValoreStato().equals("attivo")) {
+                    RelStatoCarta rel= MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualRel(dati.getNumCarta(), TipiCarte.CREDITO, statoCarta);
+                    rel.setDataFineStato(LocalDate.now().toString());
+
+                    MagnusDAO.getInstance().getRelStatoCarteDAO().saveOrUpdate(rel, TipiCarte.CREDITO);
+
+                    statoCarta= MagnusDAO.getInstance().getStatoDAO().doRetriveByAttribute(ValoriStato.SOSPESO);
+                    rel= new RelStatoCarta(LocalDate.now().toString(), statoCarta, carta);
+
+                    MagnusDAO.getInstance().getRelStatoCarteDAO().saveOrUpdate(rel, TipiCarte.CREDITO);
+
+                    result = false;
+                }else{
+                    RelStatoCarta rel= MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualRel(dati.getNumCarta(), TipiCarte.CREDITO, statoCarta);
+                    rel.setDataFineStato(LocalDate.now().toString());
+
+                    MagnusDAO.getInstance().getRelStatoCarteDAO().saveOrUpdate(rel, TipiCarte.CREDITO);
+
+                    statoCarta= MagnusDAO.getInstance().getStatoDAO().doRetriveByAttribute(ValoriStato.ATTIVO);
+                    rel= new RelStatoCarta(LocalDate.now().toString(), statoCarta, carta);
+
+                    MagnusDAO.getInstance().getRelStatoCarteDAO().saveOrUpdate(rel, TipiCarte.CREDITO);
+
+                    result = false;
+                }
+
+            }else {
+                MagnusDAO.getInstance().getRelStatoCarteDAO().delete(carta.getNumCarta(), TipiCarte.CREDITO);
+                MagnusDAO.getInstance().getCarteDAO().delete(carta, TipiCarte.CREDITO);
+
+                result= true;
+            }
+
+        }
+        else {
+            carta = MagnusDAO.getInstance().getCarteDAO().doRetriveByKey(dati.getNumCarta(), TipiCarte.DEBITO, true);
+
+            if (dati.getStato() == 1) {
+                statoCarta = MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualState(dati.getNumCarta(), TipiCarte.DEBITO);
+
+                if (statoCarta.getValoreStato().equals("attivo")) {
+                    RelStatoCarta rel= MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualRel(dati.getNumCarta(), TipiCarte.DEBITO, statoCarta);
+                    rel.setDataFineStato(LocalDate.now().toString());
+
+                    MagnusDAO.getInstance().getRelStatoCarteDAO().saveOrUpdate(rel, TipiCarte.DEBITO);
+
+                    statoCarta= MagnusDAO.getInstance().getStatoDAO().doRetriveByAttribute(ValoriStato.SOSPESO);
+                    rel= new RelStatoCarta(LocalDate.now().toString(), statoCarta, carta);
+
+                    MagnusDAO.getInstance().getRelStatoCarteDAO().saveOrUpdate(rel, TipiCarte.DEBITO);
+
+                    result= false;
+                }else{
+                    RelStatoCarta rel= MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualRel(dati.getNumCarta(), TipiCarte.DEBITO, statoCarta);
+                    rel.setDataFineStato(LocalDate.now().toString());
+
+                    MagnusDAO.getInstance().getRelStatoCarteDAO().saveOrUpdate(rel, TipiCarte.DEBITO);
+
+                    statoCarta= MagnusDAO.getInstance().getStatoDAO().doRetriveByAttribute(ValoriStato.ATTIVO);
+                    rel= new RelStatoCarta(LocalDate.now().toString(), statoCarta, carta);
+
+                    MagnusDAO.getInstance().getRelStatoCarteDAO().saveOrUpdate(rel, TipiCarte.DEBITO);
+
+                    result= false;
+                }
+            } else {
+                MagnusDAO.getInstance().getRelStatoCarteDAO().delete(carta.getNumCarta(), TipiCarte.DEBITO);
+                MagnusDAO.getInstance().getCarteDAO().delete(carta, TipiCarte.DEBITO);
+
+                result = true;
+            }
+        }
+        return result;
+    }
+
     @GetMapping("/prendiCarte")
     public List<Card> prendiCarte(HttpServletRequest request, @RequestParam("IDSession") String idSession) {
         Vector<Card> result= new Vector<>();

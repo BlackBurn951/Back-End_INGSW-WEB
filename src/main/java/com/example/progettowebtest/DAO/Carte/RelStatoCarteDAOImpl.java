@@ -113,7 +113,25 @@ public class RelStatoCarteDAOImpl implements RelStatoCarteDAO{
     }
 
     @Override
-    public boolean delete(RelStatoCarta rel) {
+    public boolean delete(String numCarta, TipiCarte tipo) {
+        String query = "";
+
+        if (tipo == TipiCarte.CREDITO)
+            query = "DELETE FROM rel_stato_carta_credito WHERE num_carta = ?";
+        else
+            query = "DELETE FROM rel_stato_carta_debito WHERE num_carta = ?";
+
+        try {
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
+            statement.setString(1, numCarta);
+
+            return statement.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return false;
     }
+
 }

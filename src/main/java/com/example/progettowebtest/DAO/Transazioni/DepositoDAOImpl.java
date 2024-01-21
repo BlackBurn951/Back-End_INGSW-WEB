@@ -26,7 +26,7 @@ public class DepositoDAOImpl implements DepositoDAO{
     @Override
     public Vector<Transazione> doRetriveAllForCC(String numCC) {
         Vector<Transazione> result= new Vector<>();
-        String query= "select  b.id_deposito ,r.data_transazione, b.importo from deposito as b, rel_cc_deposito as r where b.id_deposito=r.id_deposito";
+        String query= "select  b.id_deposito ,r.data_transazione, b.importo, r.esito from deposito as b, rel_cc_deposito as r where b.id_deposito=r.id_deposito";
 
         try{
             PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
@@ -34,7 +34,7 @@ public class DepositoDAOImpl implements DepositoDAO{
 
             while(queryResult.next()) {
                 result.add(new TransazioneProxy(queryResult.getInt("id_deposito"), queryResult.getDate("data_transazione").toString(), queryResult.getDouble("importo"),
-                        "", TipoTransazione.DEPOSITO));
+                        "", queryResult.getBoolean("esito"), TipoTransazione.DEPOSITO));
             }
 
         }catch (SQLException e) {
@@ -70,7 +70,7 @@ public class DepositoDAOImpl implements DepositoDAO{
         if(proxy)
             query= "select * from deposito as b, rel_cc_deposito as r where b.id_deposito= r.id_deposito";
         else
-            query= "select r.data_transazione, b.importo from deposito as b, rel_cc_deposito as r where b.id_deposito=r.id_deposito";
+            query= "select r.data_transazione, b.importo, r.esito from deposito as b, rel_cc_deposito as r where b.id_deposito=r.id_deposito";
 
         try{
             PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
@@ -91,7 +91,7 @@ public class DepositoDAOImpl implements DepositoDAO{
             }
             else if(queryResult.next())
                 return new TransazioneProxy(queryResult.getInt("id_deposito"), queryResult.getDate("data_transazione").toString(), queryResult.getDouble("importo"),
-                        queryResult.getString("causale"), TipoTransazione.DEPOSITO);
+                        queryResult.getString("causale"), queryResult.getBoolean("esito"), TipoTransazione.DEPOSITO);
 
         }catch (SQLException e) {
             e.printStackTrace();

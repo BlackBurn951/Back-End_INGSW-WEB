@@ -68,7 +68,7 @@ public class CarteDAOImpl implements CarteDAO{
                         carta= new CartaProxy(queryResult.getString("num_carta_debito"), queryResult.getBoolean("stato_pagamento_online"), queryResult.getDate("data_creazione").toString(),
                                 queryResult.getDate("data_scadenza").toString(), queryResult.getString("cvv"), queryResult.getBoolean("carta_fisica"),
                                 queryResult.getDouble("canone_mensile"), queryResult.getString("pin"), 0.0,
-                                MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualState(queryResult.getString("num_carta_credito"), TipiCarte.DEBITO), TipiCarte.DEBITO);
+                                MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualState(queryResult.getString("num_carta_debito"), TipiCarte.DEBITO), TipiCarte.DEBITO);
                 }
             }
 
@@ -121,9 +121,27 @@ public class CarteDAOImpl implements CarteDAO{
     }
 
     @Override
-    public boolean delete(Carte carta) {
+    public boolean delete(Carte carta, TipiCarte tipo) {
+        String query = "";
+
+        if (tipo == TipiCarte.CREDITO)
+            query = "DELETE FROM carta_di_credito WHERE num_carta_credito = ?";
+        else
+            query = "DELETE FROM carta_di_debito WHERE num_carta_debito = ?";
+
+        try {
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
+            statement.setString(1, carta.getNumCarta());
+
+            if (statement.executeUpdate() > 0)
+                return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return false;
     }
+
 
 
     //Metodi di servizio

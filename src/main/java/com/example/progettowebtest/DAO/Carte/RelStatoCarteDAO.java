@@ -12,5 +12,5 @@ public interface RelStatoCarteDAO {
     Vector<RelStatoCarta> doRetriveByAttribute(String numCarta, TipiCarte tipo);
     Stato doRetriveActualState(String numCarta, TipiCarte tipo);
     boolean saveOrUpdate(RelStatoCarta rel, TipiCarte tipo);
-    boolean delete(RelStatoCarta rel);
+    boolean delete(String numcarta, TipiCarte tipo);
 }
