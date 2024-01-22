@@ -10,28 +10,39 @@ function modifyLinks() {
 
 document.addEventListener("DOMContentLoaded", modifyLinks);
 
+// Funzione per aprire il popup e caricare i dettagli della transazione
+// Funzione per aprire il popup e caricare i dettagli della transazione
 function openPopup(button) {
-    var popup = document.getElementById("popup");
+    var transactionId = button.getAttribute('data-transaction-id');
 
-    var costoTransazioneElement = popup.querySelector(".costoTransazione");
-    var nomeBeneficiarioElement = popup.querySelector(".nomeBeneficiario");
+    // Recupera gli elementi del popup
+    var costoTransazioneElement = document.querySelector('.costoTransazione');
+    var nomeBeneficiarioElement = document.querySelector('.nomeBeneficiario');
 
-    var costo = button.getAttribute("data-costo");
-    var nomeBeneficiario = button.getAttribute("data-nome-beneficiario");
+    // Esegui una chiamata fetch per ottenere i dettagli della transazione
+    fetch('/api/transazioni/' + transactionId)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Errore durante il recupero dei dettagli della transazione');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Aggiorna il contenuto del popup con i dettagli ottenuti
+            costoTransazioneElement.textContent = 'Costo: ' + data.costoTransazione;
+            nomeBeneficiarioElement.textContent = 'Beneficiario: ' + data.nomeBeneficiario;
 
-    costoTransazioneElement.innerText = costo;
-    nomeBeneficiarioElement.innerText = nomeBeneficiario;
-
-    popup.style.display = "block";
+            // Mostra il popup
+            document.getElementById('popup').style.display = 'block';
+        })
+        .catch(error => console.error(error));
 }
 
-
-
-
+// Funzione per chiudere il popup
 function closePopupTrans() {
-    var popup = document.getElementById("popup");
-    popup.style.display = "none";
+    document.getElementById('popup').style.display = 'none';
 }
+
 
 
 

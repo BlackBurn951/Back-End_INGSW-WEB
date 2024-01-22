@@ -131,30 +131,31 @@ public class UtenteDAOImpl implements UtenteDAO {
     @Override
     public boolean delete(Utente ut) {
         boolean result= false;
-        if(ut.getDoc().getClass().getSimpleName().equals("CartaIdentita"))
-            result= MagnusDAO.getInstance().getCartaIdentitaDAO().delete((CartaIdentita) ut.getDoc());
-        else if (ut.getDoc().getClass().getSimpleName().equals("Patente"))
-            result= MagnusDAO.getInstance().getPatenteDAO().delete((Patente) ut.getDoc());
-        else
-            result= MagnusDAO.getInstance().getPassaportoDAO().delete((Passaporto) ut.getDoc());
 
-        result= MagnusDAO.getInstance().getIndirizzoDAO().delete(ut.getResidenza());
-        if(ut.getDomicilio()!=null)
-            result= MagnusDAO.getInstance().getIndirizzoDAO().delete(ut.getDomicilio());
+        try {
+            String query = "DELETE FROM utente WHERE cf= ?";
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
 
-        if(result) {
-            try {
-                String query = "DELETE FROM utente WHERE cf= ?";
-                PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
+            statement.setString(1, ut.getCodiceFiscale());
 
-                statement.setString(1, ut.getCodiceFiscale());
+            if (statement.executeUpdate() > 0) {
+                if(ut.getDoc().getClass().getSimpleName().equals("CartaIdentita"))
+                    result= MagnusDAO.getInstance().getCartaIdentitaDAO().delete((CartaIdentita) ut.getDoc());
+                else if (ut.getDoc().getClass().getSimpleName().equals("Patente"))
+                    result= MagnusDAO.getInstance().getPatenteDAO().delete((Patente) ut.getDoc());
+                else
+                    result= MagnusDAO.getInstance().getPassaportoDAO().delete((Passaporto) ut.getDoc());
 
-                if (statement.executeUpdate() == 0)
-                    result= false;
+                result= MagnusDAO.getInstance().getIndirizzoDAO().delete(ut.getResidenza());
 
-            } catch (SQLException e) {
-                e.printStackTrace();
+                if(ut.getDomicilio()!=null)
+                    result= MagnusDAO.getInstance().getIndirizzoDAO().delete(ut.getDomicilio());
+
+                result= true;
             }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return result;
     }
@@ -197,7 +198,7 @@ public class UtenteDAOImpl implements UtenteDAO {
         if (docId != null)
             doc = MagnusDAO.getInstance().getCartaIdentitaDAO().doRetriveByKey(docId);
         else if (patente != null)
-            doc = MagnusDAO.getInstance().getPassaportoDAO().doRetriveByKey(patente);
+            doc = MagnusDAO.getInstance().getPatenteDAO().doRetriveByKey(patente);
         else if (passaporto != null)
             doc = MagnusDAO.getInstance().getPassaportoDAO().doRetriveByKey(passaporto);
 
