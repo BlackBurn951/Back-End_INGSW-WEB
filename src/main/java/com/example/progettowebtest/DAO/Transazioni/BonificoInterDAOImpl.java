@@ -71,10 +71,12 @@ public class BonificoInterDAOImpl implements BonificoInterDAO{
             ResultSet queryResult= statement.executeQuery();
 
             if(proxy && queryResult.next()) {
-                bonInt = new BonificoInter(queryResult.getDate("data_transazione").toString(), queryResult.getDouble("costo_commissione"),
+                bonInt= new BonificoInter(queryResult.getDate("data_transazione").toString(), queryResult.getDouble("costo_commissione"),
                         queryResult.getBoolean("esito"), queryResult.getString("nome_beneficiario"), queryResult.getString("cognome_beneficiario"),
                         queryResult.getDouble("importo"), queryResult.getString("causale"), queryResult.getString("iban_destinatario"), queryResult.getString("valuta_pagamento"), queryResult.getString("paese_destinatario"));
                 bonInt.setId(queryResult.getInt("id_internazionale"));
+
+                return bonInt;
             }
             else if(queryResult.next())
                 return new TransazioneProxy(queryResult.getInt("id_internazionale"), queryResult.getDate("data_transazione").toString(), queryResult.getDouble("importo"),
