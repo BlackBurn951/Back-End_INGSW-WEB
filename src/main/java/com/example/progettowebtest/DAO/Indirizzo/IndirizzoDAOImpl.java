@@ -96,9 +96,14 @@ public class IndirizzoDAOImpl implements IndirizzoDAO{
         boolean result = false;
 
         try {
-            String query = "DELETE FROM indirizzo WHERE nome_via = "+ind.getNomeVia()+" AND num_civico = "+ind.getNumCivico()+" AND " +
-                    "id_comune = "+ind.getComune().getIdComune()+" AND id_via = "+ind.getTipologiaVia().getIdVia();
+            String query = "DELETE FROM indirizzo WHERE nome_via = ? AND num_civico = ? AND " +
+                    "id_comune = ? AND id_via = ?";
             PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
+
+            statement.setString(1, ind.getNomeVia());
+            statement.setString(2, ind.getNumCivico());
+            statement.setInt(3, ind.getComune().getIdComune());
+            statement.setInt(4, ind.getTipologiaVia().getIdVia());
 
             if (statement.executeUpdate()>0)
                 result = true;

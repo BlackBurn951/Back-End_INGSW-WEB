@@ -121,7 +121,7 @@
     <input class="inputPopUp" id="nuovaEmail" type="text">
     <div class="error-message" id="errorEmailMessage" style="color: red; display: none;">Formato email non valido</div>
     <div class="contBott">
-      <button class="bottonePopUp" onclick="closePopup()">Annulla</button>
+      <button class="bottonePopUp" onclick="closePopupFunction()">Annulla</button>
       <button class="bottonePopUp" onclick="validateEmail()">Conferma</button>
     </div>
   </div>
@@ -138,7 +138,7 @@
     <img id="confermaPassIcon" class="show-password2" src="/images/hide.png" alt="" onclick="confermaToggleNuovaPass()">
     <div class="error-message" id="errorPassword" style="color: red; display: none;">Password errata</div>
     <div class="contBott">
-      <button class="bottonePopUp" onclick="closePopup()">Annulla</button>
+      <button class="bottonePopUp" onclick="closePopupFunction()">Annulla</button>
       <button class="bottonePopUp" onclick="sospendiChiudi()">Conferma</button>
     </div>
   </div>
@@ -158,11 +158,23 @@
     <span id="confPassError" class="error"></span>
 
     <div class="contBott">
-      <button class="bottonePopUp" onclick="closePopup()">Annulla</button>
+      <button class="bottonePopUp" onclick="closePopupFunction()">Annulla</button>
       <button class="bottonePopUp" onclick="validatePassword()" >Conferma</button>
     </div>
   </div>
 </div>
+
+
+<div id="popupConferma" class="popupConferma" style="display: none;">
+  <div class="contenutoPopup">
+    <p id="popup-message"></p>
+    <button class="bottoneConferma" onclick="closePopup()">Chiudi</button>
+
+  </div>
+
+</div>
+
+
 
 
 </body>

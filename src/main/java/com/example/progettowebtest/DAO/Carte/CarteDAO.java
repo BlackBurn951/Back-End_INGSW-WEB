@@ -14,7 +14,7 @@ public interface CarteDAO {
 
     boolean saveOrUpdate(Carte carta, TipiCarte tipo);
 
-    boolean delete(Carte carta);
+    boolean delete(Carte carta, TipiCarte tipo);
 
 
 }

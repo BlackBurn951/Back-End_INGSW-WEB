@@ -33,9 +33,9 @@ function openSosPopup(id, action) {
 
 
 
-function closePopup() {
+function closePopupFunction() {
     document.getElementById('popup').style.display = 'none';
-    document.getElementById('popupPasword').style.display = 'none';
+    document.getElementById('popupPasword').style.display ='none';
     document.getElementById('popupSospensione').style.display = 'none';
 
     var emailInput = document.getElementById('nuovaEmail');
@@ -44,6 +44,8 @@ function closePopup() {
     var errorMessage = document.getElementById('errorEmailMessage');
     var errorPass = document.getElementById('errorPassword');
     var passSops = document.getElementById('passwordSosp');
+    var nuovaPassError = document.getElementById("nuovaPassError");
+    var confPassError = document.getElementById("confPassError");
 
     emailInput.value = '';
     nuovPassInput.value = '';
@@ -51,23 +53,13 @@ function closePopup() {
     passSops.value = '';
 
     errorPass.style.display = 'none';
-    errorMessage.style.display = 'none'; // Nascondi il messaggio di errore
+    errorMessage.style.display = 'none';
+    nuovaPassError.style.display = 'none';
+    confPassError.style.display = 'none';
 }
 
 
-function validateEmail() {
-    var emailInput = document.getElementById('nuovaEmail');
-    var errorMessage = document.getElementById('errorEmailMessage');
 
-    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (emailRegex.test(emailInput.value)) {
-    // Se l'email è valida, puoi procedere con la chiamata al server
-    // Aggiungi qui la logica per la chiamata al server
-} else {
-    errorMessage.style.display = 'block';
-    }
-}
 
 function validatePassword() {
     var nuovaPass = document.getElementById("nuovaPass").value;
@@ -81,59 +73,187 @@ function validatePassword() {
     confPassError.innerHTML = "";
 
     if (!nuovaPass.match(passwordPattern)) {
-    nuovaPassError.innerHTML = "La password deve contenere:<br>\n" +
-        "              - Almeno 8 caratteri (massimo 16);<br>\n" +
-        "              - Almeno una lettera maiuscola ed una minuscola;<br>\n" +
-        "              - Almeno un numero;<br>\n" +
-        "              - Almeno un carattere speciale fra i seguenti (!&#64;$#%^&*()_+).";
+        nuovaPassError.style.display = ''
+        nuovaPassError.innerHTML = "La password deve contenere:<br>\n" +
+            "              - Almeno 8 caratteri (massimo 16);<br>\n" +
+            "              - Almeno una lettera maiuscola ed una minuscola;<br>\n" +
+            "              - Almeno un numero;<br>\n" +
+            "              - Almeno un carattere speciale fra i seguenti (!&#64;$#%^&*()_+).";
 }
 
     if (nuovaPass !== confPass) {
-    confPassError.innerHTML = "Le password non coincidono!";
+        confPassError.style.display = ''
+        confPassError.innerHTML = "Le password non coincidono!";
 }
 
     if (nuovaPass.match(passwordPattern) && nuovaPass === confPass) {
-    // Implement further actions if needed
-    alert("Password is valid and matches!");
+        closePopupFunction()
+        cambiaEmailPass(nuovaPass)
+    }
 }
+
+
+
+function cambiaEmailPass(stringa) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const idSession = urlParams.get("IDSession");
+    url = `/cambiaPass?IDSession=${idSession}&password=${stringa}`;
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    })
+        .then(response => response.json())
+        .then(data => {
+            messaggioConferma = data ? "Password modificata con successo." : "Errore nel cambio della password.";
+            showPopup(messaggioConferma);
+        })
+        .catch(() => {
+            showPopup("Errore durante l'operazione.");
+        });
+}
+
+function validateEmail() {
+    var errorMessage = document.getElementById('errorEmailMessage');
+    var emailInput = document.getElementById("nuovaEmail").value;
+    console.log("Valore dell'email:", emailInput);
+
+    var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+
+    if (emailRegex.test(emailInput)) {
+        closePopupFunction();
+        cambiaEmail(emailInput);
+
+    } else {
+        errorMessage.style.display = 'block';
+    }
+
+}
+
+
+
+function cambiaEmail(stringaEmail){
+    const urlParams = new URLSearchParams(window.location.search);
+    const idSession = urlParams.get("IDSession");
+    url = `/changeEmail?IDSession=${idSession}`;
+
+    const CambioEmail ={
+        email: stringaEmail
+    }
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(CambioEmail)
+    })
+        .then(response => response.json())
+        .then(data => {
+            messaggioConferma = data ? "Email modificata con successo." : "Errore nel cambio dell'email.";
+            showPopup(messaggioConferma);
+        })
+        .catch(() => {
+            showPopup("Errore durante l'operazione.");
+        });
+
 }
 
 function sospendiChiudi() {
     var popup = document.getElementById('popupSospensione');
     var action = popup.getAttribute('data-action');
-    var passwordInput = document.getElementById('passwordSosp');
+    var passwordInput = document.getElementById("passwordSosp").value;
+
     var errorPasswordMessage = document.getElementById('errorPassword');
 
-    // Aggiungi la logica per la validazione della password
-    var isPasswordValid = controllaPassword(passwordInput.value);
+    var isPasswordValid = controllaPassword(passwordInput);
 
     if (!isPasswordValid) {
-        // Mostra il messaggio di errore sotto il campo password
         errorPasswordMessage.style.display = 'block';
     } else {
-        // Nascondi il messaggio di errore se la password è valida
         errorPasswordMessage.style.display = 'none';
-
-        // Esegui l'azione appropriata in base all'attributo data-action
         if (action === 'sospendi') {
-            // Logica per sospendere il conto
-            console.log("Il conto è sospeso.");
+            cambiaStato(1)
         } else if (action === 'chiudi') {
-            // Logica per chiudere il conto
-            console.log("Il conto è chiuso.");
+            cambiaStato(2)
         }
-
-        // Chiudi il popup
         popup.style.display = 'none';
     }
 }
 
-// Funzione di validazione della password
 function controllaPassword(password) {
-    // Aggiungi la tua logica di validazione della password qui
-    // Ad esempio, verifica se la lunghezza della password è sufficiente, ecc.
-    return password.length >= 8;  // Esempio: richiede una password di almeno 8 caratteri
+    const urlParams = new URLSearchParams(window.location.search);
+    const idSession = urlParams.get("IDSession");
+    url = `/checkPass?IDSession=${idSession}&password=${password}`;
+
+    return fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    })
+        .then(response => response.json())
+        .then(data => {
+            return data;
+        })
+        .catch(() => {
+            throw new Error("Errore durante l'operazione.");
+        });
 }
+
+
+function cambiaStato(valore) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const idSession = urlParams.get("IDSession");
+    url = `/cambiaStatoConto?IDSession=${idSession}&stato=${valore}`;
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data === false) {
+                messaggioConferma = "Stato del conto cambiato con successo.";
+            } else {
+                messaggioConferma = "Conto chiuso con successo.";
+                setTimeout(function() {
+                    window.location.href = "http://localhost:4200";
+                }, 2000);
+            }
+            showPopup(messaggioConferma);
+        })
+        .catch(() => {
+            showPopup("Errore durante l'operazione.");
+        });
+}
+
+function tornaHomepage() {
+    fetch('/redirect/tornaHomepage', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+        } else {
+            console.error('Errore nella richiesta per tornare alla homepage');
+        }
+    })
+    .catch(error => {
+        console.error('Errore durante la richiesta per tornare alla homepage:', error);
+    });
+}
+
+
+
+
 
 
 function toggleNuovaPass() {
@@ -142,10 +262,10 @@ function toggleNuovaPass() {
 
     if (nuovaPassInput.type === "password") {
         nuovaPassInput.type = "text";
-        nuovaPassIcon.src = "/images/view.png"; // Sostituisci con l'immagine dell'icona visibile
+        nuovaPassIcon.src = "/images/view.png";
     } else {
         nuovaPassInput.type = "password";
-        nuovaPassIcon.src = "/images/hide.png"; // Sostituisci con l'immagine dell'icona nascosta
+        nuovaPassIcon.src = "/images/hide.png";
     }
 }
 
@@ -155,10 +275,10 @@ function confermaToggleNuovaPass() {
 
     if (nuovaPassInput.type === "password") {
         nuovaPassInput.type = "text";
-        nuovaPassIcon.src = "/images/view.png"; // Sostituisci con l'immagine dell'icona visibile
+        nuovaPassIcon.src = "/images/view.png";
     } else {
         nuovaPassInput.type = "password";
-        nuovaPassIcon.src = "/images/hide.png"; // Sostituisci con l'immagine dell'icona nascosta
+        nuovaPassIcon.src = "/images/hide.png";
     }
 }
 
@@ -174,3 +294,17 @@ function toggleConfPass() {
         confPassIcon.src = "/images/hide.png"; // Sostituisci con l'immagine dell'icona nascosta
     }
 }
+
+function showPopup(message) {
+    document.getElementById('popup-message').innerHTML = message;
+    document.getElementById('popupConferma').style.display = 'block';
+}
+
+function closePopup() {
+    document.getElementById('popupConferma').style.display = 'none';
+}
+
+
+
+
+

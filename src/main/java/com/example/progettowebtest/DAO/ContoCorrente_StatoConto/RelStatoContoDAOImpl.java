@@ -4,6 +4,8 @@ import com.example.progettowebtest.Connection.DbConn;
 import com.example.progettowebtest.DAO.MagnusDAO;
 import com.example.progettowebtest.DAO.StatoDAO;
 import com.example.progettowebtest.DAO.StatoDAOImpl;
+import com.example.progettowebtest.Model.Carte.RelStatoCarta;
+import com.example.progettowebtest.Model.Carte.TipiCarte;
 import com.example.progettowebtest.Model.ContoCorrente.RelStatoConto;
 import com.example.progettowebtest.Model.Stato;
 
@@ -77,27 +79,21 @@ public class RelStatoContoDAOImpl implements RelStatoContoDAO{
     }
 
     @Override
-    public boolean saveOrUpdate(RelStatoConto rel) {
-        boolean result= false;
-        String query= "INSERT INTO rel_stato_conto (data_inizio_stato, data_fine_stato, id_stato, num_cc) " +
-                "VALUES (?, ?, ?, ?)";
+    public RelStatoConto doRetriveActualRel(String numCC) {
+        RelStatoConto result= null;
+        String query= "select * from rel_stato_conto where num_cc= ? and data_fine_stato IS NULL";
 
-        //ON CONFLICT (id_rel) DO UPDATE SET " +
-        //"data_inizio_stato=EXCLUDED.data_inizio_stato, data_fine_stato=EXCLUDED.data_fine_stato, id_stato=EXCLUDED.id_stato, num_cc=EXCLUDED.num_cc"
         try{
             PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
+            statement.setString(1, numCC);
 
-            statement.setDate(1, rel.getDataInizioStato());
-            if(rel.getDataFineStato()==null)
-                statement.setNull(2, Types.NULL);
-            else
-                statement.setDate(2, rel.getDataFineStato());
-            statement.setInt(3, rel.getStato().getIdStato());
-            statement.setString(4, rel.getConto().getNumCC());
+            ResultSet queryResult= statement.executeQuery();
 
-            statement.executeUpdate();
-
-            result= true;
+            if(queryResult.next()) {
+                result = new RelStatoConto(queryResult.getDate("data_inizio_stato").toString(), MagnusDAO.getInstance().getStatoDAO().doRetriveByKey(queryResult.getInt("id_stato")),
+                        MagnusDAO.getInstance().getContoCorrenteDAO().doRetriveByKey(numCC));
+                result.setId(queryResult.getInt("id_rel"));
+            }
 
         }catch (SQLException e) {
             e.printStackTrace();
@@ -106,7 +102,57 @@ public class RelStatoContoDAOImpl implements RelStatoContoDAO{
     }
 
     @Override
-    public boolean delete(RelStatoConto rel) {
+    public boolean saveOrUpdate(RelStatoConto rel) {
+        String query= "";
+
+        if(rel.getId()>-1)
+            query= "INSERT INTO rel_stato_conto (id_rel, data_inizio_stato, data_fine_stato, id_stato, num_cc) " +
+                "VALUES (?, ?, ?, ?, ?) ON CONFLICT (id_rel) DO UPDATE SET " +
+                    "data_inizio_stato=EXCLUDED.data_inizio_stato, data_fine_stato=EXCLUDED.data_fine_stato, id_stato=EXCLUDED.id_stato, num_cc=EXCLUDED.num_cc";
+        else
+            query= "INSERT INTO rel_stato_conto (data_inizio_stato, data_fine_stato, id_stato, num_cc) " +
+                    "VALUES (?, ?, ?, ?)";
+
+        try{
+            PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
+
+            if(rel.getId()>-1) {
+                statement.setInt(1, rel.getId());
+                statement.setDate(2, rel.getDataInizioStato());
+                statement.setDate(3, rel.getDataFineStato());
+                statement.setInt(4, rel.getStato().getIdStato());
+                statement.setString(5, rel.getConto().getNumCC());
+            }
+            else {
+                statement.setDate(1, rel.getDataInizioStato());
+                statement.setNull(2, Types.NULL);
+                statement.setInt(3, rel.getStato().getIdStato());
+                statement.setString(4, rel.getConto().getNumCC());
+            }
+
+            if(statement.executeUpdate()>0)
+                return true;
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean delete(String numCC) {
+        String query = "DELETE FROM rel_stato_conto WHERE num_cc = ?";
+
+        try {
+            PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
+            statement.setString(1, numCC);
+
+            return statement.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return false;
     }
 }

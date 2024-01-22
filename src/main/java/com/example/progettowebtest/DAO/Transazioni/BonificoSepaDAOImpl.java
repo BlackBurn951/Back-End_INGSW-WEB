@@ -21,7 +21,7 @@ public class BonificoSepaDAOImpl implements BonificoSepaDAO {
     @Override
     public Vector<Transazione> doRetriveAllForCC(String numCC) {
         Vector<Transazione> result= new Vector<>();
-        String query= "select b.id_sepa, r.data_transazione, b.importo, b.causale from bonifico_area_sepa as b, rel_cc_bon_sepa as r where b.id_sepa= r.id_sepa";
+        String query= "select b.id_sepa, r.data_transazione, b.importo, r.esito, b.causale from bonifico_area_sepa as b, rel_cc_bon_sepa as r where b.id_sepa= r.id_sepa";
 
         try{
             PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
@@ -29,7 +29,7 @@ public class BonificoSepaDAOImpl implements BonificoSepaDAO {
 
             while(queryResult.next()) {
                 result.add(new TransazioneProxy(queryResult.getInt("id_sepa"), queryResult.getDate("data_transazione").toString(), queryResult.getDouble("importo"),
-                        queryResult.getString("causale"), TipoTransazione.BONIFICOSEPA));
+                        queryResult.getString("causale"), queryResult.getBoolean("esito"), TipoTransazione.BONIFICOSEPA));
             }
 
         }catch (SQLException e) {
@@ -45,7 +45,7 @@ public class BonificoSepaDAOImpl implements BonificoSepaDAO {
         if(proxy)
             query= "select * from bonifico_area_sepa as b, rel_cc_bon_sepa as r where b.id_sepa= r.id_sepa";
         else
-            query= "select r.data_transazione, b.importo, b.causale from bonifico_area_sepa as b, rel_cc_bon_sepa as r where b.id_sepa=r.id_sepa";
+            query= "select b.id_sepa, r.data_transazione, b.importo, r.esito, b.causale from bonifico_area_sepa as b, rel_cc_bon_sepa as r where b.id_sepa=r.id_sepa";
 
         try {
             PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
@@ -57,10 +57,11 @@ public class BonificoSepaDAOImpl implements BonificoSepaDAO {
                         queryResult.getDouble("importo"), queryResult.getString("causale"), queryResult.getString("iban_destinatario"));
             bonSep.setId(id);
             }
-            else
-                return new TransazioneProxy(queryResult.getInt("id_sepa"), queryResult.getDate("data_transazione").toString(), queryResult.getDouble("importo"),
-                        queryResult.getString("causale"), TipoTransazione.BONIFICOSEPA);
-
+            else {
+                if(queryResult.next())
+                    return new TransazioneProxy(queryResult.getInt("id_sepa"), queryResult.getDate("data_transazione").toString(), queryResult.getDouble("importo"),
+                        queryResult.getString("causale"), queryResult.getBoolean("esito"), TipoTransazione.BONIFICOSEPA);
+            }
         }catch (SQLException e) {
             e.printStackTrace();
         }
@@ -119,14 +120,14 @@ public class BonificoSepaDAOImpl implements BonificoSepaDAO {
     }
 
     @Override
-    public boolean delete(Transazione bon) {
+    public boolean delete(int id) {
         String query = "DELETE FROM rel_cc_bon_sepa WHERE id_sepa = ?";
 
         try {
             PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
-            statement.setInt(1, bon.getId());
+            statement.setInt(1, id);
 
-            if (statement.executeUpdate()>0  && eliminaTransazione(bon)) {
+            if (statement.executeUpdate()>0  && eliminaTransazione(id)) {
                 return true;
             }
 
@@ -160,12 +161,12 @@ public class BonificoSepaDAOImpl implements BonificoSepaDAO {
         return false;
     }
 
-    private boolean eliminaTransazione(Transazione bon) {
+    private boolean eliminaTransazione(int id) {
         String bonificoQuery = "DELETE FROM bonifico_area_sepa WHERE id_sepa = ?";
 
         try {
             PreparedStatement statement = DbConn.getConnection().prepareStatement(bonificoQuery);
-            statement.setInt(1, bon.getId());
+            statement.setInt(1, id);
 
             if (statement.executeUpdate() > 0)
                 return true;

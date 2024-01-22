@@ -20,7 +20,7 @@ public class BonificoInterDAOImpl implements BonificoInterDAO{
     @Override
     public Vector<Transazione> doRetriveAllForCC(String numCC) {
         Vector<Transazione> result= new Vector<>();
-        String query= "select b.id_internazionale, r.data_transazione, b.importo, b.causale from bonifico_internazionale as b, rel_cc_bon_int as r where b.id_internazionale= r.id_internazionale";
+        String query= "select b.id_internazionale, r.data_transazione, b.importo, r.esito, b.causale from bonifico_internazionale as b, rel_cc_bon_int as r where b.id_internazionale= r.id_internazionale";
 
         try{
             PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
@@ -28,7 +28,7 @@ public class BonificoInterDAOImpl implements BonificoInterDAO{
 
             while(queryResult.next()) {
                 result.add(new TransazioneProxy(queryResult.getInt("id_internazionale"), queryResult.getDate("data_transazione").toString(), queryResult.getDouble("importo"),
-                        queryResult.getString("causale"), TipoTransazione.BONIFICOINTER));
+                        queryResult.getString("causale"), queryResult.getBoolean("esito"), TipoTransazione.BONIFICOINTER));
             }
 
         }catch (SQLException e) {
@@ -64,21 +64,23 @@ public class BonificoInterDAOImpl implements BonificoInterDAO{
         if(proxy)
             query= "select * from bonifico_internazionale as b, rel_cc_bon_int as r where b.id_internazionale= r.id_internazionale";
         else
-            query= "select r.data_transazione, b.importo, b.causale from bonifico_internazionale as b, rel_cc_bon_int as r where b.id_internazionale=r.id_internazionale";
+            query= "select b.id_internazionale, r.data_transazione, b.importo, r.esito, b.causale from bonifico_internazionale as b, rel_cc_bon_int as r where b.id_internazionale=r.id_internazionale";
 
         try{
             PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
             ResultSet queryResult= statement.executeQuery();
 
             if(proxy && queryResult.next()) {
-                bonInt = new BonificoInter(queryResult.getDate("data_transazione").toString(), queryResult.getDouble("costo_commissione"),
+                bonInt= new BonificoInter(queryResult.getDate("data_transazione").toString(), queryResult.getDouble("costo_commissione"),
                         queryResult.getBoolean("esito"), queryResult.getString("nome_beneficiario"), queryResult.getString("cognome_beneficiario"),
                         queryResult.getDouble("importo"), queryResult.getString("causale"), queryResult.getString("iban_destinatario"), queryResult.getString("valuta_pagamento"), queryResult.getString("paese_destinatario"));
                 bonInt.setId(queryResult.getInt("id_internazionale"));
+
+                return bonInt;
             }
             else if(queryResult.next())
                 return new TransazioneProxy(queryResult.getInt("id_internazionale"), queryResult.getDate("data_transazione").toString(), queryResult.getDouble("importo"),
-                        queryResult.getString("causale"), TipoTransazione.BONIFICOINTER);
+                        queryResult.getString("causale"),queryResult.getBoolean("esito"), TipoTransazione.BONIFICOINTER);
 
         }catch (SQLException e) {
             e.printStackTrace();
@@ -123,14 +125,14 @@ public class BonificoInterDAOImpl implements BonificoInterDAO{
     }
 
     @Override
-    public boolean delete(Transazione bon) {
+    public boolean delete(int id) {
         String query = "DELETE FROM rel_cc_bon_int WHERE id_internazionale = ?";
 
         try {
             PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
-            statement.setInt(1, bon.getId());
+            statement.setInt(1, id);
 
-            if (statement.executeUpdate()>0  && eliminaTransazione(bon)) {
+            if (statement.executeUpdate()>0  && eliminaTransazione(id)) {
                 return true;
             }
 
@@ -164,12 +166,12 @@ public class BonificoInterDAOImpl implements BonificoInterDAO{
         return false;
     }
 
-    private boolean eliminaTransazione(Transazione bon) {
+    private boolean eliminaTransazione(int id) {
         String bonificoQuery = "DELETE FROM bonifico_internazionale WHERE id_internazionale= ?";
 
         try {
             PreparedStatement statement = DbConn.getConnection().prepareStatement(bonificoQuery);
-            statement.setInt(1, bon.getId());
+            statement.setInt(1, id);
 
             if (statement.executeUpdate() > 0)
                 return true;

@@ -262,6 +262,31 @@ label{
 
 }
 
+.popupConferma {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 25%;
+    height: 15%;
+    background: rgb(217, 217, 217);
+    border-radius: 2vh;
+    border: 2px solid #08090B;
+    z-index: 1;
+}
+
+.bottoneConferma{
+    width: 20%;
+    background-color: #3498db;
+    color: #ffffff;
+    padding: 5px 5px;
+    font-size: 18px;
+    font-weight: 540;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 
 
 .inputPopUp{
@@ -273,6 +298,14 @@ label{
     border: 1px solid #ccc;
     border-radius: 4px;
     background-color: #f8f9fa;
+}
+
+.contenutoPopup{
+    align-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    margin-top: 5%;
 }
 
 
