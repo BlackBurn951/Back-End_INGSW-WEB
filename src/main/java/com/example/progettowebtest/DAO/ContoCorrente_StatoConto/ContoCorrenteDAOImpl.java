@@ -236,7 +236,19 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO{
     }
 
     @Override
-    public boolean delete(ContoCorrente contoCorr) {
+    public boolean delete(String numCC) {
+        String query= "delete from conto_corrente where num_cc= ?";
+
+        try{
+            PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
+
+            statement.setString(1, numCC);
+
+            return statement.executeUpdate()>0;
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 

@@ -61,4 +61,9 @@ public class Bollettino extends DatiTransazione implements Transazione {
     public void setId(int id) {
         this.idBollettino = id;
     }
+
+    @Override
+    public String getTipoTrans() {
+        return "Bollettino";
+    }
 }

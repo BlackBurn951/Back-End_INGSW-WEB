@@ -25,7 +25,7 @@ public class PrelievoDAOImpl implements PrelievoDAO {
     @Override
     public Vector<Transazione> doRetriveAllForCC(String numCC) {
         Vector<Transazione> result= new Vector<>();
-        String query= "select b.id_prelievo, r.data_transazione, b.importo from prelievo as b, rel_cc_prelievo as r where b.id_prelievo=r.id_prelievo";
+        String query= "select b.id_prelievo, r.data_transazione, b.importo, r.esito from prelievo as b, rel_cc_prelievo as r where b.id_prelievo=r.id_prelievo";
 
         try{
             PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
@@ -33,7 +33,7 @@ public class PrelievoDAOImpl implements PrelievoDAO {
 
             while(queryResult.next()) {
                 result.add(new TransazioneProxy(queryResult.getInt("id_prelievo"), queryResult.getDate("data_transazione").toString(), queryResult.getDouble("importo"),
-                        queryResult.getString("causale"), TipoTransazione.PRELIEVO));
+                        queryResult.getString("causale"), queryResult.getBoolean("esito"), TipoTransazione.PRELIEVO));
             }
 
         }catch (SQLException e) {
@@ -67,7 +67,7 @@ public class PrelievoDAOImpl implements PrelievoDAO {
         if(proxy)
             query= "select * from prelievo as b, rel_cc_prelievo as r where b.id_prelievo= r.id_prelievo";
         else
-            query= "select r.data_transazione, b.importo from prelievo as b, rel_cc_prelievo as r where b.id_prelievo= r.id_prelievo";
+            query= "select r.data_transazione, b.importo, r.esito from prelievo as b, rel_cc_prelievo as r where b.id_prelievo= r.id_prelievo";
 
         try{
             PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
@@ -88,7 +88,7 @@ public class PrelievoDAOImpl implements PrelievoDAO {
             }
                 else if(queryResult.next())
                 return new TransazioneProxy(queryResult.getInt("id_prelievo"), queryResult.getDate("data_transazione").toString(), queryResult.getDouble("importo"),
-                        "", TipoTransazione.PRELIEVO);
+                        "", queryResult.getBoolean("esito"), TipoTransazione.PRELIEVO);
 
         }catch (SQLException e) {
             e.printStackTrace();
@@ -136,14 +136,14 @@ public class PrelievoDAOImpl implements PrelievoDAO {
 
 
     @Override
-    public boolean delete(Transazione prel) {
+    public boolean delete(int id) {
         String query = "DELETE FROM rel_cc_prelievo WHERE id_prelievo = ?";
 
         try {
             PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
-            statement.setInt(1, prel.getId());
+            statement.setInt(1, id);
 
-            if (statement.executeUpdate()>0 && eliminaTransazione(prel)) {
+            if (statement.executeUpdate()>0 && eliminaTransazione(id)) {
                 return true;
             }
 
@@ -179,12 +179,12 @@ public class PrelievoDAOImpl implements PrelievoDAO {
         return false;
     }
 
-    private boolean eliminaTransazione(Transazione prel) {
+    private boolean eliminaTransazione(int id) {
         String prelievoQuery = "DELETE FROM prelievo WHERE id_prelievo = ?";
 
         try {
             PreparedStatement statement = DbConn.getConnection().prepareStatement(prelievoQuery);
-            statement.setInt(1, prel.getId());
+            statement.setInt(1, id);
 
             if (statement.executeUpdate() > 0)
                 return true;

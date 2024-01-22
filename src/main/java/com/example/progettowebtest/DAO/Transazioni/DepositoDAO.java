@@ -12,5 +12,5 @@ public interface DepositoDAO {
 
     Transazione doRetriveByKey(int id, boolean proxy);
     boolean saveOrUpdate(Deposito depo, String numCC);
-    boolean delete(Transazione depo);
+    boolean delete(int id);
 }

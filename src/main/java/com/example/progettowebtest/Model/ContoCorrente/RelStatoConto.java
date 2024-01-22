@@ -5,7 +5,7 @@ import com.example.progettowebtest.Model.Stato;
 import java.sql.Date;
 
 public class RelStatoConto {
-    private int id;
+    private int id= -1;
     private Date dataInizioStato;
     private Date dataFineStato;
     private Stato st;

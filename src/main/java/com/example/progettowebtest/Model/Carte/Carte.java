@@ -17,4 +17,6 @@ public interface Carte {
     Double getFido();
     ContoCorrente getContoRiferimento();
     Stato getStatoCarta();
+    void setStatoCarta(Stato stato);
+    TipiCarte getTipoCarta();
 }

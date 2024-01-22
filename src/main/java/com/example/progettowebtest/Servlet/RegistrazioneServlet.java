@@ -1,5 +1,6 @@
 package com.example.progettowebtest.Servlet;
 
+import com.example.progettowebtest.ClassiEmail.InvioContratto;
 import com.example.progettowebtest.ClassiRequest.DatiControlloUtente;
 import com.example.progettowebtest.ClassiRequest.DatiRegistrazione;
 import com.example.progettowebtest.DAO.MagnusDAO;
@@ -7,6 +8,7 @@ import com.example.progettowebtest.ClassiRequest.IdentificativiUtente;
 import com.example.progettowebtest.EmailSender.CreaPDFConfermaConto;
 import com.example.progettowebtest.EmailSender.EmailService;
 import com.example.progettowebtest.EmailSender.EmailTemplateLoader;
+import com.example.progettowebtest.EmailSender.SenderEmail;
 import com.example.progettowebtest.Model.ContoCorrente.ContoCorrente;
 import com.example.progettowebtest.Model.Indirizzo.ColonneDatiComune;
 import com.example.progettowebtest.Model.Indirizzo.DatiComune;
@@ -163,23 +165,12 @@ public class RegistrazioneServlet extends HttpServlet {
 
             MagnusDAO.getInstance().getContoCorrenteDAO().saveOrUpdate(cc, true);
 
-            //Invio contratto
-            String indirizzoRes= dati.getTipoStradaRes()+" "+dati.getNomeStradaRes()+" "+dati.getNumCivicoRes()+" "+dati.getCittaRes()+" "+dati.getCapRes()+" "+dati.getProvinciaRes()+" "+dati.getRegioneRes();
 
-            String emailTemplate = EmailTemplateLoader.loadEmailTemplate("/email_pdf_template.html");
-            String pdf_html = emailTemplate
-                    .replace("EMAIL_DESTINATARIO", dati.getEmail())
-                    .replace("NOME_COGNOME", dati.getNome()+" "+dati.getCognome())
-                    .replace("DATA_NASCITA", dati.getDataNascita())
-                    .replace("INDIRIZZO", indirizzoRes)
-                    .replace("NUMERO_TELEFONO", dati.getCellulare())
-                    .replace("DATA_FIRMA", data.toString())
-                    .replace("PINDASERVER", MagnusDAO.getInstance().getContoCorrenteDAO().getPinChiaro());
-            MagnusDAO.getInstance().getContoCorrenteDAO().setPinChiaro("");
+            InvioContratto datiContratto= new InvioContratto(dati.getNome()+" "+dati.getCognome(), dati.getDataNascita(),
+                    dati.getTipoStradaRes()+" "+dati.getNomeStradaRes()+" "+dati.getNumCivicoRes()+" "+dati.getCittaRes()+" "+dati.getCapRes()+" "+dati.getProvinciaRes()+" "+dati.getRegioneRes(),
+                    dati.getCellulare(), data.toString(), MagnusDAO.getInstance().getContoCorrenteDAO().getPinChiaro());
+            SenderEmail.sendEmails(null, datiContratto, null, dati.getEmail());
 
-            PDDocument pdfFile = CreaPDFConfermaConto.creaPDFconto(dati.getNome()+" "+dati.getCognome(), dati.getDataNascita(), indirizzoRes, dati.getCellulare(), dati.getEmail(), data.toString());
-            Message message = EmailService.createMessageWithAttachment(pdf_html, "caesar.magnus.info@gmail.com", dati.getEmail(), "Conferma registrazione e dati conto", pdfFile);
-            sendMessage(getService(), "caesar.magnus.info@gmail.com", message);
 
 
             //Aggiornamento sessione
@@ -193,7 +184,7 @@ public class RegistrazioneServlet extends HttpServlet {
 
             response.setHeader("Session-ID", session.getId());
 
-        }catch (NullPointerException | GeneralSecurityException | IOException | MessagingException e ) {
+        }catch (NullPointerException e ) {
             e.printStackTrace();
         }
         return result;

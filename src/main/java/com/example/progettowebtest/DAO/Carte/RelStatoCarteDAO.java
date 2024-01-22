@@ -10,7 +10,8 @@ public interface RelStatoCarteDAO {
     Vector<RelStatoCarta> doRetriveAll();
     RelStatoCarta doRetriveByKey(int id);
     Vector<RelStatoCarta> doRetriveByAttribute(String numCarta, TipiCarte tipo);
+    RelStatoCarta doRetriveActualRel(String numCarta, TipiCarte tipo);
     Stato doRetriveActualState(String numCarta, TipiCarte tipo);
     boolean saveOrUpdate(RelStatoCarta rel, TipiCarte tipo);
-    boolean delete(RelStatoCarta rel);
+    boolean delete(String numcarta, TipiCarte tipo);
 }
