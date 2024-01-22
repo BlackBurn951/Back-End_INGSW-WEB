@@ -126,8 +126,8 @@ public class RelStatoContoDAOImpl implements RelStatoContoDAO{
             else {
                 statement.setDate(1, rel.getDataInizioStato());
                 statement.setNull(2, Types.NULL);
-                statement.setString(3, rel.getConto().getNumCC());
-                statement.setInt(4, rel.getStato().getIdStato());
+                statement.setInt(3, rel.getStato().getIdStato());
+                statement.setString(4, rel.getConto().getNumCC());
             }
 
             if(statement.executeUpdate()>0)

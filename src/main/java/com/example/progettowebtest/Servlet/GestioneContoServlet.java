@@ -92,10 +92,14 @@ public class GestioneContoServlet {
             eliminaTransazione(trans);
 
             trans= MagnusDAO.getInstance().getDepositoDAO().doRetriveAllForCC(cc.getNumCC());
-            eliminaTransazione(trans);
+            for(Transazione tr: trans) {
+                MagnusDAO.getInstance().getDepositoDAO().delete(tr.getId());
+            }
 
             trans= MagnusDAO.getInstance().getPrelievoDAO().doRetriveAllForCC(cc.getNumCC());
-            eliminaTransazione(trans);
+            for(Transazione tr: trans) {
+                MagnusDAO.getInstance().getPrelievoDAO().delete(tr.getId());
+            }
 
             MagnusDAO.getInstance().getContoCorrenteDAO().delete(cc.getNumCC());
 
