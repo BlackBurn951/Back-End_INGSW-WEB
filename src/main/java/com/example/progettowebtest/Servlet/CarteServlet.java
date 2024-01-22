@@ -100,7 +100,7 @@ public class CarteServlet {
     }
 
     @PostMapping("/cambiaStatoCarta")
-    public boolean cambiaStato(HttpServletRequest request, @RequestParam("IDSession") String idSession, @RequestBody CambioStatoCarta dati){
+    public boolean cambiaStatoCarta(HttpServletRequest request, @RequestParam("IDSession") String idSession, @RequestBody CambioStatoCarta dati){
         boolean result;  //True -> eliminato  False -> attivata/disattivata
 
 
@@ -113,7 +113,7 @@ public class CarteServlet {
                 statoCarta = MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualState(dati.getNumCarta(), TipiCarte.CREDITO);
 
                 if (statoCarta.getValoreStato().equals("attivo")) {
-                    RelStatoCarta rel= MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualRel(dati.getNumCarta(), TipiCarte.CREDITO, statoCarta);
+                    RelStatoCarta rel= MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualRel(dati.getNumCarta(), TipiCarte.CREDITO);
                     rel.setDataFineStato(LocalDate.now().toString());
 
                     MagnusDAO.getInstance().getRelStatoCarteDAO().saveOrUpdate(rel, TipiCarte.CREDITO);
@@ -125,7 +125,7 @@ public class CarteServlet {
 
                     result = false;
                 }else{
-                    RelStatoCarta rel= MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualRel(dati.getNumCarta(), TipiCarte.CREDITO, statoCarta);
+                    RelStatoCarta rel= MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualRel(dati.getNumCarta(), TipiCarte.CREDITO);
                     rel.setDataFineStato(LocalDate.now().toString());
 
                     MagnusDAO.getInstance().getRelStatoCarteDAO().saveOrUpdate(rel, TipiCarte.CREDITO);
@@ -153,7 +153,7 @@ public class CarteServlet {
                 statoCarta = MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualState(dati.getNumCarta(), TipiCarte.DEBITO);
 
                 if (statoCarta.getValoreStato().equals("attivo")) {
-                    RelStatoCarta rel= MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualRel(dati.getNumCarta(), TipiCarte.DEBITO, statoCarta);
+                    RelStatoCarta rel= MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualRel(dati.getNumCarta(), TipiCarte.DEBITO);
                     rel.setDataFineStato(LocalDate.now().toString());
 
                     MagnusDAO.getInstance().getRelStatoCarteDAO().saveOrUpdate(rel, TipiCarte.DEBITO);
@@ -165,7 +165,7 @@ public class CarteServlet {
 
                     result= false;
                 }else{
-                    RelStatoCarta rel= MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualRel(dati.getNumCarta(), TipiCarte.DEBITO, statoCarta);
+                    RelStatoCarta rel= MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualRel(dati.getNumCarta(), TipiCarte.DEBITO);
                     rel.setDataFineStato(LocalDate.now().toString());
 
                     MagnusDAO.getInstance().getRelStatoCarteDAO().saveOrUpdate(rel, TipiCarte.DEBITO);

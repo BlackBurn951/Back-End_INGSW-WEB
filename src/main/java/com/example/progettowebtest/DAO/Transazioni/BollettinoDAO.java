@@ -12,5 +12,5 @@ public interface BollettinoDAO{
     int retriveLastId();
     Transazione doRetriveByKey(int id, boolean proxy);
     boolean saveOrUpdate(Bollettino bol, String numCC);
-    boolean delete(Transazione bol);
+    boolean delete(int id);
 }

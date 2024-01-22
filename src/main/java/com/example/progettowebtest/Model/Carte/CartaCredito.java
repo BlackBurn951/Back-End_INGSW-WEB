@@ -16,4 +16,9 @@ public class CartaCredito extends Carta implements Carte{
     public Double getFido() {
         return fido;
     }
+
+    @Override
+    public TipiCarte getTipoCarta() {
+        return TipiCarte.CREDITO;
+    }
 }

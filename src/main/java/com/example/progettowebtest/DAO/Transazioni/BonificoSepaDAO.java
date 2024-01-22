@@ -13,5 +13,5 @@ public interface BonificoSepaDAO {
 
     Transazione doRetriveByKey(int id, boolean proxy);
     boolean saveOrUpdate(BonificoSepa bonSepa, String numCC);
-    boolean delete(Transazione bonSepa);
+    boolean delete(int id);
 }

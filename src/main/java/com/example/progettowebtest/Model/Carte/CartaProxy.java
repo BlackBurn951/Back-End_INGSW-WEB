@@ -81,4 +81,9 @@ public class CartaProxy implements Carte{
     public void setStatoCarta(Stato stato) {
         statoCarta= stato;
     }
+
+    @Override
+    public TipiCarte getTipoCarta() {
+        return tipo;
+    }
 }
