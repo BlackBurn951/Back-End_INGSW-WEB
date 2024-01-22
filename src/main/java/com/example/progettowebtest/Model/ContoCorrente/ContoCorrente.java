@@ -32,9 +32,11 @@ public class ContoCorrente {
         this.tariffaAnnuale = tariffaAnnuale;
         this.indFatturazione = indFatturazione;
         this.intestatario = intestatario;
-        movimenti= new Vector<>();
+        this.movimenti= new Vector<>();
     }
-    public ContoCorrente() {}
+    public ContoCorrente() {
+        this.movimenti= new Vector<>();
+    }
 
     public String getNumCC() {return numCC;}
     public String getIban() {return iban;}

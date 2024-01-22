@@ -35,6 +35,7 @@ public class CaricaTransazioneServlet {
                         result.add(Double.toString(tr.getCostoTransazione()));
                         break;
                     case "BonificoInter":
+                        System.out.println("Nome beneficiario int:"+tr.getNomeBeneficiario());
                         result.add(tr.getNomeBeneficiario());
                         result.add(tr.getCognomeBeneficiario());
                         result.add(Double.toString(tr.getImporto()));
