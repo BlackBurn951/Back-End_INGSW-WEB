@@ -76,7 +76,7 @@
                           <!--<td><button th:attr="data-costo=${item.getCostoTransazione()}, data-nome-beneficiario=${item.getNomeBeneficiario()}" onclick="openPopup(this)">+</button></td>-->
 
 
-                          <td><button th:attr="data-costo=${item.getCostoTransazione()}, data-nome-beneficiario=${item.getNomeBeneficiario()}" onclick="openPopup(this)">+</button></td>
+                          <td><button th:attr="data-transaction-id=${item.getId()}, data-transaction-tipo=${item.getTipoTrans()}" onclick="openPopup(this)">+</button></td>
 
                       </tr>
                   </tbody>
@@ -87,10 +87,20 @@
 
       <div class="popup" id="popup">
         <div class="contenutoPopup">
+            <button class="popup-btn" onclick="closePopupTrans()">X</button>
+            <p class="tipoBollettino"></p>
+            <p class="labelCCDest"></p>
+            <p class="numCcDest"></p>
+            <p class="importo"></p>
+            <p class="causale"></p>
             <p class="costoTransazione"></p>
+            <p class="data"></p>
             <p class="nomeBeneficiario"></p>
-
-            <button class="popup-btn" onclick="closePopupTrans()">Chiudi</button>
+            <p class="cognomeBeneficiario"></p>
+            <p class="labelIban"></p>
+            <p class="ibanDest"></p>
+            <p class="valuta"></p>
+            <p class="paeseDest"></p>
 
         </div>
       </div>

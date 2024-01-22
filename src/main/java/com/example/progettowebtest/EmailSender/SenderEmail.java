@@ -22,7 +22,7 @@ public class SenderEmail {
 
                 emailTemplate = EmailTemplateLoader.loadEmailTemplate("/email_otp_template.html");
                 htm_otp = emailTemplate
-                        .replace("$NOME_COGNOME$", datiOtp.getNomeCongome())
+                        .replace("$NOME_COGNOME$", datiOtp.getNomeCognome())
                         .replace("$GENERATED_OTP$", datiOtp.getOtp());
 
 
