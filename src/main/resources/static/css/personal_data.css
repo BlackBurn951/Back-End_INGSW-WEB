@@ -277,11 +277,10 @@ label{
 }
 
 .bottoneConferma{
-    margin-top: 5%;
     width: 20%;
     background-color: #3498db;
     color: #ffffff;
-    padding: 7px 7px;
+    padding: 5px 5px;
     font-size: 18px;
     font-weight: 540;
     border-radius: 5px;
