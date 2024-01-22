@@ -136,14 +136,14 @@ public class PrelievoDAOImpl implements PrelievoDAO {
 
 
     @Override
-    public boolean delete(Transazione prel) {
+    public boolean delete(int id) {
         String query = "DELETE FROM rel_cc_prelievo WHERE id_prelievo = ?";
 
         try {
             PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
-            statement.setInt(1, prel.getId());
+            statement.setInt(1, id);
 
-            if (statement.executeUpdate()>0 && eliminaTransazione(prel)) {
+            if (statement.executeUpdate()>0 && eliminaTransazione(id)) {
                 return true;
             }
 
@@ -179,12 +179,12 @@ public class PrelievoDAOImpl implements PrelievoDAO {
         return false;
     }
 
-    private boolean eliminaTransazione(Transazione prel) {
+    private boolean eliminaTransazione(int id) {
         String prelievoQuery = "DELETE FROM prelievo WHERE id_prelievo = ?";
 
         try {
             PreparedStatement statement = DbConn.getConnection().prepareStatement(prelievoQuery);
-            statement.setInt(1, prel.getId());
+            statement.setInt(1, id);
 
             if (statement.executeUpdate() > 0)
                 return true;

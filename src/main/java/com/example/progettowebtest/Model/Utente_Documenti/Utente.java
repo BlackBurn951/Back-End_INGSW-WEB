@@ -36,6 +36,7 @@ public class Utente extends DatiUtente {
     public double getRedditoAnnuo() {return redditoAnnuo;}
     public DocumentiIdentita getDoc() {return doc;}
 
+    public void setEmail(String email) {this.email= email;}
     public void setPassword(String password) {this.password = password;}
 
     //Gestione indirizzi
