@@ -53,12 +53,9 @@ public class TransazioneProxy implements Transazione {
 
     @Override
     public double getCostoTransazione() {
-        if (transazioneReale == null) {
+        if (transazioneReale == null)
             instanzaTransazione();
-            if (transazioneReale == null) {
-                return 0.0;
-            }
-        }
+
         return transazioneReale.getCostoTransazione();
     }
 
@@ -66,8 +63,10 @@ public class TransazioneProxy implements Transazione {
 
     @Override
     public String getNomeBeneficiario() {
-        if (transazioneReale == null && (isType(TipoTransazione.BONIFICOSEPA) || isType(TipoTransazione.BONIFICOINTER)))
+        if (transazioneReale == null && (isType(TipoTransazione.BONIFICOSEPA) || isType(TipoTransazione.BONIFICOINTER))) {
             instanzaTransazione();
+            return transazioneReale.getNomeBeneficiario();
+        }
         else if (transazioneReale != null && (isType(TipoTransazione.BONIFICOSEPA) || isType(TipoTransazione.BONIFICOINTER)))
             return transazioneReale.getNomeBeneficiario();
         return "ERRORE";
@@ -75,8 +74,10 @@ public class TransazioneProxy implements Transazione {
 
     @Override
     public String getCognomeBeneficiario() {
-        if (transazioneReale == null && (isType(TipoTransazione.BONIFICOSEPA) || isType(TipoTransazione.BONIFICOINTER)))
+        if (transazioneReale == null && (isType(TipoTransazione.BONIFICOSEPA) || isType(TipoTransazione.BONIFICOINTER))) {
             instanzaTransazione();
+            return transazioneReale.getCognomeBeneficiario();
+        }
         else if (transazioneReale != null && (isType(TipoTransazione.BONIFICOSEPA) || isType(TipoTransazione.BONIFICOINTER)))
             return transazioneReale.getCognomeBeneficiario();
         return "ERRORE";
@@ -84,8 +85,10 @@ public class TransazioneProxy implements Transazione {
 
     @Override
     public String getIbanDestinatario() {
-        if (transazioneReale == null && (isType(TipoTransazione.BONIFICOSEPA) || isType(TipoTransazione.BONIFICOINTER)))
+        if (transazioneReale == null && (isType(TipoTransazione.BONIFICOSEPA) || isType(TipoTransazione.BONIFICOINTER))) {
             instanzaTransazione();
+            return transazioneReale.getIbanDestinatario();
+        }
         else if (transazioneReale != null && (isType(TipoTransazione.BONIFICOSEPA) || isType(TipoTransazione.BONIFICOINTER)))
             return transazioneReale.getIbanDestinatario();
         return "ERRORE";
@@ -93,8 +96,10 @@ public class TransazioneProxy implements Transazione {
 
     @Override
     public String getValutaPagamento() {
-        if (transazioneReale == null && (isType(TipoTransazione.BONIFICOINTER)))
+        if (transazioneReale == null && (isType(TipoTransazione.BONIFICOINTER))) {
             instanzaTransazione();
+            return transazioneReale.getValutaPagamento();
+        }
         else if (transazioneReale != null && (isType(TipoTransazione.BONIFICOINTER)))
             return transazioneReale.getValutaPagamento();
         return "ERRORE";
@@ -102,8 +107,10 @@ public class TransazioneProxy implements Transazione {
 
     @Override
     public String getPaeseDestinatario() {
-        if (transazioneReale == null && (isType(TipoTransazione.BONIFICOINTER)))
+        if (transazioneReale == null && (isType(TipoTransazione.BONIFICOINTER))) {
             instanzaTransazione();
+            return transazioneReale.getPaeseDestinatario();
+        }
         else if (transazioneReale != null && (isType(TipoTransazione.BONIFICOINTER)))
             return transazioneReale.getPaeseDestinatario();
         return "ERRORE";
@@ -111,8 +118,10 @@ public class TransazioneProxy implements Transazione {
 
     @Override
     public String getNumCcDest() {
-        if (transazioneReale == null && (isType(TipoTransazione.BOLLETTINO)))
+        if (transazioneReale == null && (isType(TipoTransazione.BOLLETTINO))) {
             instanzaTransazione();
+            return transazioneReale.getNumCcDest();
+        }
         else if (transazioneReale != null && (isType(TipoTransazione.BOLLETTINO)))
             return transazioneReale.getNumCcDest();
         return "ERRORE";
@@ -120,8 +129,10 @@ public class TransazioneProxy implements Transazione {
 
     @Override
     public TipologiaBollettino getTipoBol() {
-        if (transazioneReale == null && (isType(TipoTransazione.BOLLETTINO)))
+        if (transazioneReale == null && (isType(TipoTransazione.BOLLETTINO))) {
             instanzaTransazione();
+            return transazioneReale.getTipoBol();
+        }
         else if (transazioneReale != null && (isType(TipoTransazione.BOLLETTINO)))
             return transazioneReale.getTipoBol();
         return null;
@@ -129,8 +140,10 @@ public class TransazioneProxy implements Transazione {
 
     @Override
     public Mezzo getMezzo() {
-        if (transazioneReale == null && (isType(TipoTransazione.DEPOSITO) || isType(TipoTransazione.PRELIEVO)))
+        if (transazioneReale == null && (isType(TipoTransazione.DEPOSITO) || isType(TipoTransazione.PRELIEVO))) {
             instanzaTransazione();
+            return transazioneReale.getMezzo();
+        }
         else if (transazioneReale != null && (isType(TipoTransazione.DEPOSITO) || isType(TipoTransazione.PRELIEVO)))
             return transazioneReale.getMezzo();
         return null;
@@ -138,8 +151,10 @@ public class TransazioneProxy implements Transazione {
 
     @Override
     public Carte getCartaEsecuzione() {
-        if (transazioneReale == null && (isType(TipoTransazione.DEPOSITO) || isType(TipoTransazione.PRELIEVO)))
+        if (transazioneReale == null && (isType(TipoTransazione.DEPOSITO) || isType(TipoTransazione.PRELIEVO))) {
             instanzaTransazione();
+            return transazioneReale.getCartaEsecuzione();
+        }
         else if (transazioneReale != null && (isType(TipoTransazione.DEPOSITO) || isType(TipoTransazione.PRELIEVO)))
             return transazioneReale.getCartaEsecuzione();
         return null;
