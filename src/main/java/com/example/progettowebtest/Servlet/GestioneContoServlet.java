@@ -1,5 +1,7 @@
 package com.example.progettowebtest.Servlet;
 
+import com.example.progettowebtest.ClassiRequest.CambioEmail;
+import com.example.progettowebtest.ClassiRequest.CambioPassword;
 import com.example.progettowebtest.ClassiRequest.IdentificativiUtente;
 import com.example.progettowebtest.DAO.MagnusDAO;
 import com.example.progettowebtest.Model.Carte.Carte;
@@ -13,28 +15,46 @@ import com.example.progettowebtest.Model.Utente_Documenti.Utente;
 import com.example.progettowebtest.Model.ValoriStato;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.Vector;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200",  exposedHeaders = "Session-ID")
 public class GestioneContoServlet {
 
     @PostMapping("/changeEmail")
-    public boolean cambiaEmail(HttpServletRequest request, @RequestParam("IDSession") String idSession, @RequestParam("email") String email) {
+    public boolean cambiaEmail(HttpServletRequest request, @RequestParam("IDSession") String idSession, @RequestBody CambioEmail dati) {
         HttpSession session= (HttpSession)request.getServletContext().getAttribute(idSession);
 
         Utente ut= (Utente)session.getAttribute("Utente");
-        Utente contr= MagnusDAO.getInstance().getUtenteDAO().doRetriveByKey(email, IdentificativiUtente.EMAIL);
+        Utente contr= MagnusDAO.getInstance().getUtenteDAO().doRetriveByKey(dati.getEmail(), IdentificativiUtente.EMAIL);
 
         if(contr==null) {
-            ut.setEmail(email);
+            ut.setEmail(dati.getEmail());
             if(MagnusDAO.getInstance().getUtenteDAO().saveOrUpdate(ut))
                 return true;
         }
         return false;
+    }
+
+    @PostMapping("/cambiaPass")
+    public boolean cambiaPass(HttpServletRequest request, @RequestParam("IDSession") String idSession, @RequestParam("password") String cambio) {
+        HttpSession session= (HttpSession)request.getServletContext().getAttribute(idSession);
+
+        Utente ut= (Utente)session.getAttribute("Utente");
+        ut.setPassword(cambio);
+        return MagnusDAO.getInstance().getUtenteDAO().saveOrUpdate(ut);
+    }
+
+    @GetMapping("checkPass")
+    public boolean checkPsw(HttpServletRequest request, @RequestParam("IDSession") String idSession, @RequestParam("psw") String psw) {
+        HttpSession session= (HttpSession)request.getServletContext().getAttribute(idSession);
+
+        Utente ut= (Utente)session.getAttribute("Utente");
+        return BCrypt.checkpw(psw, ut.getPassword());
     }
 
     @PostMapping("/cambiaStatoConto")
@@ -57,12 +77,16 @@ public class GestioneContoServlet {
 
                 MagnusDAO.getInstance().getRelStatoContoDAO().saveOrUpdate(rel);
 
+                cc.setStatoConto(statoConto);
+
                 result = false;
             }else{
                 statoConto= MagnusDAO.getInstance().getStatoDAO().doRetriveByAttribute(ValoriStato.ATTIVO);
                 rel= new RelStatoConto(LocalDate.now().toString(), statoConto, cc);
 
                 MagnusDAO.getInstance().getRelStatoContoDAO().saveOrUpdate(rel);
+
+                cc.setStatoConto(statoConto);
 
                 result = false;
             }
@@ -83,13 +107,19 @@ public class GestioneContoServlet {
             }
 
             Vector<Transazione> trans= MagnusDAO.getInstance().getBollettinoDAO().doRetriveAllForCC(cc.getNumCC());
-            eliminaTransazione(trans);
+            for(Transazione tr: trans) {
+                MagnusDAO.getInstance().getBollettinoDAO().delete(tr.getId());
+            }
 
             trans= MagnusDAO.getInstance().getBonificoSepaDAO().doRetriveAllForCC(cc.getNumCC());
-            eliminaTransazione(trans);
+            for(Transazione tr: trans) {
+                MagnusDAO.getInstance().getBonificoSepaDAO().delete(tr.getId());
+            }
 
             trans= MagnusDAO.getInstance().getBonificoInterDAO().doRetriveAllForCC(cc.getNumCC());
-            eliminaTransazione(trans);
+            for(Transazione tr: trans) {
+                MagnusDAO.getInstance().getBonificoInterDAO().delete(tr.getId());
+            }
 
             trans= MagnusDAO.getInstance().getDepositoDAO().doRetriveAllForCC(cc.getNumCC());
             for(Transazione tr: trans) {
@@ -106,17 +136,10 @@ public class GestioneContoServlet {
             MagnusDAO.getInstance().getUtenteDAO().delete((Utente) session.getAttribute("Utente"));
 
             MagnusDAO.getInstance().getIndirizzoDAO().delete(cc.getIndFatturazione());
-
             result= true;
         }
         return result;
     }
 
 
-    //Metodi di servizio
-    private void eliminaTransazione(Vector<Transazione> trans) {
-        for(Transazione tr: trans) {
-            MagnusDAO.getInstance().getBollettinoDAO().delete(tr.getId());
-        }
-    }
 }
