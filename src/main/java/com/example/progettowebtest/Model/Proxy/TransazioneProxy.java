@@ -53,7 +53,6 @@ public class TransazioneProxy implements Transazione {
 
     @Override
     public double getCostoTransazione() {
-        System.out.println("MEtodo chiamato!!!");
         if (transazioneReale == null) {
             instanzaTransazione();
             if (transazioneReale == null) {
