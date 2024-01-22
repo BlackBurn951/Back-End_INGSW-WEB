@@ -58,4 +58,9 @@ public class Deposito extends DatiTransazione implements Transazione {
     public void setId(int id) {
         this.idDeposito = id;
     }
+
+    @Override
+    public String getTipoTrans() {
+        return "Deposito";
+    }
 }

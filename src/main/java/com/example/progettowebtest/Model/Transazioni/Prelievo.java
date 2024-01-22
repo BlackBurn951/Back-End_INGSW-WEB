@@ -27,6 +27,11 @@ public class Prelievo extends DatiTransazione implements Transazione {
 
     }
 
+    @Override
+    public String getTipoTrans() {
+        return "Prelievo";
+    }
+
     //Metodi implementati per il proxy
 
     @Override

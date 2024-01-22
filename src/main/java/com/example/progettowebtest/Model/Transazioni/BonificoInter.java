@@ -64,4 +64,9 @@ public class BonificoInter extends DatiTransazione implements Transazione {
     public void setId(int id) {
         this.idInter = id;
     }
+
+    @Override
+    public String getTipoTrans() {
+        return "BonificoInter";
+    }
 }

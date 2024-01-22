@@ -64,4 +64,9 @@ public class BonificoSepa extends DatiTransazione implements Transazione {
     public void setId(int id) {
         this.idSepa = id;
     }
+
+    @Override
+    public String getTipoTrans() {
+        return "BonificoSepa";
+    }
 }
