@@ -138,14 +138,14 @@ public class DepositoDAOImpl implements DepositoDAO{
     }
 
     @Override
-    public boolean delete(Transazione dep) {
+    public boolean delete(int id) {
         String query = "DELETE FROM rel_cc_deposito WHERE id_deposito = ?";
 
         try {
             PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
-            statement.setInt(1, dep.getId());
+            statement.setInt(1, id);
 
-            if (statement.executeUpdate()>0 && eliminaTransazione(dep)) {
+            if (statement.executeUpdate()>0 && eliminaTransazione(id)) {
                 return true;
             }
 
@@ -181,12 +181,12 @@ public class DepositoDAOImpl implements DepositoDAO{
         return false;
     }
 
-    private boolean eliminaTransazione(Transazione dep) {
+    private boolean eliminaTransazione(int id) {
         String depositoQuery = "DELETE FROM deposito WHERE id_deposito= ?";
 
         try {
             PreparedStatement statement = DbConn.getConnection().prepareStatement(depositoQuery);
-            statement.setInt(1, dep.getId());
+            statement.setInt(1, id);
 
             if (statement.executeUpdate() > 0)
                 return true;

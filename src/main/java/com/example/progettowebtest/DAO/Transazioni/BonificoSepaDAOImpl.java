@@ -120,14 +120,14 @@ public class BonificoSepaDAOImpl implements BonificoSepaDAO {
     }
 
     @Override
-    public boolean delete(Transazione bon) {
+    public boolean delete(int id) {
         String query = "DELETE FROM rel_cc_bon_sepa WHERE id_sepa = ?";
 
         try {
             PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
-            statement.setInt(1, bon.getId());
+            statement.setInt(1, id);
 
-            if (statement.executeUpdate()>0  && eliminaTransazione(bon)) {
+            if (statement.executeUpdate()>0  && eliminaTransazione(id)) {
                 return true;
             }
 
@@ -161,12 +161,12 @@ public class BonificoSepaDAOImpl implements BonificoSepaDAO {
         return false;
     }
 
-    private boolean eliminaTransazione(Transazione bon) {
+    private boolean eliminaTransazione(int id) {
         String bonificoQuery = "DELETE FROM bonifico_area_sepa WHERE id_sepa = ?";
 
         try {
             PreparedStatement statement = DbConn.getConnection().prepareStatement(bonificoQuery);
-            statement.setInt(1, bon.getId());
+            statement.setInt(1, id);
 
             if (statement.executeUpdate() > 0)
                 return true;

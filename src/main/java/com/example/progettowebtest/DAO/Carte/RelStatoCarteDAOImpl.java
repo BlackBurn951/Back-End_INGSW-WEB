@@ -56,7 +56,7 @@ public class RelStatoCarteDAOImpl implements RelStatoCarteDAO{
     }
 
     @Override
-    public RelStatoCarta doRetriveActualRel(String numCarta, TipiCarte tipo, Stato st) {
+    public RelStatoCarta doRetriveActualRel(String numCarta, TipiCarte tipo) {
         RelStatoCarta result= null;
         String query= "";
 

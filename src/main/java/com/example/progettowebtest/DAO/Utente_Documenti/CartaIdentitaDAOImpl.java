@@ -94,8 +94,10 @@ public class CartaIdentitaDAOImpl implements CartaIdentitaDAO{
         boolean result= false;
 
         try {
-            String query = "DELETE FROM carta_di_identità WHERE num_identificativo = "+cd.getNumIdentificativo() ;
+            String query = "DELETE FROM carta_di_identità WHERE num_identificativo = ?";
             PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
+
+            statement.setString(1, cd.getNumIdentificativo());
 
             if(statement.executeUpdate()>0)
                 result= true;

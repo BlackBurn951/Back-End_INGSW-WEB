@@ -97,9 +97,10 @@ public class PassaportoDAOImpl implements PassaportoDAO{
         boolean result = false;
 
         try {
-            String query = "DELETE FROM passaporto WHERE num_passaporto = "+ passa.getNumIdentificativo();
+            String query = "DELETE FROM passaporto WHERE num_passaporto = ?";
             PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
 
+            statement.setString(1, passa.getNumIdentificativo());
             if (statement.executeUpdate()>0)
                 result = true;
 

@@ -9,7 +9,7 @@ public interface ContoCorrenteDAO {
     ContoCorrente doRetriveByKey(String numConto);
     ContoCorrente doRetriveByAttribute(String attributo);
     boolean saveOrUpdate(ContoCorrente contoCorr, boolean fristTime);
-    boolean delete(ContoCorrente contoCorr);
+    boolean delete(String numCC);
     void setPinChiaro(String pinChiaro);
     String getPinChiaro();
 }

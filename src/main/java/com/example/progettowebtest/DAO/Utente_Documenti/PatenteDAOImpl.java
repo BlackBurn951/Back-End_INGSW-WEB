@@ -96,9 +96,10 @@ public class PatenteDAOImpl implements PatenteDAO{
         boolean result = false;
 
         try {
-            String query = "DELETE FROM patente WHERE num_patente = "+ pat.getNumIdentificativo();
+            String query = "DELETE FROM patente WHERE num_patente = ?";
             PreparedStatement statement = DbConn.getConnection().prepareStatement(query);
 
+            statement.setString(1, pat.getNumIdentificativo());
             if (statement.executeUpdate()>0)
                 result = true;
 
