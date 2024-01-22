@@ -23,6 +23,17 @@ import java.util.concurrent.TimeUnit;
 @CrossOrigin(origins = "http://localhost:4200")
 public class PagamentiServlet {
     //FARE CALCOLO DEL FIDO
+    @GetMapping("/checkStatoConto")
+    public boolean checkStatus(HttpServletRequest request, @RequestParam("IDSession") String idSess) {
+        HttpSession session= (HttpSession) request.getServletContext().getAttribute(idSess);
+        ContoCorrente cc= (ContoCorrente) session.getAttribute("Conto");
+        String stato = cc.getStatoConto().getValoreStato();
+
+        return stato.equals("attivo");
+    }
+
+
+
     @GetMapping("/checkPin")
     public String checkPin(HttpServletRequest request, @RequestParam("pinSend") String pinSend, @RequestParam("IDSession") String idSess) {
         HttpSession session= (HttpSession) request.getServletContext().getAttribute(idSess);

@@ -222,7 +222,9 @@ function cambiaStato(valore) {
                 messaggioConferma = "Stato del conto cambiato con successo.";
             } else {
                 messaggioConferma = "Conto chiuso con successo.";
-                setTimeout(() => tornaHomepage(), 2000); // Ritarda di 2 secondi
+                setTimeout(function() {
+                    window.location.href = "http://localhost:4200";
+                }, 2000);
             }
             showPopup(messaggioConferma);
         })
