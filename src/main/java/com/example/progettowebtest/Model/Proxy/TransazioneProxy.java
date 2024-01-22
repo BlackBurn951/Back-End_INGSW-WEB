@@ -151,6 +151,23 @@ public class TransazioneProxy implements Transazione {
         this.id = id;
     }
 
+    @Override
+    public String getTipoTrans() {
+        String result= "";
+        if (tipo == TipoTransazione.BOLLETTINO) {
+            result= "Bollettino";
+        } else if (tipo == TipoTransazione.BONIFICOINTER) {
+            result= "BonificoInter";
+        } else if (tipo == TipoTransazione.BONIFICOSEPA) {
+            result= "BonificoSepa";
+        } else if (tipo == TipoTransazione.DEPOSITO) {
+            result= "Deposito";
+        } else if (tipo == TipoTransazione.PRELIEVO) {
+            result= "Prelievo";
+        }
+        return result;
+    }
+
     private void instanzaTransazione() {
         if (tipo == TipoTransazione.BOLLETTINO) {
             transazioneReale = MagnusDAO.getInstance().getBollettinoDAO().doRetriveByKey(id, true);
@@ -182,5 +199,16 @@ public class TransazioneProxy implements Transazione {
 
     private boolean isType(TipoTransazione types) {
         return tipo == types;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) return true;
+        if(o == null) return false;
+        if(this.getClass() != o.getClass()) return false;
+
+        TransazioneProxy trans = (TransazioneProxy) o;
+        // qui facciamo il controllo che le due persone siano uguali
+        return id==trans.getId() && this.getTipoTrans().equals(trans.getTipoTrans());
     }
 }

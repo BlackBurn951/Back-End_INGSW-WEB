@@ -24,4 +24,5 @@ public interface Transazione {
     Mezzo getMezzo();
     Carte getCartaEsecuzione();
     void setId(int id);
+    String getTipoTrans();
 }
