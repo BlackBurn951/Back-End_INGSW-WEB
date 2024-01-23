@@ -10,7 +10,6 @@ header {
 }
 
 .notificaImage {
-    display: none; /*PER ADESSO NASCOSTA PRIMA DELL'IMPLEMENTAZIONE*/
     max-width: 4vw;
     max-height: 4vw;
 }
@@ -39,16 +38,15 @@ header {
     white-space: nowrap;
 }
 
-/* Aggiunta di una media query per adattare il layout a schermi più piccoli */
 @media screen and (max-width: 768px) {
     .containerHeader {
-        flex-direction: column; /* Cambiato il layout a colonna su schermi più piccoli */
+        flex-direction: column;
         align-items: center;
     }
 
     .iconeNE {
-        margin-top: 10px; /* Aggiunto margine superiore per separare le icone dall'alto */
-        gap: 1vw; /* Ridotto lo spazio tra le icone con vw */
+        margin-top: 10px; /
+        gap: 1vw;
     }
 }
 
@@ -214,7 +212,8 @@ body {
 
 
 button {
-    width: 70%;
+    height: auto;
+    width: 40%;
     background-color: #3498db;
     color: #ffffff;
     padding: 0.1vw 0.1vw;
@@ -261,6 +260,10 @@ th {
     background-color: #f2f2f2;
 }
 
+.mostraElemento {
+    display: block !important;
+}
+
 .popup {
     display: none;
     position: fixed;
@@ -268,7 +271,7 @@ th {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 20%;
-    height: 77%;
+    height: auto;
     background: rgb(217, 217, 217);
     border-radius: 2vh;
     border: 2px solid #08090B;
@@ -280,6 +283,7 @@ th {
     align-items: center;
     display: flex;
     flex-direction: column;
+    column-count: 2;
 }
 
 

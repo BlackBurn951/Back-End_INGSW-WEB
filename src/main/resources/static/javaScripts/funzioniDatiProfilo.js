@@ -162,32 +162,18 @@ function cambiaEmail(stringaEmail){
 
 }
 
-function sospendiChiudi() {
+
+function controllaPassword() {
+    var passwordInput = document.getElementById("passwordSosp").value;
+
     var popup = document.getElementById('popupSospensione');
     var action = popup.getAttribute('data-action');
-    var passwordInput = document.getElementById("passwordSosp").value;
 
     var errorPasswordMessage = document.getElementById('errorPassword');
 
-    var isPasswordValid = controllaPassword(passwordInput);
-
-    if (!isPasswordValid) {
-        errorPasswordMessage.style.display = 'block';
-    } else {
-        errorPasswordMessage.style.display = 'none';
-        if (action === 'sospendi') {
-            cambiaStato(1)
-        } else if (action === 'chiudi') {
-            cambiaStato(2)
-        }
-        popup.style.display = 'none';
-    }
-}
-
-function controllaPassword(password) {
     const urlParams = new URLSearchParams(window.location.search);
     const idSession = urlParams.get("IDSession");
-    url = `/checkPass?IDSession=${idSession}&password=${password}`;
+    url = `/checkPass?IDSession=${idSession}&password=${passwordInput}`;
 
     return fetch(url, {
         method: 'GET',
@@ -197,7 +183,18 @@ function controllaPassword(password) {
     })
         .then(response => response.json())
         .then(data => {
-            return data;
+            if(data) {
+                errorPasswordMessage.style.display = 'none';
+                if (action === 'sospendi') {
+                    cambiaStato(1);
+                } else if (action === 'chiudi') {
+                    cambiaStato(2);
+                }
+                popup.style.display = 'none';
+            } else {
+                errorPasswordMessage.style.display = 'block';
+
+            }
         })
         .catch(() => {
             throw new Error("Errore durante l'operazione.");
@@ -232,28 +229,6 @@ function cambiaStato(valore) {
             showPopup("Errore durante l'operazione.");
         });
 }
-
-function tornaHomepage() {
-    fetch('/redirect/tornaHomepage', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => {
-        if (response.ok) {
-        } else {
-            console.error('Errore nella richiesta per tornare alla homepage');
-        }
-    })
-    .catch(error => {
-        console.error('Errore durante la richiesta per tornare alla homepage:', error);
-    });
-}
-
-
-
-
 
 
 function toggleNuovaPass() {
@@ -301,6 +276,9 @@ function showPopup(message) {
 }
 
 function closePopup() {
+    var passwordInput = document.getElementById("passwordSosp");
+    passwordInput.value = ''
+
     document.getElementById('popupConferma').style.display = 'none';
 }
 
