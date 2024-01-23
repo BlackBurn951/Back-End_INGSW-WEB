@@ -41,6 +41,7 @@ public class CarteServlet {
         String numCartaProposto = generaNumeroCarta();
         String cvvProposto = generaCVV();
         String dataCreazione= dataAttuale.toString();
+
         String dataScadenza= dataArrivo.toString();
         String pinProposto = generateOTP();
 
