@@ -20,6 +20,7 @@ public class ContoCorrente {
     private Indirizzo indFatturazione;
     private Utente intestatario;
     private Vector<Transazione> movimenti;
+    private Vector<Notifiche> notifiche;
 
     public ContoCorrente(String numCC, String iban, String pin, String dataApertura, double saldo,
                          int tassoInteresse, int tariffaAnnuale, Indirizzo indFatturazione, Utente intestatario) {
@@ -33,9 +34,11 @@ public class ContoCorrente {
         this.indFatturazione = indFatturazione;
         this.intestatario = intestatario;
         this.movimenti= new Vector<>();
+        this.notifiche= new Vector<>();
     }
     public ContoCorrente() {
         this.movimenti= new Vector<>();
+        this.notifiche= new Vector<>();
     }
 
     public String getNumCC() {return numCC;}
