@@ -26,8 +26,6 @@
                     <span th:text="${notifica.testo}"></span>
                     <a href="#" class="eliminaNotifica" th:attr="data-notificaId=${notifica.id}" onclick="eliminaNotifica(this)">x</a>
                 </li>
-
-
             </div>
             <a href="/redirect/tornaHomepage" class="logout"><img class="esciImage" src="/images/iconaEsci.png" alt=""></a>
         </div>
@@ -48,7 +46,7 @@
     <div class="containerDatiConto">
         <h2>Benvenuto <span th:text="${utente.getNome()+'  '+utente.getCognome()}"></span></h2>
         <h3>Numero conto: <span th:text="${conto.getNumCC()}"></span></h3>
-        <h3>Saldo: <span th:text="${conto.getSaldo()}"></span></h3>
+        <h3>Saldo: <span th:text="${conto.getSaldo()}+ ' €'"></span></h3>
         <h3>Stato: <span th:text="${conto.getStatoConto().getValoreStato()}" th:style="${conto.getStatoConto().getValoreStato() eq 'attivo' ? 'color: green;' : 'color: darkred;'}"></span></h3>
     </div>
 
@@ -68,13 +66,10 @@
                   <tbody>
                       <tr class="item" th:each="item, iterStat : ${conto.getMovimenti()}">
                           <td th:text="${item.getDataTransazione()}"></td>
-                          <td th:text="${item.getImporto()}"></td>
+                          <td th:text="${item.getImporto()} + ' €'"></td>
                           <td th:text="${item.getCausale()}"></td>
                           <td th:if="${item.getEsito()}" th:text="Eseguita" style="color: green;"></td>
                           <td th:unless="${item.getEsito()}" th:text="Rifiutata" style="color: red;"></td>
-
-                          <!--<td><button th:attr="data-costo=${item.getCostoTransazione()}, data-nome-beneficiario=${item.getNomeBeneficiario()}" onclick="openPopup(this)">+</button></td>-->
-
 
                           <td><button th:attr="data-transaction-id=${item.getId()}, data-transaction-tipo=${item.getTipoTrans()}" onclick="openPopup(this)">+</button></td>
 
@@ -86,24 +81,23 @@
       </div>
 
       <div class="popup" id="popup">
-        <div class="contenutoPopup">
-            <button class="popup-btn" onclick="closePopupTrans()">X</button>
-            <p class="tipoBollettino"></p>
-            <p class="labelCCDest"></p>
-            <p class="numCcDest"></p>
-            <p class="importo"></p>
-            <p class="causale"></p>
-            <p class="costoTransazione"></p>
-            <p class="data"></p>
-            <p class="nomeBeneficiario"></p>
-            <p class="cognomeBeneficiario"></p>
-            <p class="labelIban"></p>
-            <p class="ibanDest"></p>
-            <p class="valuta"></p>
-            <p class="paeseDest"></p>
+          <div class="contenutoPopup">
+              <div class="popup-content" id="contenutoBollettino">
+                  <button class="popup-btn" onclick="closePopupTrans()">X</button>
 
-        </div>
+                  <!-- Contenuti specifici per Bollettino -->
+              </div>
+
+              <div class="popup-content" id="contenutoBonificoInter">
+                  <!-- Contenuti specifici per BonificoInter -->
+              </div>
+
+              <div class="popup-content" id="contenutoBonficoSepa">
+                  <!-- Contenuti specifici per BonificoSepa -->
+              </div>
+          </div>
       </div>
+
 
 
   </div>

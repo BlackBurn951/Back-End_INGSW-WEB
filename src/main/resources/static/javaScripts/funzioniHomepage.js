@@ -10,29 +10,35 @@ function modifyLinks() {
 
 document.addEventListener("DOMContentLoaded", modifyLinks);
 
-// Funzione per aprire il popup e caricare i dettagli della transazione
-// Funzione per aprire il popup e caricare i dettagli della transazione
+
+/*
 function openPopup(button) {
     const urlParams = new URLSearchParams(window.location.search);
     const idSession = urlParams.get("IDSession");
     var transactionId = button.getAttribute('data-transaction-id');
     var transactionTipo = button.getAttribute('data-transaction-tipo');
 
+
+
     url = `/visualizzaTrans?IDSession=${idSession}&idTrans=${transactionId}&tipoTrans=${transactionTipo}`;
 
     var tipoBol = document.querySelector('.tipoBollettino');
-    var labelDest = document.querySelector('.labelCCDest');
     var numCcDest = document.querySelector('.numCcDest');
     var nomeBeneficiario = document.querySelector('.nomeBeneficiario');
     var cognomeBeneficiario = document.querySelector('.cognomeBeneficiario');
     var importo = document.querySelector('.importo');
     var causale = document.querySelector('.causale');
-    var labelIban = document.querySelector('.labelIban');
     var ibanDest = document.querySelector('.ibanDest');
     var valuta = document.querySelector('.valuta');
     var paeseDest = document.querySelector('.paeseDest');
     var costo = document.querySelector('.costoTransazione');
     var dataEs = document.querySelector('.data');
+
+    var popupContent = document.querySelector('.contenutoPopup');
+
+
+    var labelIban = document.querySelector('.labelIban');
+    var labelDest = document.querySelector('.labelCCDest');
 
     fetch(url)
         .then(response => {
@@ -42,18 +48,20 @@ function openPopup(button) {
             return response.json();
         })
         .then(data => {
+
             if(transactionTipo === "Bollettino"){
                 tipoBol.textContent = 'Tipo bollettino: ' + data[3];
-                importo.textContent = 'Importo: ' + data[0];
+                importo.textContent = 'Importo: ' + data[0]+' €';
                 causale.textContent = 'Causale: ' + data[1];
                 labelDest.textContent = 'Conto destinatario: '
                 numCcDest.textContent = data[2];
                 dataEs.textContent = 'Data: ' + data[4];
                 costo.textContent = 'Costo transazione: ' + data[5]
+
             }else if(transactionTipo === "BonificoInter"){
                 nomeBeneficiario.textContent = 'Nome beneficiario: ' + data[0]
                 cognomeBeneficiario.textContent = 'Cognome beneficiario: ' + data[1]
-                importo.textContent = 'Importo: ' + data[2];
+                importo.textContent = 'Importo: ' + data[2]+' €';
                 causale.textContent = 'Causale: ' + data[3];
                 labelIban.textContent = 'IBAN destinatario: '
                 ibanDest.textContent = data[4]
@@ -64,7 +72,7 @@ function openPopup(button) {
             }else if(transactionTipo === "BonificoSepa"){
                 nomeBeneficiario.textContent = 'Nome beneficiario: ' + data[0]
                 cognomeBeneficiario.textContent = 'Cognome beneficiario: ' + data[1]
-                importo.textContent = 'Importo: ' + data[2];
+                importo.textContent = 'Importo: ' + data[2]+' €';
                 causale.textContent = 'Causale: ' + data[3];
                 labelIban.textContent = 'IBAN destinatario: '
                 ibanDest.textContent = data[4]
@@ -72,44 +80,139 @@ function openPopup(button) {
                 costo.textContent = 'Costo transazione: ' + data[6]
             }
 
-            // Mostra il popup
             document.getElementById('popup').style.display = 'block';
         })
         .catch(error => console.error(error));
 }
 
+*/
+function openPopup(button) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const idSession = urlParams.get("IDSession");
+    var transactionId = button.getAttribute('data-transaction-id');
+    var transactionTipo = button.getAttribute('data-transaction-tipo');
+
+    url = `/visualizzaTrans?IDSession=${idSession}&idTrans=${transactionId}&tipoTrans=${transactionTipo}`;
+
+    var popupContent = document.querySelector('.contenutoPopup');
+
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Errore durante il recupero dei dettagli della transazione');
+            }
+            return response.json();
+        })
+        .then(data => {
+            displayTransactionDetails(transactionTipo, data);
+
+            document.getElementById('popup').style.display = 'block';
+        })
+        .catch(error => console.error(error));
+}
+
+function displayTransactionDetails(transactionTipo, data) {
+    var popupContent = document.querySelector('.contenutoPopup');
+    popupContent.innerHTML = '';
+
+    if (transactionTipo === "Bollettino") {
+        displayBollettino(data);
+    } else if (transactionTipo === "BonificoInter") {
+        displayBonificoInter(data);
+    } else if (transactionTipo === "BonificoSepa") {
+        displayBonificoSepa(data);
+    }
+}
+
+function displayBollettino(data) {
+    var popupContent = document.querySelector('.contenutoPopup');
+
+    var closeButton = document.createElement('button');
+    closeButton.className = 'popup-btn';
+    closeButton.textContent = 'X';
+    closeButton.onclick = function () {
+        closePopupTrans();
+    };
+    popupContent.appendChild(closeButton);
+
+    // Funzione per creare un elemento <p> con testo in grassetto
+    function createBoldParagraph(label, content) {
+        var element = document.createElement('p');
+        element.innerHTML = '<strong>' + label + '</strong>: ' + content;
+        popupContent.appendChild(element);
+    }
+
+    createBoldParagraph('Tipo bollettino', data[3]);
+    createBoldParagraph('Conto destinatario', data[2]);
+    createBoldParagraph('Importo', data[0] + ' €');
+    createBoldParagraph('Causale', data[1]);
+    createBoldParagraph('Data', data[4]);
+    createBoldParagraph('Costo transazione', data[5]);
+}
+
+function displayBonificoInter(data) {
+    var popupContent = document.querySelector('.contenutoPopup');
+
+    var closeButton = document.createElement('button');
+    closeButton.className = 'popup-btn';
+    closeButton.textContent = 'X';
+    closeButton.onclick = function () {
+        closePopupTrans();
+    };
+    popupContent.appendChild(closeButton);
+
+    function createBoldParagraph(label, content) {
+        var element = document.createElement('p');
+        element.innerHTML = '<strong>' + label + '</strong>: ' + content;
+        popupContent.appendChild(element);
+    }
+
+    createBoldParagraph('Nome beneficiario', data[0]);
+    createBoldParagraph('Cognome beneficiario', data[1]);
+    createBoldParagraph('Importo', data[2] + ' €');
+    createBoldParagraph('Causale', data[3]);
+    createBoldParagraph('IBAN destinatario', '');
+    var element = document.createElement('p');
+    element.innerHTML = data[4];
+    popupContent.appendChild(element);
+    createBoldParagraph('Valuta', data[5]);
+    createBoldParagraph('Paese destinatario', data[6]);
+    createBoldParagraph('Data', data[7]);
+    createBoldParagraph('Costo transazione', data[8]);
+}
+
+function displayBonificoSepa(data) {
+    var popupContent = document.querySelector('.contenutoPopup');
+
+    var closeButton = document.createElement('button');
+    closeButton.className = 'popup-btn';
+    closeButton.textContent = 'X';
+    closeButton.onclick = function () {
+        closePopupTrans();
+    };
+    popupContent.appendChild(closeButton);
+
+    function createBoldParagraph(label, content) {
+        var element = document.createElement('p');
+        element.innerHTML = '<strong>' + label + '</strong>: ' + content;
+        popupContent.appendChild(element);
+    }
+
+    createBoldParagraph('Nome beneficiario', data[0]);
+    createBoldParagraph('Cognome beneficiario', data[1]);
+    createBoldParagraph('Importo', data[2] + ' €');
+    createBoldParagraph('Causale', data[3]);
+    createBoldParagraph('IBAN destinatario', '');
+    var element = document.createElement('p');
+    element.innerHTML = data[4];
+    popupContent.appendChild(element);
+    createBoldParagraph('Data', data[5]);
+    createBoldParagraph('Costo transazione', data[6]);
+}
+
+
 function closePopupTrans() {
-    // Nascondi il popup
     document.getElementById('popup').style.display = 'none';
-
-    // Reimposta gli elementi dell'HTML allo stato predefinito
-    var labelDest = document.querySelector('.labelCCDest');
-    var labelIban = document.querySelector('.labelIban');
-    var tipoBol = document.querySelector('.tipoBollettino');
-    var numCcDest = document.querySelector('.numCcDest');
-    var nomeBeneficiario = document.querySelector('.nomeBeneficiario');
-    var cognomeBeneficiario = document.querySelector('.cognomeBeneficiario');
-    var importo = document.querySelector('.importo');
-    var causale = document.querySelector('.causale');
-    var ibanDest = document.querySelector('.ibanDest');
-    var valuta = document.querySelector('.valuta');
-    var paeseDest = document.querySelector('.paeseDest');
-    var costo = document.querySelector('.costoTransazione');
-    var dataEs = document.querySelector('.data');
-
-    tipoBol.textContent = '';
-    numCcDest.textContent = '';
-    nomeBeneficiario.textContent = '';
-    cognomeBeneficiario.textContent = '';
-    importo.textContent = '';
-    causale.textContent = '';
-    ibanDest.textContent = '';
-    valuta.textContent = '';
-    paeseDest.textContent = '';
-    costo.textContent = '';
-    dataEs.textContent = '';
-    labelDest.textContent = '';
-    labelIban.textContent = '';
 }
 
 

@@ -261,6 +261,10 @@ th {
     background-color: #f2f2f2;
 }
 
+.mostraElemento {
+    display: block !important;
+}
+
 .popup {
     display: none;
     position: fixed;
@@ -268,7 +272,7 @@ th {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 20%;
-    height: 77%;
+    height: auto;
     background: rgb(217, 217, 217);
     border-radius: 2vh;
     border: 2px solid #08090B;
@@ -280,6 +284,7 @@ th {
     align-items: center;
     display: flex;
     flex-direction: column;
+    column-count: 2;
 }
 
 

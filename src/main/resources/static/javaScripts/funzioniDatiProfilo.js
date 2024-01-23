@@ -169,6 +169,7 @@ function sospendiChiudi() {
 
     var errorPasswordMessage = document.getElementById('errorPassword');
 
+
     var isPasswordValid = controllaPassword(passwordInput);
 
     if (!isPasswordValid) {
