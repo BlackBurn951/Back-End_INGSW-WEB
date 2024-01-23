@@ -1,6 +1,5 @@
 package com.example.progettowebtest.Model.ContoCorrente;
 
-import com.example.progettowebtest.Model.ContoCorrente.ContoCorrente;
 
 public class Notifiche {
     private int id;

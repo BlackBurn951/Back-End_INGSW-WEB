@@ -6,6 +6,8 @@ import com.example.progettowebtest.ClassiRequest.DatiBonificoInter;
 import com.example.progettowebtest.ClassiRequest.DatiBonificoSepa;
 import com.example.progettowebtest.DAO.MagnusDAO;
 import com.example.progettowebtest.Model.ContoCorrente.ContoCorrente;
+import com.example.progettowebtest.Model.ContoCorrente.Notifiche;
+import com.example.progettowebtest.Model.ContoCorrente.PresetNotifiche;
 import com.example.progettowebtest.Model.Proxy.Transazione;
 import com.example.progettowebtest.Model.Transazioni.Bollettino;
 import com.example.progettowebtest.Model.Transazioni.BonificoInter;
@@ -22,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 public class PagamentiServlet {
-    //FARE CALCOLO DEL FIDO
+
     @GetMapping("/checkStatoConto")
     public boolean checkStatus(HttpServletRequest request, @RequestParam("IDSession") String idSess) {
         HttpSession session= (HttpSession) request.getServletContext().getAttribute(idSess);
@@ -31,9 +33,6 @@ public class PagamentiServlet {
 
         return stato.equals("attivo");
     }
-
-
-
     @GetMapping("/checkPin")
     public String checkPin(HttpServletRequest request, @RequestParam("pinSend") String pinSend, @RequestParam("IDSession") String idSess) {
         HttpSession session= (HttpSession) request.getServletContext().getAttribute(idSess);
@@ -46,17 +45,23 @@ public class PagamentiServlet {
             return "PIN errato";
     }
 
+
+    //FARE CALCOLO DEL FIDO
     @PostMapping("/doBollettino")
     public boolean doBollettino(HttpServletRequest request, @RequestParam("IDSession") String idSess, @RequestBody DatiBollettino dati) {
-        boolean result;
+        boolean result= false;
 
         HttpSession session= (HttpSession) request.getServletContext().getAttribute(idSess);
         ContoCorrente cc= (ContoCorrente) session.getAttribute("Conto");
 
         if(cc.getSaldo()>=(dati.getImporto()+1.0)) {
             cc.setSaldo(cc.getSaldo() - (dati.getImporto()+1.0));
-            MagnusDAO.getInstance().getContoCorrenteDAO().saveOrUpdate(cc, false);
-            result = true;
+            if(MagnusDAO.getInstance().getContoCorrenteDAO().saveOrUpdate(cc, false)) {
+                Notifiche not= new Notifiche(PresetNotifiche.NOTIFICA_BOLLETTINO, false);
+                MagnusDAO.getInstance().getNotificheDAO().saveOrUpdate(not, cc.getNumCC());
+                cc.addNotifica(not);
+                result = true;
+            }
         }
         else
             result= false;
@@ -75,15 +80,19 @@ public class PagamentiServlet {
 
     @PostMapping("/doBonificoSepa")
     public boolean doBonificoSepa(HttpServletRequest request, @RequestParam("IDSession") String idSess, @RequestBody DatiBonificoSepa dati) {
-        boolean result;
+        boolean result= false;
 
         HttpSession session= (HttpSession) request.getServletContext().getAttribute(idSess);
         ContoCorrente cc= (ContoCorrente) session.getAttribute("Conto");
 
         if(cc.getSaldo()>=(dati.getImportoSepa()+1.0)) {
             cc.setSaldo(cc.getSaldo() - (dati.getImportoSepa() + 1.0));
-            MagnusDAO.getInstance().getContoCorrenteDAO().saveOrUpdate(cc, false);
-            result = true;
+            if(MagnusDAO.getInstance().getContoCorrenteDAO().saveOrUpdate(cc, false)) {
+                Notifiche not= new Notifiche(PresetNotifiche.NOTIFICA_BONIFICOSEPA, false);
+                MagnusDAO.getInstance().getNotificheDAO().saveOrUpdate(not, cc.getNumCC());
+                cc.addNotifica(not);
+                result = true;
+            }
         }else
             result= false;
 
@@ -101,15 +110,19 @@ public class PagamentiServlet {
 
     @PostMapping("/doBonificoInt")
     public boolean doBonificoInt(HttpServletRequest request, @RequestParam("IDSession") String idSess, @RequestBody DatiBonificoInter dati) {
-        boolean result;
+        boolean result = false;
 
         HttpSession session= (HttpSession) request.getServletContext().getAttribute(idSess);
         ContoCorrente cc= (ContoCorrente) session.getAttribute("Conto");
 
         if(cc.getSaldo()>=(dati.getImportoI()+1.0)) {
             cc.setSaldo(cc.getSaldo() - (dati.getImportoI() + 1.0));
-            MagnusDAO.getInstance().getContoCorrenteDAO().saveOrUpdate(cc, false);
-            result = true;
+            if(MagnusDAO.getInstance().getContoCorrenteDAO().saveOrUpdate(cc, false)) {
+                Notifiche not= new Notifiche(PresetNotifiche.NOTIFICA_BONIFICOINTER, false);
+                MagnusDAO.getInstance().getNotificheDAO().saveOrUpdate(not, cc.getNumCC());
+                cc.addNotifica(not);
+                result = true;
+            }
         }
         else
             result= false;
