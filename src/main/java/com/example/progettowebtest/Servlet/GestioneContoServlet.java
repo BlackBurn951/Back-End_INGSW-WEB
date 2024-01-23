@@ -50,7 +50,7 @@ public class GestioneContoServlet {
     }
 
     @GetMapping("checkPass")
-    public boolean checkPsw(HttpServletRequest request, @RequestParam("IDSession") String idSession, @RequestParam("psw") String psw) {
+    public boolean checkPsw(HttpServletRequest request, @RequestParam("IDSession") String idSession, @RequestParam("password") String psw) {
         HttpSession session= (HttpSession)request.getServletContext().getAttribute(idSession);
 
         Utente ut= (Utente)session.getAttribute("Utente");
