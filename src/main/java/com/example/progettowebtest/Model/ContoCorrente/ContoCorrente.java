@@ -52,6 +52,7 @@ public class ContoCorrente {
     public Indirizzo getIndFatturazione() {return indFatturazione;}
     public Utente getIntestatario() {return intestatario;}
     public Vector<Transazione> getMovimenti() {return movimenti;}
+    public Vector<Notifiche> getNotifiche() {return notifiche;}
 
     public void setNumCC(String numCC) {
         this.numCC = numCC;
@@ -69,5 +70,8 @@ public class ContoCorrente {
 
     public void addTransazione(Transazione trans) {movimenti.add(trans);}
     public void removeTransazione(Transazione trans) {movimenti.remove(trans);}
+
+    public void addNotifica(Notifiche not) {notifiche.add(not);}
+    public void removeNotifica(Notifiche not) {notifiche.remove(not);}
 
 }
