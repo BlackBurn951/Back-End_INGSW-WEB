@@ -211,7 +211,7 @@ label{
 
 .popup-content {
     gap:2vh;
-    height: 30%;
+    height: auto;
     width: 20%;
     align-items: center;
     background: rgb(217, 217, 217);
@@ -229,7 +229,7 @@ label{
 
 #passPopup-content {
     gap:2vh;
-    height: 70%;
+    height: auto;
     width: 20%;
     align-items: center;
     background: rgb(217, 217, 217);
