@@ -9,6 +9,7 @@ public interface CarteDAO {
     Vector<Carte> doRetriveAll();
 
     Vector<Carte> doRetriveAllForCC(String numCC);
+    Vector<Carte> doRetriveAllCreditForCC(String numCC);
 
     Carte doRetriveByKey(String numCarta, TipiCarte tipo, boolean proxy);
 

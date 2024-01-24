@@ -5,6 +5,8 @@ import com.example.progettowebtest.ClassiRequest.DatiBollettino;
 import com.example.progettowebtest.ClassiRequest.DatiBonificoInter;
 import com.example.progettowebtest.ClassiRequest.DatiBonificoSepa;
 import com.example.progettowebtest.DAO.MagnusDAO;
+import com.example.progettowebtest.Model.Carte.Carte;
+import com.example.progettowebtest.Model.Carte.TipiCarte;
 import com.example.progettowebtest.Model.ContoCorrente.ContoCorrente;
 import com.example.progettowebtest.Model.ContoCorrente.Notifiche;
 import com.example.progettowebtest.Model.ContoCorrente.PresetNotifiche;
@@ -19,7 +21,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.concurrent.TimeUnit;
+import java.util.Vector;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -54,6 +56,8 @@ public class PagamentiServlet {
         HttpSession session= (HttpSession) request.getServletContext().getAttribute(idSess);
         ContoCorrente cc= (ContoCorrente) session.getAttribute("Conto");
 
+        Vector<Carte> carteCredito= MagnusDAO.getInstance().getCarteDAO().doRetriveAllCreditForCC(cc.getNumCC());
+
         if(cc.getSaldo()>=(dati.getImporto()+1.0)) {
             cc.setSaldo(cc.getSaldo() - (dati.getImporto()+1.0));
             if(MagnusDAO.getInstance().getContoCorrenteDAO().saveOrUpdate(cc, false)) {
@@ -61,6 +65,20 @@ public class PagamentiServlet {
                 MagnusDAO.getInstance().getNotificheDAO().saveOrUpdate(not, cc.getNumCC());
                 cc.addNotifica(not);
                 result = true;
+            }
+        }
+        else if(carteCredito!=null) {
+            for(Carte cr: carteCredito) {
+                if(cr.getFido()>=(dati.getImporto()+1.0)) {
+                    cr.setFido(cr.getFido()-(dati.getImporto()+1.0));
+                    if(MagnusDAO.getInstance().getCarteDAO().saveOrUpdate(cr, TipiCarte.CREDITO)) {
+                        Notifiche not= new Notifiche(PresetNotifiche.NOTIFICA_BOLLETTINO, false);
+                        MagnusDAO.getInstance().getNotificheDAO().saveOrUpdate(not, cc.getNumCC());
+                        cc.addNotifica(not);
+                        result = true;
+                    }
+                    break;
+                }
             }
         }
         else
@@ -85,6 +103,8 @@ public class PagamentiServlet {
         HttpSession session= (HttpSession) request.getServletContext().getAttribute(idSess);
         ContoCorrente cc= (ContoCorrente) session.getAttribute("Conto");
 
+        Vector<Carte> carteCredito= MagnusDAO.getInstance().getCarteDAO().doRetriveAllCreditForCC(cc.getNumCC());
+
         if(cc.getSaldo()>=(dati.getImportoSepa()+1.0)) {
             cc.setSaldo(cc.getSaldo() - (dati.getImportoSepa() + 1.0));
             if(MagnusDAO.getInstance().getContoCorrenteDAO().saveOrUpdate(cc, false)) {
@@ -93,7 +113,21 @@ public class PagamentiServlet {
                 cc.addNotifica(not);
                 result = true;
             }
-        }else
+        }else if(carteCredito!=null) {
+            for(Carte cr: carteCredito) {
+                if(cr.getFido()>=(dati.getImportoSepa()+1.0)) {
+                    cr.setFido(cr.getFido()-(dati.getImportoSepa()+1.0));
+                    if(MagnusDAO.getInstance().getCarteDAO().saveOrUpdate(cr, TipiCarte.CREDITO)) {
+                        Notifiche not= new Notifiche(PresetNotifiche.NOTIFICA_BONIFICOSEPA, false);
+                        MagnusDAO.getInstance().getNotificheDAO().saveOrUpdate(not, cc.getNumCC());
+                        cc.addNotifica(not);
+                        result = true;
+                    }
+                    break;
+                }
+            }
+        }
+        else
             result= false;
 
 
@@ -115,6 +149,8 @@ public class PagamentiServlet {
         HttpSession session= (HttpSession) request.getServletContext().getAttribute(idSess);
         ContoCorrente cc= (ContoCorrente) session.getAttribute("Conto");
 
+        Vector<Carte> carteCredito= MagnusDAO.getInstance().getCarteDAO().doRetriveAllCreditForCC(cc.getNumCC());
+
         if(cc.getSaldo()>=(dati.getImportoI()+1.0)) {
             cc.setSaldo(cc.getSaldo() - (dati.getImportoI() + 1.0));
             if(MagnusDAO.getInstance().getContoCorrenteDAO().saveOrUpdate(cc, false)) {
@@ -122,6 +158,19 @@ public class PagamentiServlet {
                 MagnusDAO.getInstance().getNotificheDAO().saveOrUpdate(not, cc.getNumCC());
                 cc.addNotifica(not);
                 result = true;
+            }
+        }else if(carteCredito!=null) {
+            for(Carte cr: carteCredito) {
+                if(cr.getFido()>=(dati.getImportoI()+1.0)) {
+                    cr.setFido(cr.getFido()-(dati.getImportoI()+1.0));
+                    if(MagnusDAO.getInstance().getCarteDAO().saveOrUpdate(cr, TipiCarte.CREDITO)) {
+                        Notifiche not= new Notifiche(PresetNotifiche.NOTIFICA_BONIFICOINTER, false);
+                        MagnusDAO.getInstance().getNotificheDAO().saveOrUpdate(not, cc.getNumCC());
+                        cc.addNotifica(not);
+                        result = true;
+                    }
+                    break;
+                }
             }
         }
         else
