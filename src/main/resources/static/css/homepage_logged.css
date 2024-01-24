@@ -9,11 +9,23 @@ header {
     max-height: 6vw;
 }
 
+.esciImage:hover{
+    background-color: black;
+    border-radius: 40%;
+
+}
+
 .notificaImage {
+    cursor: pointer;
     max-width: 4vw;
     max-height: 4vw;
 }
 
+.notificaImage:hover{
+    background-color: black;
+    border-radius: 40%;
+
+}
 .iconeNE {
     position: relative;
     display: flex;
@@ -77,6 +89,10 @@ nav:hover {
         align-items: center;
         margin-left: 20px;
         margin-bottom: 10px;
+    }
+    .imageButton:hover{
+        background-color: #ffffff;
+        border-radius: 40%;
     }
 }
 
@@ -260,9 +276,7 @@ th {
     background-color: #f2f2f2;
 }
 
-.mostraElemento {
-    display: block !important;
-}
+
 
 .popup {
     display: none;
@@ -283,7 +297,7 @@ th {
     align-items: center;
     display: flex;
     flex-direction: column;
-    column-count: 2;
+
 }
 
 
@@ -307,11 +321,14 @@ th {
 
 
 .centroNotifiche {
+    align-items: center;
+    text-align: center;
+    align-content: center;
     position: relative;
-    cursor: pointer;
 }
 
 .badge {
+    cursor: pointer;
     position: absolute;
     top: 1px;
     right: 1px;
@@ -321,24 +338,47 @@ th {
     padding: 6px 8px;
     font-size: 12px;
     display: inline-block;
+
 }
 
 .notificheMenu {
+    border: 2px solid #08090B;
+    border-radius: 1vh;
+    white-space: nowrap;
     display: none;
     position: absolute;
-    background-color: #f9f9f9;
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    padding: 10px;
+    background: rgb(217, 217, 217);
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    height: auto;
+    width: 600%;
     z-index: 1;
-    right: 0; /* Posiziona il menu a destra dell'icona */
-}
-
-.notificheMenu.show {
-    display: block;
+    left: 0;
 }
 
 .notificheMenu li {
-    list-style: none;
-    padding: 8px;
-    border-bottom: 1px solid #ddd;
+    margin-top: 1vh;
+    font-size: 15px;
+    background-color: white;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    line-height: 150%;
+    align-items: center;
+}
+
+
+
+
+.notificheMenu.show {
+    white-space: nowrap;
+    display: flex;
+    flex-direction: column;
+}
+
+.eliminaNotifica{
+    margin-right: 2%;
+    white-space: nowrap;
+    cursor: pointer;
+    float: right;
+    color: #000000;
+    font-weight: bold;
 }

@@ -75,7 +75,7 @@ public class CarteDAOImpl implements CarteDAO{
                     else
                         carta= new CartaProxy(queryResult.getString("num_carta_debito"), queryResult.getBoolean("stato_pagamento_online"), queryResult.getDate("data_creazione").toString(),
                                 queryResult.getDate("data_scadenza").toString(), queryResult.getString("cvv"), queryResult.getBoolean("carta_fisica"),
-                                queryResult.getDouble("canone_mensile"), queryResult.getString("pin"), 0.0,
+                                queryResult.getDouble("canone_mensile"), queryResult.getString("pin"), 3000.0,
                                 MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualState(queryResult.getString("num_carta_debito"), TipiCarte.DEBITO), TipiCarte.DEBITO);
                 }
             }
@@ -185,7 +185,7 @@ public class CarteDAOImpl implements CarteDAO{
             while(queryResult.next()) {
                 result.add(new CartaProxy(queryResult.getString("num_carta_debito"), queryResult.getBoolean("stato_pagamento_online"), queryResult.getDate("data_creazione").toString(),
                         queryResult.getDate("data_scadenza").toString(), queryResult.getString("cvv"), queryResult.getBoolean("carta_fisica"), queryResult.getDouble("canone_mensile"),
-                        queryResult.getString("pin"), 0.0, MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualState(queryResult.getString("num_carta_debito"), TipiCarte.DEBITO), TipiCarte.DEBITO));
+                        queryResult.getString("pin"), 3000.0, MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualState(queryResult.getString("num_carta_debito"), TipiCarte.DEBITO), TipiCarte.DEBITO));
             }
 
         }catch (SQLException e) {
