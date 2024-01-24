@@ -62,12 +62,14 @@ public class BonificoInterDAOImpl implements BonificoInterDAO{
         Transazione bonInt= null;
         String query;
         if(proxy)
-            query= "select * from bonifico_internazionale as b, rel_cc_bon_int as r where b.id_internazionale= r.id_internazionale";
+            query= "select * from bonifico_internazionale as b, rel_cc_bon_int as r where b.id_internazionale= ? and b.id_internazionale= r.id_internazionale";
         else
-            query= "select b.id_internazionale, r.data_transazione, b.importo, r.esito, b.causale from bonifico_internazionale as b, rel_cc_bon_int as r where b.id_internazionale=r.id_internazionale";
+            query= "select b.id_internazionale, r.data_transazione, b.importo, r.esito, b.causale from bonifico_internazionale as b, rel_cc_bon_int as r where b.id_internazionale= ? and b.id_internazionale=r.id_internazionale";
 
         try{
             PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
+            statement.setInt(1,id);
+
             ResultSet queryResult= statement.executeQuery();
 
             if(proxy && queryResult.next()) {

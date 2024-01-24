@@ -263,10 +263,10 @@ function toggleConfPass() {
 
     if (confPassInput.type === "password") {
         confPassInput.type = "text";
-        confPassIcon.src = "/images/view.png"; // Sostituisci con l'immagine dell'icona visibile
+        confPassIcon.src = "/images/view.png";
     } else {
         confPassInput.type = "password";
-        confPassIcon.src = "/images/hide.png"; // Sostituisci con l'immagine dell'icona nascosta
+        confPassIcon.src = "/images/hide.png";
     }
 }
 
