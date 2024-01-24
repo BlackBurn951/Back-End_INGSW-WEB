@@ -21,15 +21,13 @@
         <div class="iconeNE">
             <div class="centroNotifiche">
                 <img class="notificaImage" src="/images/notification.png" alt="" onclick="toggleNotifiche()">
-                <span  th:if="${conto.getUnreadNotify() > 0}" class="badge" th:text="${conto.getUnreadNotify()}" onclick="toggleNotifiche()"></span>
-                <ul>
-                    <li th:each="notifica : ${conto.notifiche}">
-                        <p th:text="${notifica.testo}"></p>
-                        <a href="#" class="eliminaNotifica" th:attr="data-notificaId=${notifica.id}" onclick="eliminaNotifica(this)">x</a>
+                <span th:if="${conto.getUnreadNotify() > 0}" class="badge" th:text="${conto.getUnreadNotify()}" onclick="toggleNotifiche()"></span>
+                <ul class="notificheMenu" >
+                    <li th:each="i : ${#numbers.sequence(conto.getNotifiche().size() - 1, 0, -1)}"  th:with="n=${conto.getNotifiche()[i]}">
+                        <span th:text="${n.getTesto()}"></span>
+                        <span class="eliminaNotifica" onclick="eliminaNotifica()">X</span>
                     </li>
                 </ul>
-
-
 
             </div>
             <a href="/redirect/tornaHomepage" class="logout"><img class="esciImage" src="/images/iconaEsci.png" alt=""></a>

@@ -1,3 +1,25 @@
+document.addEventListener("DOMContentLoaded", function() {
+    modifyLinks();
+
+    window.addEventListener('click', function(event) {
+        var centroNotifiche = document.querySelector('.centroNotifiche');
+        var notificheMenu = centroNotifiche.querySelector('.notificheMenu');
+        var badge = centroNotifiche.querySelector('.badge');
+
+        // Verifica se il clic è avvenuto al di fuori del menu delle notifiche
+        if (notificheMenu && !centroNotifiche.contains(event.target)) {
+            notificheMenu.classList.remove('show');
+        }
+
+        // Verifica se il clic è avvenuto al di fuori del badge e nascondilo se è visibile
+
+    });
+
+    // Altri tuoi gestori di eventi...
+});
+
+
+
 function modifyLinks() {
     var urlParams = new URLSearchParams(window.location.search);
     var idSession = urlParams.get("IDSession");
@@ -7,8 +29,6 @@ function modifyLinks() {
         link.setAttribute("href", linkHref + '?IDSession=' + idSession);
     });
 }
-
-document.addEventListener("DOMContentLoaded", modifyLinks);
 
 
 
@@ -91,7 +111,7 @@ function displayBonificoInter(data) {
         element.innerHTML = '<strong>' + label + '</strong>: ' + content;
         popupContent.appendChild(element);
     }
-
+    createBoldParagraph('Tipo bonifico', 'Internazionale');
     createBoldParagraph('Nome beneficiario', data[0]);
     createBoldParagraph('Cognome beneficiario', data[1]);
     createBoldParagraph('Importo', data[2] + ' €');
@@ -122,7 +142,7 @@ function displayBonificoSepa(data) {
         element.innerHTML = '<strong>' + label + '</strong>: ' + content;
         popupContent.appendChild(element);
     }
-
+    createBoldParagraph('Tipo bonifico', 'Area SEPA');
     createBoldParagraph('Nome beneficiario', data[0]);
     createBoldParagraph('Cognome beneficiario', data[1]);
     createBoldParagraph('Importo', data[2] + ' €');
@@ -145,9 +165,11 @@ function closePopupTrans() {
 
 
 function toggleNotifiche() {
+
     var centroNotifiche = document.querySelector('.centroNotifiche');
     var notificheMenu = centroNotifiche.querySelector('.notificheMenu');
     var badge = centroNotifiche.querySelector('.badge');
+
 
     if (notificheMenu) {
         notificheMenu.classList.toggle('show');
@@ -157,8 +179,6 @@ function toggleNotifiche() {
         badge.style.display = 'none';
     }
 }
-
-
 
 
 
