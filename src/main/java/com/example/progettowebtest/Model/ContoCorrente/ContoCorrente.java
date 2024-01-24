@@ -1,5 +1,6 @@
 package com.example.progettowebtest.Model.ContoCorrente;
 
+import com.example.progettowebtest.DAO.MagnusDAO;
 import com.example.progettowebtest.Model.Indirizzo.Indirizzo;
 import com.example.progettowebtest.Model.Stato;
 import com.example.progettowebtest.Model.Proxy.Transazione;
@@ -52,7 +53,18 @@ public class ContoCorrente {
     public Indirizzo getIndFatturazione() {return indFatturazione;}
     public Utente getIntestatario() {return intestatario;}
     public Vector<Transazione> getMovimenti() {return movimenti;}
-    public Vector<Notifiche> getNotifiche() {return notifiche;}
+    public Vector<Notifiche> getNotifiche() {
+        this.setLette();
+        return notifiche;
+    }
+    public int getUnreadNotify() {
+        int result= 0;
+        for(Notifiche nt: this.notifiche) {
+            if(!nt.isLetta())
+                result+=1;
+        }
+        return result;
+    }
 
     public void setNumCC(String numCC) {
         this.numCC = numCC;
@@ -67,6 +79,12 @@ public class ContoCorrente {
     public void setIndFatturazione(Indirizzo indFatturazione) {this.indFatturazione = indFatturazione;}
     public void setIntestatario(Utente intestatario) {this.intestatario = intestatario;}
     public void setDataApertura(String dataApertura) {this.dataApertura = Date.valueOf(dataApertura);}
+    public void setLette() {
+        for (Notifiche nt: this.notifiche) {
+            nt.letta();
+            MagnusDAO.getInstance().getNotificheDAO().saveOrUpdate(nt,numCC);
+        }
+    }
 
     public void addTransazione(Transazione trans) {movimenti.add(trans);}
     public void removeTransazione(Transazione trans) {movimenti.remove(trans);}

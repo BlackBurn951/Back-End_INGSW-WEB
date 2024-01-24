@@ -8,13 +8,13 @@ public class PresetNotifiche {
 
     //Notifiche carte
     public static String NOTIFICA_CREAZIONE_CARTA_PT_I="Creata carta di ";
-    public static String NOTIFICA_CREAZIONE_CARTA_PT_II="in data: ";
+    public static String NOTIFICA_CREAZIONE_CARTA_PT_II=" in data: ";
     public static String NOTIFICA_ATTIVAZIONE_CARTA_PT_I="Carta di ";
-    public static String NOTIFICA_ATTIVAZIONE_CARTA_PT_II="attiva in data: ";
+    public static String NOTIFICA_ATTIVAZIONE_CARTA_PT_II=" attiva in data: ";
     public static String NOTIFICA_SOSPENSIONE_CARTA_PT_I="Carta di ";
-    public static String NOTIFICA_SOSPENSIONE_CARTA_PT_II="sospesa in data: ";
+    public static String NOTIFICA_SOSPENSIONE_CARTA_PT_II=" sospesa in data: ";
     public static String NOTIFICA_CANCELLAZIONE_CARTA_PT_I="Carta di ";
-    public static String NOTIFICA_CANCELLAZIONE_CARTA_PT_II="eliminata in data";
+    public static String NOTIFICA_CANCELLAZIONE_CARTA_PT_II=" eliminata in data";
 
     //Notifiche conto
     public static String NOTIFICA_ATTIVAZIONE_CONTO="Conto attivato";

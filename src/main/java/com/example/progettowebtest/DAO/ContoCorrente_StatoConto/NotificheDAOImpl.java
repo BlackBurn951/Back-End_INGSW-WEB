@@ -27,10 +27,10 @@ public class NotificheDAOImpl implements NotificheDAO{
 
             ResultSet queryResult= statement.executeQuery();
             while(queryResult.next()) {
+                System.out.println("Notifica presa per il conto: "+queryResult.getString("notifica"));
                 not=new Notifiche(queryResult.getString("notifica"), queryResult.getBoolean("letta"));
                 not.setId(queryResult.getInt("id_notifiche"));
                 result.add(not);
-
             }
         }catch (SQLException e) {
             e.printStackTrace();
@@ -47,7 +47,7 @@ public class NotificheDAOImpl implements NotificheDAO{
 
             ResultSet queryResult= statement.executeQuery();
             if(queryResult.next())
-                return queryResult.getInt("id_notifiche");
+                return queryResult.getInt("id");
         }catch (SQLException e) {
             e.printStackTrace();
         }
@@ -89,12 +89,12 @@ public class NotificheDAOImpl implements NotificheDAO{
 
             if(not.getId()>-1) {
                 statement.setInt(1, not.getId());
-                statement.setString(2, not.getNotifica());
+                statement.setString(2, not.getTesto());
                 statement.setBoolean(3, not.isLetta());
                 statement.setString(4, numCC);
             }
             else {
-                statement.setString(1, not.getNotifica());
+                statement.setString(1, not.getTesto());
                 statement.setBoolean(2, not.isLetta());
                 statement.setString(3, numCC);
             }
