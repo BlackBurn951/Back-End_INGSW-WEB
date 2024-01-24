@@ -2,7 +2,7 @@ package com.example.progettowebtest.Model.ContoCorrente;
 
 
 public class Notifiche {
-    private int id;
+    private int id=-1;
     private String notifica;
     private boolean letta;
 
@@ -15,7 +15,7 @@ public class Notifiche {
         return id;
     }
 
-    public String getNotifica() {
+    public String getTesto() {
         return notifica;
     }
 
@@ -26,4 +26,5 @@ public class Notifiche {
     public void setId(int id) {
         this.id = id;
     }
+    public void letta() {this.letta= true;}
 }

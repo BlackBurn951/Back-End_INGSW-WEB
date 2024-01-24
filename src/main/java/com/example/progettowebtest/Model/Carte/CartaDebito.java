@@ -10,7 +10,7 @@ public class CartaDebito extends Carta implements Carte{
     }
 
     @Override
-    public Double getFido() {return -1.0;}
+    public Double getFido() {return 3000.0;}
 
     @Override
     public void setFido(double fido) {

@@ -106,18 +106,16 @@ public class BonificoInterDAOImpl implements BonificoInterDAO{
             statement.setString(6, bonInt.getValutaPagamento());
             statement.setString(7, bonInt.getPaeseDestinatario());
 
-            int i = statement.executeUpdate();
-            if(i >0){
-                int id= retriveLastId();
-                if(id!=0)
-                    bonInt.setId(id);
-                else
-                    return false;
-                if(inserisciRelazione(bonInt, numCC))
-                    return true;
-                else
-                    return false;
 
+
+            if(statement.executeUpdate()>0) {
+                int id= retriveLastId();
+                if(id!=0) {
+                    bonInt.setId(id);
+                    return inserisciRelazione(bonInt, numCC);
+                }
+                else
+                    return false;
             }
 
         }catch (SQLException e) {

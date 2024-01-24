@@ -10,6 +10,7 @@ import com.example.progettowebtest.DAO.StatoDAOImpl;
 import com.example.progettowebtest.DAO.Utente_Documenti.UtenteDAO;
 import com.example.progettowebtest.DAO.Utente_Documenti.UtenteDAOImpl;
 import com.example.progettowebtest.Model.ContoCorrente.ContoCorrente;
+import com.example.progettowebtest.Model.ContoCorrente.Notifiche;
 import com.example.progettowebtest.Model.ContoCorrente.RelStatoConto;
 import com.example.progettowebtest.Model.Indirizzo.Indirizzo;
 import com.example.progettowebtest.Model.Proxy.Transazione;
@@ -89,6 +90,15 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO{
                     for(Transazione trans: prelievo)
                         result.addTransazione(trans);
                 }
+
+                Vector<Notifiche> not= MagnusDAO.getInstance().getNotificheDAO().doRetriveAllForCC(result.getNumCC());
+                if(!not.isEmpty()) {
+                    System.out.println("Notifiche presenti!!");
+                    for(Notifiche no: not) {
+                        result.addNotifica(no);
+                        System.out.println("Notifica inserita: "+no.getTesto());
+                    }
+                }
             }
 
         }catch (SQLException e) {
@@ -147,6 +157,15 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO{
                 if(!prelievo.isEmpty()) {
                     for(Transazione trans: prelievo)
                         result.addTransazione(trans);
+                }
+
+                Vector<Notifiche> not= MagnusDAO.getInstance().getNotificheDAO().doRetriveAllForCC(result.getNumCC());
+                if(!not.isEmpty()) {
+                    System.out.println("Notifiche presenti!!");
+                    for(Notifiche no: not) {
+                        result.addNotifica(no);
+                        System.out.println("Notifica inserita: "+no.getTesto());
+                    }
                 }
             }
 
