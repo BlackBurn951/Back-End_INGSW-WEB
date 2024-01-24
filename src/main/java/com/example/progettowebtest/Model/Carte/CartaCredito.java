@@ -18,6 +18,11 @@ public class CartaCredito extends Carta implements Carte{
     }
 
     @Override
+    public void setFido(double fido) {
+        this.fido= fido;
+    }
+
+    @Override
     public TipiCarte getTipoCarta() {
         return TipiCarte.CREDITO;
     }
