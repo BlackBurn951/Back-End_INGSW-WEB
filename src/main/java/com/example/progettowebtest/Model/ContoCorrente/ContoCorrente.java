@@ -20,6 +20,7 @@ public class ContoCorrente {
     private Indirizzo indFatturazione;
     private Utente intestatario;
     private Vector<Transazione> movimenti;
+    private Vector<Notifiche> notifiche;
 
     public ContoCorrente(String numCC, String iban, String pin, String dataApertura, double saldo,
                          int tassoInteresse, int tariffaAnnuale, Indirizzo indFatturazione, Utente intestatario) {
@@ -33,9 +34,11 @@ public class ContoCorrente {
         this.indFatturazione = indFatturazione;
         this.intestatario = intestatario;
         this.movimenti= new Vector<>();
+        this.notifiche= new Vector<>();
     }
     public ContoCorrente() {
         this.movimenti= new Vector<>();
+        this.notifiche= new Vector<>();
     }
 
     public String getNumCC() {return numCC;}
@@ -49,6 +52,7 @@ public class ContoCorrente {
     public Indirizzo getIndFatturazione() {return indFatturazione;}
     public Utente getIntestatario() {return intestatario;}
     public Vector<Transazione> getMovimenti() {return movimenti;}
+    public Vector<Notifiche> getNotifiche() {return notifiche;}
 
     public void setNumCC(String numCC) {
         this.numCC = numCC;
@@ -66,5 +70,8 @@ public class ContoCorrente {
 
     public void addTransazione(Transazione trans) {movimenti.add(trans);}
     public void removeTransazione(Transazione trans) {movimenti.remove(trans);}
+
+    public void addNotifica(Notifiche not) {notifiche.add(not);}
+    public void removeNotifica(Notifiche not) {notifiche.remove(not);}
 
 }

@@ -26,6 +26,14 @@ public class CarteDAOImpl implements CarteDAO{
     }
 
     @Override
+    public Vector<Carte> doRetriveAllCreditForCC(String numCC) {
+        Vector<Carte> result= new Vector<>();
+
+        prendiCarteCredito(result, numCC);
+        return result;
+    }
+
+    @Override
     public Carte doRetriveByKey(String numCarta, TipiCarte tipo, boolean proxy) {
         Carte carta= null;
         String query= "";

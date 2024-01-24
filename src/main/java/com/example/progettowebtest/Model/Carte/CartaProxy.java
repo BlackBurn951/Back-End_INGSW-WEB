@@ -83,6 +83,11 @@ public class CartaProxy implements Carte{
     }
 
     @Override
+    public void setFido(double fido) {
+        this.fido= fido;
+    }
+
+    @Override
     public TipiCarte getTipoCarta() {
         return tipo;
     }
