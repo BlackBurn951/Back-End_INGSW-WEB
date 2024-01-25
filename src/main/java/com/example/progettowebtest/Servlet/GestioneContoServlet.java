@@ -1,11 +1,9 @@
 package com.example.progettowebtest.Servlet;
 
 import com.example.progettowebtest.ClassiRequest.CambioEmail;
-import com.example.progettowebtest.ClassiRequest.CambioPassword;
 import com.example.progettowebtest.ClassiRequest.IdentificativiUtente;
 import com.example.progettowebtest.DAO.MagnusDAO;
 import com.example.progettowebtest.Model.Carte.Carte;
-import com.example.progettowebtest.Model.Carte.RelStatoCarta;
 import com.example.progettowebtest.Model.Carte.TipiCarte;
 import com.example.progettowebtest.Model.ContoCorrente.ContoCorrente;
 import com.example.progettowebtest.Model.ContoCorrente.Notifiche;
@@ -36,8 +34,7 @@ public class GestioneContoServlet {
 
         if(contr==null) {
             ut.setEmail(dati.getEmail());
-            if(MagnusDAO.getInstance().getUtenteDAO().saveOrUpdate(ut))
-                return true;
+            return MagnusDAO.getInstance().getUtenteDAO().saveOrUpdate(ut);
         }
         return false;
     }

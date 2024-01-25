@@ -76,7 +76,7 @@ public class NotificheDAOImpl implements NotificheDAO{
 
     @Override
     public boolean saveOrUpdate(Notifiche not, String numCC) {
-        String query= "";
+        String query;
 
         if(not.getId()>-1)
             query="insert into notifiche(id_notifiche, notifica, letta, num_cc) values (?,?,?,?)" +

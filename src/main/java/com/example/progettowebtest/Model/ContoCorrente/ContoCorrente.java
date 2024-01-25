@@ -89,7 +89,8 @@ public class ContoCorrente {
     }
 
     public void addTransazione(Transazione trans) {movimenti.add(trans);}
-    public void removeTransazione(Transazione trans) {movimenti.remove(trans);}
+
+    //public void removeTransazione(Transazione trans) {movimenti.remove(trans);}
 
     public void addNotifica(Notifiche not) {notifiche.add(not);}
     public void removeNotifica(int id) {
