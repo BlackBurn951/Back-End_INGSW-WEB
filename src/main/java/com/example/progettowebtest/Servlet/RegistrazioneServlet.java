@@ -64,25 +64,20 @@ public class RegistrazioneServlet extends HttpServlet {
     public String checkOTP(HttpServletRequest request, @RequestParam("otpSend") String otpSend, @RequestParam("IDSession") String idSess) {
         String response;
 
-        System.out.println("Id sessione inviato: "+ idSess);
         HttpSession session= (HttpSession) request.getServletContext().getAttribute(idSess);
-        System.out.println("id sessione presa dal context: "+ session.getId());
         long minutiAttuali= TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis());
 
         if(session!=null && ((minutiAttuali - (long) session.getAttribute("TempoInvioOTP")) <= 10)) {
             if(session.getAttribute("control").equals(otpSend)) {
                 response = "OTP corretto";
-                System.out.println(response);
             }
             else {
                 response = "OTP errato";
-                System.out.println(response);
             }
         }
         else if(session!=null && ((minutiAttuali - (long) session.getAttribute("TempoInvioOTP")) > 10))
             response= "Sessione scaduta";
         else {
-            System.out.println("Server: sessione non trovata!!!");
             response= "Sessione non esistente!!!";
         }
 
@@ -130,7 +125,6 @@ public class RegistrazioneServlet extends HttpServlet {
                 return false;
 
             ut.addAddress(res);
-            System.out.println("citta dom: "+dati.getCittaDom());
             if(!dati.getCittaDom().isEmpty()) {
                 tipo= MagnusDAO.getInstance().getTipoViaDAO().doRetriveByAttribute(dati.getTipoStradaDom());
                 queryDatiComune= MagnusDAO.getInstance().getDatiComuneDAO().doRetriveByAttribute(dati.getCittaDom(), ColonneDatiComune.NOME_COMUNE);

@@ -27,7 +27,6 @@ public class NotificheDAOImpl implements NotificheDAO{
 
             ResultSet queryResult= statement.executeQuery();
             while(queryResult.next()) {
-                System.out.println("Notifica presa per il conto: "+queryResult.getString("notifica"));
                 not=new Notifiche(queryResult.getString("notifica"), queryResult.getBoolean("letta"));
                 not.setId(queryResult.getInt("id_notifiche"));
                 result.add(not);

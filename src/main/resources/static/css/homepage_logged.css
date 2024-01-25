@@ -199,12 +199,7 @@ body {
     scrollbar-color: #3498db #f2f2f2;
 }
 
-@media screen and (min-width: 1600px) {
-    .bloccoTransazioni {
-        margin-top: -5%;
-        width: 90%;
-    }
-}
+
 
 .containerDatiTransazioni::-webkit-scrollbar {
     width: 12px;
@@ -220,6 +215,13 @@ body {
 }
 
 
+
+@media screen and (min-width: 1600px) {
+    .bloccoTransazioni {
+        margin-top: -5%;
+        width: 90%;
+    }
+}
 
 .scrollable-list {
     margin-top: -20%;
@@ -256,7 +258,6 @@ button:hover {
     gap:5vh;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-/*-----------------*/
 
 
 
@@ -342,26 +343,52 @@ th {
 }
 
 .notificheMenu {
+    opacity: 0; /* Parti con l'opacità a 0 */
+    visibility: hidden; /* Nascondi il contenuto */
+    transition: opacity 0.3s ease, visibility 0s linear 0.3s; /* Transizione per opacità */
+    position: absolute;
     border: 2px solid #08090B;
     border-radius: 1vh;
     white-space: nowrap;
-    display: none;
-    position: absolute;
     background: rgb(217, 217, 217);
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
     height: auto;
-    width: 600%;
+    width: 750%;
     z-index: 1;
     left: 0;
+    scrollbar-width: thin;
+    scrollbar-color: #3498db #f2f2f2;
+    max-height: 300%;
+    overflow: auto;
+}
+
+
+
+.notificheMenu::-webkit-scrollbar {
+    width: 12px;
+}
+
+.notificheMenu::-webkit-scrollbar-thumb {
+    background-color: #3498db;
+    border-radius: 6px;
+}
+
+.notificheMenu::-webkit-scrollbar-track {
+    background-color: #f2f2f2;
+}
+
+#noticheLI{
+    margin-top: 1vh;
 }
 
 .notificheMenu li {
-    margin-top: 1vh;
-    font-size: 15px;
+    font-weight: bold;
+    font-size: 17px;
+    border-radius: 1vh;
     background-color: white;
     border-top: 1px solid black;
     border-bottom: 1px solid black;
-    line-height: 150%;
+    line-height: 200%;
     align-items: center;
 }
 
@@ -369,9 +396,9 @@ th {
 
 
 .notificheMenu.show {
-    white-space: nowrap;
-    display: flex;
-    flex-direction: column;
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
 }
 
 .eliminaNotifica{

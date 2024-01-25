@@ -89,10 +89,8 @@ public class PagamentiServlet {
 
         MagnusDAO.getInstance().getBollettinoDAO().saveOrUpdate(bol, cc.getNumCC());
 
-        System.out.println("Id dell'ultimo bollettino inserito: "+MagnusDAO.getInstance().getBollettinoDAO().retriveLastId());
         Transazione proxy= MagnusDAO.getInstance().getBollettinoDAO().doRetriveByKey(MagnusDAO.getInstance().getBollettinoDAO().retriveLastId(), false);
         if(proxy!=null) {
-            System.out.println("Causale bollettino appena aggiunto: "+proxy.getCausale());
             cc.addTransazione(proxy);
         }
         return result;
@@ -113,7 +111,9 @@ public class PagamentiServlet {
                 Notifiche not= new Notifiche(PresetNotifiche.NOTIFICA_BONIFICOSEPA+LocalDate.now(), false);
                 MagnusDAO.getInstance().getNotificheDAO().saveOrUpdate(not, cc.getNumCC());
                 cc.addNotifica(not);
-                result = true;
+                result = 0;
+                esito= true;
+
             }
         }else if(carteCredito!=null) {
             for(Carte cr: carteCredito) {
@@ -133,13 +133,12 @@ public class PagamentiServlet {
             result= false;
 
 
-        BonificoSepa sepa= new BonificoSepa(LocalDate.now().toString(), 1.0, result, dati.getNomeBeneficiario(), dati.getCognomeBeneficiario(), dati.getImportoSepa(), dati.getCausaleSepa(), dati.getIbanDestinatarioSepa());
+        BonificoSepa sepa= new BonificoSepa(LocalDate.now().toString(), 1.0, esito, dati.getNomeBeneficiario(), dati.getCognomeBeneficiario(), dati.getImportoSepa(), dati.getCausaleSepa(), dati.getIbanDestinatarioSepa());
 
         MagnusDAO.getInstance().getBonificoSepaDAO().saveOrUpdate(sepa, cc.getNumCC());
 
         Transazione proxy= MagnusDAO.getInstance().getBonificoSepaDAO().doRetriveByKey(MagnusDAO.getInstance().getBonificoSepaDAO().retriveLastId(), false);
         if(proxy!=null) {
-            System.out.println("Causale bonifico sepa appena aggiunto: "+proxy.getCausale());
             cc.addTransazione(proxy);
         }
 
@@ -161,7 +160,8 @@ public class PagamentiServlet {
                 Notifiche not= new Notifiche(PresetNotifiche.NOTIFICA_BONIFICOINTER+LocalDate.now(), false);
                 MagnusDAO.getInstance().getNotificheDAO().saveOrUpdate(not, cc.getNumCC());
                 cc.addNotifica(not);
-                result = true;
+                result = 0;
+                esito= true;
             }
         }else if(carteCredito!=null) {
             for(Carte cr: carteCredito) {
@@ -171,22 +171,29 @@ public class PagamentiServlet {
                         Notifiche not= new Notifiche(PresetNotifiche.NOTIFICA_BONIFICOINTER+LocalDate.now(), false);
                         MagnusDAO.getInstance().getNotificheDAO().saveOrUpdate(not, cc.getNumCC());
                         cc.addNotifica(not);
-                        result = true;
+                        result = 1;
+                        esito= true;
                     }
                     break;
                 }
             }
+            if(!esito) {
+                Notifiche not= new Notifiche(PresetNotifiche.NOTIFICA_TRANSNEGATA+LocalDate.now(), false);
+                MagnusDAO.getInstance().getNotificheDAO().saveOrUpdate(not, cc.getNumCC());
+                cc.addNotifica(not);
+            }
+        }else {
+            Notifiche not= new Notifiche(PresetNotifiche.NOTIFICA_TRANSNEGATA+LocalDate.now(), false);
+            MagnusDAO.getInstance().getNotificheDAO().saveOrUpdate(not, cc.getNumCC());
+            cc.addNotifica(not);
         }
-        else
-            result= false;
 
-        BonificoInter inter = new BonificoInter(LocalDate.now().toString(), 1.0, result, dati.getNomeBeneficiarioI(), dati.getCognomeBeneficiarioI(), dati.getImportoI(), dati.getCausaleI(), dati.getIbanDestinatarioI(), dati.getValuta(), dati.getPaeseDest());
+        BonificoInter inter = new BonificoInter(LocalDate.now().toString(), 1.0, esito, dati.getNomeBeneficiarioI(), dati.getCognomeBeneficiarioI(), dati.getImportoI(), dati.getCausaleI(), dati.getIbanDestinatarioI(), dati.getValuta(), dati.getPaeseDest());
 
         MagnusDAO.getInstance().getBonificoInterDAO().saveOrUpdate(inter, cc.getNumCC());
 
         Transazione proxy= MagnusDAO.getInstance().getBonificoInterDAO().doRetriveByKey(MagnusDAO.getInstance().getBonificoInterDAO().retriveLastId(), false);
         if(proxy!=null) {
-            System.out.println("Causale bonifico internazionale appena aggiunto: "+proxy.getCausale());
             cc.addTransazione(proxy);
         }
         return result;

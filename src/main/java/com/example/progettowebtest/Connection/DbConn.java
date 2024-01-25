@@ -7,13 +7,16 @@ import java.sql.SQLException;
 public class DbConn {
 
     private static DataSource dataSource;
+    private static Connection connection;
+
 
     public static Connection getConnection() throws SQLException {
-        if (dataSource == null) {
-            throw new IllegalStateException("DataSource non configurato correttamente");
+        if(connection == null){
+            connection = dataSource.getConnection();
         }
-        return dataSource.getConnection();
+        return connection;
     }
+
 
     public static void setDataSource(DataSource dataSource) {
         DbConn.dataSource = dataSource;

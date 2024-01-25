@@ -83,6 +83,7 @@ public class CarteDAOImpl implements CarteDAO{
         }catch (SQLException e) {
             e.printStackTrace();
         }
+
         return carta;
     }
 

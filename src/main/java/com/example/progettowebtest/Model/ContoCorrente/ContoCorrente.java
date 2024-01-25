@@ -57,6 +57,8 @@ public class ContoCorrente {
         this.setLette();
         return notifiche;
     }
+
+
     public int getUnreadNotify() {
         int result= 0;
         for(Notifiche nt: this.notifiche) {

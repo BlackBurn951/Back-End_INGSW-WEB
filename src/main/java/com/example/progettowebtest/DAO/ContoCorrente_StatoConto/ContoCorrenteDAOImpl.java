@@ -91,14 +91,13 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO{
                         result.addTransazione(trans);
                 }
 
+
                 Vector<Notifiche> not= MagnusDAO.getInstance().getNotificheDAO().doRetriveAllForCC(result.getNumCC());
-                if(!not.isEmpty()) {
-                    System.out.println("Notifiche presenti!!");
-                    for(Notifiche no: not) {
-                        result.addNotifica(no);
-                        System.out.println("Notifica inserita: "+no.getTesto());
-                    }
+                for (Notifiche no : not) {
+                    result.addNotifica(no);
                 }
+
+
             }
 
         }catch (SQLException e) {
@@ -159,14 +158,12 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO{
                         result.addTransazione(trans);
                 }
 
+
                 Vector<Notifiche> not= MagnusDAO.getInstance().getNotificheDAO().doRetriveAllForCC(result.getNumCC());
-                if(!not.isEmpty()) {
-                    System.out.println("Notifiche presenti!!");
-                    for(Notifiche no: not) {
-                        result.addNotifica(no);
-                        System.out.println("Notifica inserita: "+no.getTesto());
-                    }
+                for (Notifiche no : not) {
+                    result.addNotifica(no);
                 }
+
             }
 
         }catch (SQLException e) {
@@ -225,7 +222,6 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO{
                 statement.setInt(12, contoCorr.getIndFatturazione().getTipologiaVia().getIdVia());
             }
             int i= statement.executeUpdate();
-            System.out.println(i);
             if(i>0) {
 
                 if (fristTime) {

@@ -23,10 +23,13 @@
                 <img class="notificaImage" src="/images/notification.png" alt="" onclick="toggleNotifiche()">
                 <span th:if="${conto.getUnreadNotify() > 0}" class="badge" th:text="${conto.getUnreadNotify()}" onclick="toggleNotifiche()"></span>
                 <ul class="notificheMenu" >
-                    <li th:each="i : ${#numbers.sequence(conto.getNotifiche().size() - 1, 0, -1)}"  th:with="n=${conto.getNotifiche()[i]}">
-                        <span th:text="${n.getTesto()}"></span>
-                        <span class="eliminaNotifica" onclick="eliminaNotifica()">X</span>
-                    </li>
+                    <div id="noticheLI">
+                        <li th:each="i : ${#numbers.sequence(conto.getNotifiche().size() - 1, 0, -1)}"  th:with="n=${conto.getNotifiche()[i]}">
+                            <span th:text="${n.getTesto()}"></span>
+                            <span class="eliminaNotifica" th:attr="data-notifica-id=${n.getId()}" onclick="eliminaNotifica(this)">X</span>
+
+                        </li>
+                    </div>
                 </ul>
 
             </div>
@@ -67,12 +70,12 @@
                       </tr>
                   </thead>
                   <tbody>
-                      <tr class="item" th:each="item, iterStat : ${conto.getMovimenti()}">
+                  <tr class="item" th:each="i : ${#numbers.sequence(conto.getMovimenti().size() - 1, 0, -1)}"  th:with="item=${conto.getMovimenti()[i]}">
                           <td th:text="${item.getDataTransazione()}"></td>
                           <td th:text="${item.getImporto()} + ' €'"></td>
                           <td th:text="${item.getCausale()}"></td>
                           <td th:if="${item.getEsito()}" th:text="Eseguita" style="color: green;"></td>
-                          <td th:unless="${item.getEsito()}" th:text="Rifiutata" style="color: red;"></td>
+                          <td th:unless="${item.getEsito()}" th:text="Rifiutata" style="color: darkred;"></td>
 
                           <td><button th:attr="data-transaction-id=${item.getId()}, data-transaction-tipo=${item.getTipoTrans()}" onclick="openPopup(this)">+</button></td>
 

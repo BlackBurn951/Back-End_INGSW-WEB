@@ -160,7 +160,6 @@ public class BollettinoDAOImpl implements BollettinoDAO{
             statement.setString(5, numCC);
 
             if(statement.executeUpdate()>0) {
-                System.out.println("Relazione inserita");
                 return true;
             }
 

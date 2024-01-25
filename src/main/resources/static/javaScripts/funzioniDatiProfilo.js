@@ -118,7 +118,6 @@ function cambiaEmailPass(stringa) {
 function validateEmail() {
     var errorMessage = document.getElementById('errorEmailMessage');
     var emailInput = document.getElementById("nuovaEmail").value;
-    console.log("Valore dell'email:", emailInput);
 
     var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 

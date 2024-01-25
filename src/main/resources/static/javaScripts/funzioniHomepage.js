@@ -40,8 +40,6 @@ function openPopup(button) {
 
     url = `/visualizzaTrans?IDSession=${idSession}&idTrans=${transactionId}&tipoTrans=${transactionTipo}`;
 
-    var popupContent = document.querySelector('.contenutoPopup');
-
     fetch(url)
         .then(response => {
             if (!response.ok) {
@@ -184,8 +182,28 @@ function toggleNotifiche() {
 
 
 function eliminaNotifica(element) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const idSession = urlParams.get("IDSession");
+    var idNotifica = element.getAttribute('data-notifica-id');
 
+    url = `/eliminaNotifica?IDSession=${idSession}&idNotifica=${idNotifica}`;
+
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Errore durante l\'eliminazione della notifica');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data === true) {
+                element.parentNode.remove();
+            } else {
+            }
+        })
+        .catch(error => console.error(error));
 }
+
 
 
 
