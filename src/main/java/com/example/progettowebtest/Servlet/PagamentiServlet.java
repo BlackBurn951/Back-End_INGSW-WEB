@@ -50,8 +50,9 @@ public class PagamentiServlet {
 
     //FARE CALCOLO DEL FIDO
     @PostMapping("/doBollettino")
-    public boolean doBollettino(HttpServletRequest request, @RequestParam("IDSession") String idSess, @RequestBody DatiBollettino dati) {
-        boolean result= false;
+    public int doBollettino(HttpServletRequest request, @RequestParam("IDSession") String idSess, @RequestBody DatiBollettino dati) {
+        int result= 2;  //0 trans comn il conto, 1 soldi dalla carta, 2 trans negata
+        boolean esito= false;
 
         HttpSession session= (HttpSession) request.getServletContext().getAttribute(idSess);
         ContoCorrente cc= (ContoCorrente) session.getAttribute("Conto");
@@ -64,28 +65,37 @@ public class PagamentiServlet {
                 Notifiche not= new Notifiche(PresetNotifiche.NOTIFICA_BOLLETTINO+LocalDate.now(), false);
                 MagnusDAO.getInstance().getNotificheDAO().saveOrUpdate(not, cc.getNumCC());
                 cc.addNotifica(not);
-                result = true;
+                result = 0;
+                esito= true;
             }
         }
         else if(carteCredito!=null) {
             for(Carte cr: carteCredito) {
-                if(cr.getFido()>=(dati.getImporto()+1.0)) {
+                if(cr.getFido()>=(dati.getImporto()+1.0) && cr.getStatoCarta().getValoreStato().equals("attivo")) {
                     cr.setFido(cr.getFido()-(dati.getImporto()+1.0));
                     if(MagnusDAO.getInstance().getCarteDAO().saveOrUpdate(cr, TipiCarte.CREDITO)) {
                         Notifiche not= new Notifiche(PresetNotifiche.NOTIFICA_BOLLETTINO+LocalDate.now(), false);
                         MagnusDAO.getInstance().getNotificheDAO().saveOrUpdate(not, cc.getNumCC());
                         cc.addNotifica(not);
-                        result = true;
+                        result = 1;
+                        esito= true;
                     }
                     break;
                 }
             }
+            if(!esito) {
+                Notifiche not= new Notifiche(PresetNotifiche.NOTIFICA_TRANSNEGATA+LocalDate.now(), false);
+                MagnusDAO.getInstance().getNotificheDAO().saveOrUpdate(not, cc.getNumCC());
+                cc.addNotifica(not);
+            }
+        }else {
+            Notifiche not= new Notifiche(PresetNotifiche.NOTIFICA_TRANSNEGATA+LocalDate.now(), false);
+            MagnusDAO.getInstance().getNotificheDAO().saveOrUpdate(not, cc.getNumCC());
+            cc.addNotifica(not);
         }
-        else
-            result= false;
 
         TipologiaBollettino tipo= MagnusDAO.getInstance().getTipologiaBollettinoDAO().doRetriveByAttribute(dati.getTipologiaBollettino());
-        Bollettino bol= new Bollettino(LocalDate.now().toString(), 1.0, result, dati.getImporto(), dati.getCausale(), cc.getNumCC(), tipo);
+        Bollettino bol= new Bollettino(LocalDate.now().toString(), 1.0, esito, dati.getImporto(), dati.getCausale(), cc.getNumCC(), tipo);
 
         MagnusDAO.getInstance().getBollettinoDAO().saveOrUpdate(bol, cc.getNumCC());
 
@@ -97,8 +107,9 @@ public class PagamentiServlet {
     }
 
     @PostMapping("/doBonificoSepa")
-    public boolean doBonificoSepa(HttpServletRequest request, @RequestParam("IDSession") String idSess, @RequestBody DatiBonificoSepa dati) {
-        boolean result= false;
+    public int doBonificoSepa(HttpServletRequest request, @RequestParam("IDSession") String idSess, @RequestBody DatiBonificoSepa dati) {
+        int result = 2;
+        boolean esito= false;
 
         HttpSession session= (HttpSession) request.getServletContext().getAttribute(idSess);
         ContoCorrente cc= (ContoCorrente) session.getAttribute("Conto");
@@ -117,20 +128,29 @@ public class PagamentiServlet {
             }
         }else if(carteCredito!=null) {
             for(Carte cr: carteCredito) {
-                if(cr.getFido()>=(dati.getImportoSepa()+1.0)) {
+                if(cr.getFido()>=(dati.getImportoSepa()+1.0) && cr.getStatoCarta().getValoreStato().equals("attivo")) {
                     cr.setFido(cr.getFido()-(dati.getImportoSepa()+1.0));
                     if(MagnusDAO.getInstance().getCarteDAO().saveOrUpdate(cr, TipiCarte.CREDITO)) {
                         Notifiche not= new Notifiche(PresetNotifiche.NOTIFICA_BONIFICOSEPA+LocalDate.now(), false);
                         MagnusDAO.getInstance().getNotificheDAO().saveOrUpdate(not, cc.getNumCC());
                         cc.addNotifica(not);
-                        result = true;
+                        result = 1;
+                        esito= true;
+
                     }
                     break;
                 }
             }
+            if(!esito) {
+                Notifiche not= new Notifiche(PresetNotifiche.NOTIFICA_TRANSNEGATA+LocalDate.now(), false);
+                MagnusDAO.getInstance().getNotificheDAO().saveOrUpdate(not, cc.getNumCC());
+                cc.addNotifica(not);
+            }
+        }else {
+            Notifiche not= new Notifiche(PresetNotifiche.NOTIFICA_TRANSNEGATA+LocalDate.now(), false);
+            MagnusDAO.getInstance().getNotificheDAO().saveOrUpdate(not, cc.getNumCC());
+            cc.addNotifica(not);
         }
-        else
-            result= false;
 
 
         BonificoSepa sepa= new BonificoSepa(LocalDate.now().toString(), 1.0, esito, dati.getNomeBeneficiario(), dati.getCognomeBeneficiario(), dati.getImportoSepa(), dati.getCausaleSepa(), dati.getIbanDestinatarioSepa());
@@ -146,8 +166,9 @@ public class PagamentiServlet {
     }
 
     @PostMapping("/doBonificoInt")
-    public boolean doBonificoInt(HttpServletRequest request, @RequestParam("IDSession") String idSess, @RequestBody DatiBonificoInter dati) {
-        boolean result = false;
+    public int doBonificoInt(HttpServletRequest request, @RequestParam("IDSession") String idSess, @RequestBody DatiBonificoInter dati) {
+        int result = 2;
+        boolean esito= false;
 
         HttpSession session= (HttpSession) request.getServletContext().getAttribute(idSess);
         ContoCorrente cc= (ContoCorrente) session.getAttribute("Conto");
@@ -165,7 +186,7 @@ public class PagamentiServlet {
             }
         }else if(carteCredito!=null) {
             for(Carte cr: carteCredito) {
-                if(cr.getFido()>=(dati.getImportoI()+1.0)) {
+                if(cr.getFido()>=(dati.getImportoI()+1.0) && cr.getStatoCarta().getValoreStato().equals("attivo")) {
                     cr.setFido(cr.getFido()-(dati.getImportoI()+1.0));
                     if(MagnusDAO.getInstance().getCarteDAO().saveOrUpdate(cr, TipiCarte.CREDITO)) {
                         Notifiche not= new Notifiche(PresetNotifiche.NOTIFICA_BONIFICOINTER+LocalDate.now(), false);

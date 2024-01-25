@@ -99,7 +99,7 @@ public class NotificheDAOImpl implements NotificheDAO{
             }
 
             if(statement.executeUpdate()>0) {
-                if(not.getId()>-1)
+                if(not.getId()==-1)
                     not.setId(retriveLastId());
                 return true;
             }

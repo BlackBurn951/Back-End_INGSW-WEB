@@ -76,10 +76,10 @@ public class GestioneContoServlet {
             MagnusDAO.getInstance().getRelStatoContoDAO().saveOrUpdate(rel);
             if (statoConto.getValoreStato().equals("attivo")) {
                 statoConto= MagnusDAO.getInstance().getStatoDAO().doRetriveByAttribute(ValoriStato.SOSPESO);
-                not= new Notifiche(PresetNotifiche.NOTIFICA_SOSPENSIONE_CONTO, false);
+                not= new Notifiche(PresetNotifiche.NOTIFICA_SOSPENSIONE_CONTO+LocalDate.now(), false);
             }else{
                 statoConto= MagnusDAO.getInstance().getStatoDAO().doRetriveByAttribute(ValoriStato.ATTIVO);
-                not= new Notifiche(PresetNotifiche.NOTIFICA_ATTIVAZIONE_CONTO, false);
+                not= new Notifiche(PresetNotifiche.NOTIFICA_ATTIVAZIONE_CONTO+LocalDate.now(), false);
             }
             rel= new RelStatoConto(LocalDate.now().toString(), statoConto, cc);
 

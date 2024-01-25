@@ -1,20 +1,18 @@
 package com.example.progettowebtest.Servlet;
 
+import com.example.progettowebtest.DAO.MagnusDAO;
 import com.example.progettowebtest.Model.ContoCorrente.ContoCorrente;
 import com.example.progettowebtest.Model.Proxy.Transazione;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Vector;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-public class CaricaTransazioneServlet {
+public class FunzioniHomePageServlet {
 
     @GetMapping("/visualizzaTrans")
     public List<String> visualizzaTrans(HttpServletRequest request, @RequestParam("IDSession") String idSession, @RequestParam("idTrans") int id, @RequestParam("tipoTrans") String tipoTrans) {
@@ -63,5 +61,17 @@ public class CaricaTransazioneServlet {
         }
 
         return result;
+    }
+
+    @GetMapping("/eliminaNotifica")
+    public boolean eliminaNotifica(HttpServletRequest request, @RequestParam("IDSession") String idSession, @RequestParam("idNotifica") int id) {
+        HttpSession session= (HttpSession)request.getServletContext().getAttribute(idSession);
+        ContoCorrente cc= (ContoCorrente)session.getAttribute("Conto");
+
+        if(MagnusDAO.getInstance().getNotificheDAO().delete(id)) {
+            cc.removeNotifica(id);
+            return true;
+        }
+        return false;
     }
 }

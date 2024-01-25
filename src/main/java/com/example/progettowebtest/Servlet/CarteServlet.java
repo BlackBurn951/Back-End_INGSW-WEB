@@ -210,6 +210,23 @@ public class CarteServlet {
         return result;
     }
 
+    @GetMapping("/prendiNumeroCarte")
+    public int[] prendiNumeroCarte(HttpServletRequest request, @RequestParam("IDSession") String idSession) {
+        int[] numeroCarte= new int[2];
+
+        HttpSession session = (HttpSession) request.getServletContext().getAttribute(idSession);
+        ContoCorrente cc= (ContoCorrente)session.getAttribute("Conto");
+
+        Vector<Carte> carteCredito= MagnusDAO.getInstance().getCarteDAO().doRetriveAllCreditForCC(cc.getNumCC());
+        Vector<Carte> carteDebito= MagnusDAO.getInstance().getCarteDAO().doRetriveAllDebitForCC(cc.getNumCC());
+
+        if(carteCredito!=null)
+            numeroCarte[0]= carteCredito.size();
+        if(carteDebito!=null)
+            numeroCarte[1]= carteDebito.size();
+
+        return numeroCarte;
+    }
 
     private String generaNumeroCarta() {
         Random random = new Random();
