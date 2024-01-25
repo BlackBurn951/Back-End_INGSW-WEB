@@ -21,4 +21,6 @@ public class PresetNotifiche {
     //Notifiche conto
     public static String NOTIFICA_ATTIVAZIONE_CONTO="Conto attivato in data: ";
     public static String NOTIFICA_SOSPENSIONE_CONTO="Conto sospeso in data: ";
+    public static String NOTIFICA_CAMBIO_PASSWORD="Password modificata in data: ";
+    public static String NOTIFICA_CAMBIO_EMAIL="Email modificata in data: ";
 }

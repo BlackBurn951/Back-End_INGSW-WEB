@@ -96,7 +96,7 @@ public class CarteDAOImpl implements CarteDAO{
 
     @Override
     public boolean saveOrUpdate(Carte carta, TipiCarte tipo) {
-        String query= "";
+        String query;
 
         if(tipo==TipiCarte.CREDITO)
             query= "insert into carta_di_credito(num_carta_credito, stato_pagamento_online, data_creazione, data_scadenza, cvv, carta_fisica, canone_mensile, num_cc, pin, fido) " +

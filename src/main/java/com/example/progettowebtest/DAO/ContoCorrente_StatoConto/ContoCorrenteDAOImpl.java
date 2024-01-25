@@ -2,13 +2,7 @@ package com.example.progettowebtest.DAO.ContoCorrente_StatoConto;
 
 import com.example.progettowebtest.ClassiRequest.IdentificativiUtente;
 import com.example.progettowebtest.Connection.DbConn;
-import com.example.progettowebtest.DAO.Indirizzo.IndirizzoDAO;
-import com.example.progettowebtest.DAO.Indirizzo.IndirizzoDAOImpl;
 import com.example.progettowebtest.DAO.MagnusDAO;
-import com.example.progettowebtest.DAO.StatoDAO;
-import com.example.progettowebtest.DAO.StatoDAOImpl;
-import com.example.progettowebtest.DAO.Utente_Documenti.UtenteDAO;
-import com.example.progettowebtest.DAO.Utente_Documenti.UtenteDAOImpl;
 import com.example.progettowebtest.Model.ContoCorrente.ContoCorrente;
 import com.example.progettowebtest.Model.ContoCorrente.Notifiche;
 import com.example.progettowebtest.Model.ContoCorrente.RelStatoConto;
@@ -201,11 +195,6 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO{
                 statement.setDouble(5, 500.0);
                 statement.setInt(6, 3);
                 statement.setInt(7, 20);
-                statement.setString(8, contoCorr.getIndFatturazione().getNomeVia());
-                statement.setString(9, contoCorr.getIndFatturazione().getNumCivico());
-                statement.setString(10, contoCorr.getIntestatario().getCodiceFiscale());
-                statement.setInt(11, contoCorr.getIndFatturazione().getComune().getIdComune());
-                statement.setInt(12, contoCorr.getIndFatturazione().getTipologiaVia().getIdVia());
             }
             else {
                 statement.setString(1, contoCorr.getNumCC());
@@ -215,12 +204,13 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO{
                 statement.setDouble(5, contoCorr.getSaldo());
                 statement.setInt(6, contoCorr.getTassoInteresse());
                 statement.setInt(7, contoCorr.getTariffaAnnuale());
-                statement.setString(8, contoCorr.getIndFatturazione().getNomeVia());
-                statement.setString(9, contoCorr.getIndFatturazione().getNumCivico());
-                statement.setString(10, contoCorr.getIntestatario().getCodiceFiscale());
-                statement.setInt(11, contoCorr.getIndFatturazione().getComune().getIdComune());
-                statement.setInt(12, contoCorr.getIndFatturazione().getTipologiaVia().getIdVia());
             }
+            statement.setString(8, contoCorr.getIndFatturazione().getNomeVia());
+            statement.setString(9, contoCorr.getIndFatturazione().getNumCivico());
+            statement.setString(10, contoCorr.getIntestatario().getCodiceFiscale());
+            statement.setInt(11, contoCorr.getIndFatturazione().getComune().getIdComune());
+            statement.setInt(12, contoCorr.getIndFatturazione().getTipologiaVia().getIdVia());
+
             int i= statement.executeUpdate();
             if(i>0) {
 
@@ -279,7 +269,7 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO{
         int numOrAlpha;
         while(st.length()<12) {
             numOrAlpha= rng.nextInt(10);
-            if (numOrAlpha>=0 && numOrAlpha<4)
+            if (numOrAlpha<4)
                 st+=String.valueOf(rng.nextInt(10));
             else
                 st+=generateAlpha(rng.nextInt(21));

@@ -1,8 +1,5 @@
 package com.example.progettowebtest.DAO;
-
-import com.example.progettowebtest.Model.ContoCorrente.Salvadanaio;
 import com.example.progettowebtest.Model.Stato;
-import com.example.progettowebtest.Model.TabelleCorelateStato;
 import com.example.progettowebtest.Model.ValoriStato;
 
 import java.util.Vector;

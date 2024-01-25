@@ -2,10 +2,6 @@ package com.example.progettowebtest.DAO.ContoCorrente_StatoConto;
 
 import com.example.progettowebtest.Connection.DbConn;
 import com.example.progettowebtest.DAO.MagnusDAO;
-import com.example.progettowebtest.DAO.StatoDAO;
-import com.example.progettowebtest.DAO.StatoDAOImpl;
-import com.example.progettowebtest.Model.Carte.RelStatoCarta;
-import com.example.progettowebtest.Model.Carte.TipiCarte;
 import com.example.progettowebtest.Model.ContoCorrente.RelStatoConto;
 import com.example.progettowebtest.Model.Stato;
 
