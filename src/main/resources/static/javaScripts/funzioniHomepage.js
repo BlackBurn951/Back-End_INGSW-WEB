@@ -2,30 +2,27 @@ document.addEventListener("DOMContentLoaded", function() {
     modifyLinks();
 
     window.addEventListener('click', function(event) {
-        var centroNotifiche = document.querySelector('.centroNotifiche');
-        var notificheMenu = centroNotifiche.querySelector('.notificheMenu');
-        var badge = centroNotifiche.querySelector('.badge');
+        const centroNotifiche = document.querySelector('.centroNotifiche');
+        const notificheMenu = centroNotifiche.querySelector('.notificheMenu');
+        const badge = centroNotifiche.querySelector('.badge');
 
-        // Verifica se il clic è avvenuto al di fuori del menu delle notifiche
         if (notificheMenu && !centroNotifiche.contains(event.target)) {
             notificheMenu.classList.remove('show');
         }
 
-        // Verifica se il clic è avvenuto al di fuori del badge e nascondilo se è visibile
 
     });
 
-    // Altri tuoi gestori di eventi...
 });
 
 
 
 function modifyLinks() {
-    var urlParams = new URLSearchParams(window.location.search);
-    var idSession = urlParams.get("IDSession");
-    var links = document.querySelectorAll('[id^="redirect"]');
+    const urlParams = new URLSearchParams(window.location.search);
+    const idSession = urlParams.get("IDSession");
+    const links = document.querySelectorAll('[id^="redirect"]');
     links.forEach(function(link) {
-        var linkHref = link.getAttribute("href");
+        const linkHref = link.getAttribute("href");
         link.setAttribute("href", linkHref + '?IDSession=' + idSession);
     });
 }
@@ -35,12 +32,10 @@ function modifyLinks() {
 function openPopup(button) {
     const urlParams = new URLSearchParams(window.location.search);
     const idSession = urlParams.get("IDSession");
-    var transactionId = button.getAttribute('data-transaction-id');
-    var transactionTipo = button.getAttribute('data-transaction-tipo');
+    const transactionId = button.getAttribute('data-transaction-id');
+    const transactionTipo = button.getAttribute('data-transaction-tipo');
 
-    url = `/visualizzaTrans?IDSession=${idSession}&idTrans=${transactionId}&tipoTrans=${transactionTipo}`;
-
-    var popupContent = document.querySelector('.contenutoPopup');
+    let url = `/visualizzaTrans?IDSession=${idSession}&idTrans=${transactionId}&tipoTrans=${transactionTipo}`;
 
     fetch(url)
         .then(response => {
@@ -58,7 +53,7 @@ function openPopup(button) {
 }
 
 function displayTransactionDetails(transactionTipo, data) {
-    var popupContent = document.querySelector('.contenutoPopup');
+    const popupContent = document.querySelector('.contenutoPopup');
     popupContent.innerHTML = '';
 
     if (transactionTipo === "Bollettino") {
@@ -71,9 +66,9 @@ function displayTransactionDetails(transactionTipo, data) {
 }
 
 function displayBollettino(data) {
-    var popupContent = document.querySelector('.contenutoPopup');
+    const popupContent = document.querySelector('.contenutoPopup');
 
-    var closeButton = document.createElement('button');
+    const closeButton = document.createElement('button');
     closeButton.className = 'popup-btn';
     closeButton.textContent = 'X';
     closeButton.onclick = function () {
@@ -82,7 +77,7 @@ function displayBollettino(data) {
     popupContent.appendChild(closeButton);
 
     function createBoldParagraph(label, content) {
-        var element = document.createElement('p');
+        const element = document.createElement('p');
         element.innerHTML = '<strong>' + label + '</strong>: ' + content;
         popupContent.appendChild(element);
     }
@@ -96,9 +91,9 @@ function displayBollettino(data) {
 }
 
 function displayBonificoInter(data) {
-    var popupContent = document.querySelector('.contenutoPopup');
+    const popupContent = document.querySelector('.contenutoPopup');
 
-    var closeButton = document.createElement('button');
+    const closeButton = document.createElement('button');
     closeButton.className = 'popup-btn';
     closeButton.textContent = 'X';
     closeButton.onclick = function () {
@@ -107,7 +102,7 @@ function displayBonificoInter(data) {
     popupContent.appendChild(closeButton);
 
     function createBoldParagraph(label, content) {
-        var element = document.createElement('p');
+        const element = document.createElement('p');
         element.innerHTML = '<strong>' + label + '</strong>: ' + content;
         popupContent.appendChild(element);
     }
@@ -117,7 +112,7 @@ function displayBonificoInter(data) {
     createBoldParagraph('Importo', data[2] + ' €');
     createBoldParagraph('Causale', data[3]);
     createBoldParagraph('IBAN destinatario', '');
-    var element = document.createElement('p');
+    const element = document.createElement('p');
     element.innerHTML = data[4];
     popupContent.appendChild(element);
     createBoldParagraph('Valuta', data[5]);
@@ -127,9 +122,9 @@ function displayBonificoInter(data) {
 }
 
 function displayBonificoSepa(data) {
-    var popupContent = document.querySelector('.contenutoPopup');
+    const popupContent = document.querySelector('.contenutoPopup');
 
-    var closeButton = document.createElement('button');
+    const closeButton = document.createElement('button');
     closeButton.className = 'popup-btn';
     closeButton.textContent = 'X';
     closeButton.onclick = function () {
@@ -138,7 +133,7 @@ function displayBonificoSepa(data) {
     popupContent.appendChild(closeButton);
 
     function createBoldParagraph(label, content) {
-        var element = document.createElement('p');
+        const element = document.createElement('p');
         element.innerHTML = '<strong>' + label + '</strong>: ' + content;
         popupContent.appendChild(element);
     }
@@ -148,7 +143,7 @@ function displayBonificoSepa(data) {
     createBoldParagraph('Importo', data[2] + ' €');
     createBoldParagraph('Causale', data[3]);
     createBoldParagraph('IBAN destinatario', '');
-    var element = document.createElement('p');
+    const element = document.createElement('p');
     element.innerHTML = data[4];
     popupContent.appendChild(element);
     createBoldParagraph('Data', data[5]);
@@ -166,9 +161,9 @@ function closePopupTrans() {
 
 function toggleNotifiche() {
 
-    var centroNotifiche = document.querySelector('.centroNotifiche');
-    var notificheMenu = centroNotifiche.querySelector('.notificheMenu');
-    var badge = centroNotifiche.querySelector('.badge');
+    const centroNotifiche = document.querySelector('.centroNotifiche');
+    const notificheMenu = centroNotifiche.querySelector('.notificheMenu');
+    const badge = centroNotifiche.querySelector('.badge');
 
 
     if (notificheMenu) {
@@ -184,8 +179,28 @@ function toggleNotifiche() {
 
 
 function eliminaNotifica(element) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const idSession = urlParams.get("IDSession");
+    const idNotifica = element.getAttribute('data-notifica-id');
 
+    let url = `/eliminaNotifica?IDSession=${idSession}&idNotifica=${idNotifica}`;
+
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Errore durante l\'eliminazione della notifica');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data === true) {
+                element.parentNode.remove();
+            } else {
+            }
+        })
+        .catch(error => console.error(error));
 }
+
 
 
 

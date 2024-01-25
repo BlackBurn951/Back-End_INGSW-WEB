@@ -27,7 +27,6 @@ public class NotificheDAOImpl implements NotificheDAO{
 
             ResultSet queryResult= statement.executeQuery();
             while(queryResult.next()) {
-                System.out.println("Notifica presa per il conto: "+queryResult.getString("notifica"));
                 not=new Notifiche(queryResult.getString("notifica"), queryResult.getBoolean("letta"));
                 not.setId(queryResult.getInt("id_notifiche"));
                 result.add(not);
@@ -77,7 +76,7 @@ public class NotificheDAOImpl implements NotificheDAO{
 
     @Override
     public boolean saveOrUpdate(Notifiche not, String numCC) {
-        String query= "";
+        String query;
 
         if(not.getId()>-1)
             query="insert into notifiche(id_notifiche, notifica, letta, num_cc) values (?,?,?,?)" +
@@ -100,7 +99,7 @@ public class NotificheDAOImpl implements NotificheDAO{
             }
 
             if(statement.executeUpdate()>0) {
-                if(not.getId()>-1)
+                if(not.getId()==-1)
                     not.setId(retriveLastId());
                 return true;
             }

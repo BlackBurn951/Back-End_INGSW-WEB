@@ -4,9 +4,7 @@ import com.example.progettowebtest.Connection.DbConn;
 import com.example.progettowebtest.DAO.MagnusDAO;
 import com.example.progettowebtest.Model.Carte.RelStatoCarta;
 import com.example.progettowebtest.Model.Carte.TipiCarte;
-import com.example.progettowebtest.Model.ContoCorrente.RelStatoConto;
 import com.example.progettowebtest.Model.Stato;
-import com.example.progettowebtest.Model.Transazioni.TipologiaBollettino;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

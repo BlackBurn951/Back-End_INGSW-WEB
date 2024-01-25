@@ -6,7 +6,6 @@ import com.example.progettowebtest.Model.Proxy.TipoTransazione;
 import com.example.progettowebtest.Model.Proxy.Transazione;
 import com.example.progettowebtest.Model.Proxy.TransazioneProxy;
 import com.example.progettowebtest.Model.Transazioni.Bollettino;
-import org.hibernate.annotations.processing.SQL;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -160,7 +159,6 @@ public class BollettinoDAOImpl implements BollettinoDAO{
             statement.setString(5, numCC);
 
             if(statement.executeUpdate()>0) {
-                System.out.println("Relazione inserita");
                 return true;
             }
 

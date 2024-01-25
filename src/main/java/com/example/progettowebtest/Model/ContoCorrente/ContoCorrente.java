@@ -57,6 +57,8 @@ public class ContoCorrente {
         this.setLette();
         return notifiche;
     }
+
+
     public int getUnreadNotify() {
         int result= 0;
         for(Notifiche nt: this.notifiche) {
@@ -87,9 +89,17 @@ public class ContoCorrente {
     }
 
     public void addTransazione(Transazione trans) {movimenti.add(trans);}
-    public void removeTransazione(Transazione trans) {movimenti.remove(trans);}
+
+    //public void removeTransazione(Transazione trans) {movimenti.remove(trans);}
 
     public void addNotifica(Notifiche not) {notifiche.add(not);}
-    public void removeNotifica(Notifiche not) {notifiche.remove(not);}
+    public void removeNotifica(int id) {
+        for(Notifiche nt: notifiche) {
+            if(nt.getId()==id) {
+                notifiche.remove(nt);
+                break;
+            }
+        }
+    }
 
 }

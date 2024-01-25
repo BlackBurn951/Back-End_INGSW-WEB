@@ -13,9 +13,7 @@ import com.example.progettowebtest.Model.Stato;
 import com.example.progettowebtest.Model.Utente_Documenti.Utente;
 import com.example.progettowebtest.Model.ValoriStato;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.cglib.core.Local;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -72,7 +70,7 @@ public class CarteServlet {
         ContoCorrente cc= (ContoCorrente)session.getAttribute("Conto");
         Vector<String> dati= (Vector<String>)session.getAttribute("Dati carta");
 
-        Carte carta= null;
+        Carte carta;
 
         if(tipo) {
             carta = new CartaCredito(dati.get(0), true, dati.get(4), dati.get(1), dati.get(3), false, 10.0, dati.get(5),
@@ -210,6 +208,23 @@ public class CarteServlet {
         return result;
     }
 
+    @GetMapping("/prendiNumeroCarte")
+    public int[] prendiNumeroCarte(HttpServletRequest request, @RequestParam("IDSession") String idSession) {
+        int[] numeroCarte= new int[2];
+
+        HttpSession session = (HttpSession) request.getServletContext().getAttribute(idSession);
+        ContoCorrente cc= (ContoCorrente)session.getAttribute("Conto");
+
+        Vector<Carte> carteCredito= MagnusDAO.getInstance().getCarteDAO().doRetriveAllCreditForCC(cc.getNumCC());
+        Vector<Carte> carteDebito= MagnusDAO.getInstance().getCarteDAO().doRetriveAllDebitForCC(cc.getNumCC());
+
+        if(carteCredito!=null)
+            numeroCarte[0]= carteCredito.size();
+        if(carteDebito!=null)
+            numeroCarte[1]= carteDebito.size();
+
+        return numeroCarte;
+    }
 
     private String generaNumeroCarta() {
         Random random = new Random();
