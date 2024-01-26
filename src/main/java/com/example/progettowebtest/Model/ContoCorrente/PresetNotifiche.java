@@ -4,7 +4,7 @@ public class PresetNotifiche {
     //Notifiche transazioni
     public static String NOTIFICA_BOLLETTINO="Bollettino effettuato in data: ";
     public static String NOTIFICA_BONIFICOSEPA="Bonifico sepa effettuato in data: ";
-    public static String NOTIFICA_BONIFICOINTER="Bonifico int effettuato in data: ";
+    public static String NOTIFICA_BONIFICOINTER="Bonifico internazionale effettuato in data: ";
     public static String NOTIFICA_TRANSNEGATA="Transazione rifiutata in data: ";
 
 

@@ -34,12 +34,19 @@ public class RedirectController {
         return "redirect:http://localhost:4200";
     }
 
+
+
     @GetMapping("/vaiLogged")
     public String redirectToHomepageLogged(@RequestParam(name = "IDSession") String sessionId) {
 
         return "redirect:http://localhost:8080/homepage_logged?IDSession=" + sessionId;
     }
 
+    @GetMapping("/vaiFaq")
+    public String redirectToFaqPage(@RequestParam(name = "IDSession") String sessionId) {
+
+        return "redirect:http://localhost:4200/faq?IDSession=" + sessionId;
+    }
 
 
 }

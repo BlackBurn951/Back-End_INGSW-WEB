@@ -22,7 +22,7 @@ function openSosPopup(id, action) {
     const label = document.querySelector('#popupSospensione .labelPop');
 
     if (id === 1) {
-        label.textContent = "Sei sicuro di voler sospendere il conto?";
+        label.textContent = "Sei sicuro di voler sospendere/attivare il conto?";
     } else if (id === 2) {
         label.textContent = "Sei sicuro di voler chiudere il conto?";
     }

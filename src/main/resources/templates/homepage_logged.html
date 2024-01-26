@@ -2,7 +2,6 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <link rel="stylesheet" href="/css/homepage_logged.css">
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/images/logoBanca.ico" type="image/x-icon">
@@ -33,6 +32,7 @@
                 </ul>
 
             </div>
+            <a id="redirect4" href="/redirect/vaiFaq" class="logout"><img class="questionImage" src="/images/question-mark.png" alt=""></a>
             <a href="/redirect/tornaHomepage" class="logout"><img class="esciImage" src="/images/iconaEsci.png" alt=""></a>
         </div>
     </div>
@@ -57,11 +57,22 @@
     </div>
 
       <div class="bloccoTransazioni">
-          <h2 id="titleTrans">Ultime transazioni</h2>
+          <div class="boxRicerca">
+              <h2 id="titleTrans">Ultime transazioni</h2>
+              <input type="text" id="searchInput" onkeyup="searchTransactions()" placeholder="Cerca transazioni...">
+              <select id="filterSelect" onchange="filterTransactions()">
+                  <option value="all">Tutte le transazioni</option>
+                  <option value="bollettino">Bollettino</option>
+                  <option value="Bonifico SEPA">Bonifico SEPA</option>
+                  <option value="Bonifico Internazionale">Bonifico Internazionale</option>
+              </select>
+          </div>
+
           <div class="containerDatiTransazioni">
               <table id="transazioniTable">
                   <thead>
                       <tr>
+                          <th>Tipologia</th>
                           <th>Data</th>
                           <th>Importo</th>
                           <th>Causale</th>
@@ -71,6 +82,12 @@
                   </thead>
                   <tbody>
                   <tr class="item" th:each="i : ${#numbers.sequence(conto.getMovimenti().size() - 1, 0, -1)}"  th:with="item=${conto.getMovimenti()[i]}">
+                          <td>
+                              <span th:if="${item.getTipoTrans() == 'Bollettino'}">Bollettino</span>
+                              <span th:if="${item.getTipoTrans() == 'BonificoSepa'}">Bonifico SEPA</span>
+                              <span th:if="${item.getTipoTrans() == 'BonificoInter'}">Bonifico Internazionale</span>
+                              <span th:unless="${item.getTipoTrans() == 'Bollettino' || item.getTipoTrans() == 'BonificoSepa' || item.getTipoTrans() == 'BonificoInter'}" th:text="${item.getTipoTrans()}"></span>
+                          </td>
                           <td th:text="${item.getDataTransazione()}"></td>
                           <td th:text="${item.getImporto()} + ' €'"></td>
                           <td th:text="${item.getCausale()}"></td>

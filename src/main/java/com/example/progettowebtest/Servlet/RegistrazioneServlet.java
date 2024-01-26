@@ -111,6 +111,7 @@ public class RegistrazioneServlet extends HttpServlet {
                 return false;
 
             ut.addAddress(res);
+            System.out.println("citta dom: "+dati.getCittaDom());
             if(!dati.getCittaDom().isEmpty()) {
                 tipo= MagnusDAO.getInstance().getTipoViaDAO().doRetriveByAttribute(dati.getTipoStradaDom());
                 queryDatiComune= MagnusDAO.getInstance().getDatiComuneDAO().doRetriveByAttribute(dati.getCittaDom(), ColonneDatiComune.NOME_COMUNE);
