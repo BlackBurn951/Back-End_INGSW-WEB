@@ -10,10 +10,7 @@ h2{
     border: 1px solid #007BFF;
 }
 
-.edit-icon {
-    cursor: pointer;
-    margin-left: 5px;
-}
+
 
 label{
     margin-top: 3vh;
@@ -36,12 +33,6 @@ body {
 }
 
 
-
-.titolo {
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-}
 
 .formDati {
     display: flex;

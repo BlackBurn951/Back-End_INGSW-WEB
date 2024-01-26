@@ -29,6 +29,4 @@ public class HomePageController{
 
         return "/personal_data";
     }
-
-
 }

@@ -1,6 +1,5 @@
 package com.example.progettowebtest.Model;
 
-import java.sql.Date;
 
 public class Stato {
     private int idStato;

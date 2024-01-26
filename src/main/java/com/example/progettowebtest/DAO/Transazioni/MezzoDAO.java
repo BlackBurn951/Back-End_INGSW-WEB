@@ -1,6 +1,5 @@
 package com.example.progettowebtest.DAO.Transazioni;
 
-import com.example.progettowebtest.Model.Proxy.Transazione;
 import com.example.progettowebtest.Model.Transazioni.BonificoInter;
 import com.example.progettowebtest.Model.Transazioni.Mezzo;
 

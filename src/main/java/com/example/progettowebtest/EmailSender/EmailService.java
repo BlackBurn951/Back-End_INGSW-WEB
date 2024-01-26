@@ -66,9 +66,7 @@ public class EmailService {
         com.google.api.services.gmail.model.Message sentMessage;
         try {
             sentMessage = service.users().messages().send(userId, emailContent).execute();
-            System.out.println("Message Id: " + sentMessage.getId());
-        } catch (Exception e) {
-            System.out.println("An error occurred: " + e);
+        } catch (Exception ignored) {
         }
     }
 
