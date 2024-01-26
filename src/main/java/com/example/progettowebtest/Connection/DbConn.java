@@ -22,4 +22,7 @@ public class DbConn {
         DbConn.dataSource = dataSource;
     }
 
+    public static DataSource getDataSource() {
+        return dataSource;
+    }
 }
