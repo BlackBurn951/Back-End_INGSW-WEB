@@ -23,15 +23,19 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @CrossOrigin(origins = "http://localhost:4200", exposedHeaders = "Session-ID")
 public class RegistrazioneServlet extends HttpServlet {
+    private final MagnusDAO magnus;
 
-    //RICORDARSI DI CAPIRE COME FARE IL LOGIN IN AUTOMATICO
+    public RegistrazioneServlet(MagnusDAO magnus) {
+        this.magnus = magnus;
+    }
+
     @PostMapping("/emailCheck")
     public int emailCheck(HttpServletRequest request, HttpServletResponse response, @RequestBody DatiControlloUtente dati) {
         int result= 2;
 
-        if(MagnusDAO.getInstance().getUtenteDAO().doRetriveByKey(dati.getEmail(), IdentificativiUtente.EMAIL)!=null)
+        if(magnus.getUtenteDAO().doRetriveByKey(dati.getEmail(), IdentificativiUtente.EMAIL)!=null)
             result= 0;
-        else if(MagnusDAO.getInstance().getUtenteDAO().doRetriveByKey(dati.getCf(), IdentificativiUtente.CF)!=null)
+        else if(magnus.getUtenteDAO().doRetriveByKey(dati.getCf(), IdentificativiUtente.CF)!=null)
             result= 1;
         else {
             HttpSession session= request.getSession(false);

@@ -1,144 +1,78 @@
 package com.example.progettowebtest;
 
-import com.example.progettowebtest.ClassiRequest.DatiRegistrazione;
-import com.example.progettowebtest.ClassiRequest.IdentificativiUtente;
-import com.example.progettowebtest.Connection.DbConn;
-import com.example.progettowebtest.DAO.ContoCorrente_StatoConto.ContoCorrenteDAO;
-import com.example.progettowebtest.DAO.Indirizzo.DatiComuneDAO;
-import com.example.progettowebtest.DAO.Indirizzo.TipoViaDAO;
-import com.example.progettowebtest.DAO.MagnusDAO;
-import com.example.progettowebtest.DAO.Utente_Documenti.PassaportoDAO;
-import com.example.progettowebtest.DAO.Utente_Documenti.PatenteDAO;
-import com.example.progettowebtest.DAO.Utente_Documenti.UtenteDAO;
-import com.example.progettowebtest.Model.Indirizzo.TipoVia;
-import com.example.progettowebtest.Model.Utente_Documenti.Patente;
-import com.example.progettowebtest.Model.Utente_Documenti.Utente;
-import com.example.progettowebtest.Servlet.RegistrazioneServlet;
-
-import jakarta.servlet.http.HttpSession;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.*;
-
-import javax.sql.DataSource;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
-
-
 import com.example.progettowebtest.ClassiRequest.DatiControlloUtente;
-import com.example.progettowebtest.ClassiRequest.DatiRegistrazione;
+import com.example.progettowebtest.ClassiRequest.IdentificativiUtente;
 import com.example.progettowebtest.DAO.MagnusDAO;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import com.example.progettowebtest.DAO.Utente_Documenti.UtenteDAOImpl;
+import com.example.progettowebtest.Servlet.RegistrazioneServlet;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static junit.framework.Assert.*;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.example.progettowebtest.Servlet.RegistrazioneServlet;
-import org.junit.jupiter.api.Test;
-
-
-import static org.junit.jupiter.api.Assertions.*;
-
-
+@AutoConfigureMockMvc
+@ContextConfiguration(classes = {RegistrazioneServlet.class, MagnusDAO.class})
+@WebMvcTest
 public class RegistrazioneServletTest {
 
+    @Autowired
+    private MockMvc mockMvc;
     @Mock
-    private HttpServletRequest mockRequest;
-
+    private MagnusDAO magnus;
     @Mock
-    private HttpServletResponse mockResponse;
-
-    @Mock
-    private DataSource mockDataSource;
-
-    @Mock
-    private HttpSession mockSession;
+    private UtenteDAOImpl utenteDAO;
+    private RegistrazioneServlet servlet;
 
     @BeforeEach
-    public void setup() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
-
-        MagnusDAO mockMagnusDAO = mock(MagnusDAO.class);
-
-        TipoViaDAO mockTipoViaDAO = mock(TipoViaDAO.class);
-        when(mockTipoViaDAO.doRetriveByAttribute(anyString())).thenReturn(null);
-
-        DatiComuneDAO mockDatiComuneDAO = mock(DatiComuneDAO.class);
-        when(mockDatiComuneDAO.doRetriveByAttribute(anyString(), any())).thenReturn(null);
-
-        PassaportoDAO mockPassaportoDAO = mock(PassaportoDAO.class);
-
-        ContoCorrenteDAO mockContoCorrenteDAO = mock(ContoCorrenteDAO.class);
-
-        UtenteDAO mockUtenteDAO = mock(UtenteDAO.class);
-
-        when(mockMagnusDAO.getTipoViaDAO()).thenReturn(mockTipoViaDAO);
-        when(mockMagnusDAO.getDatiComuneDAO()).thenReturn(mockDatiComuneDAO);
-        when(mockMagnusDAO.getPassaportoDAO()).thenReturn(mockPassaportoDAO);
-        when(mockMagnusDAO.getContoCorrenteDAO()).thenReturn(mockContoCorrenteDAO);
-        when(mockMagnusDAO.getUtenteDAO()).thenReturn(mockUtenteDAO);
-
-        DbConn.setDataSource(mockDataSource);
-        when(DbConn.getDataSource()).thenReturn(mockDataSource);
+        servlet= new RegistrazioneServlet(magnus);
+        mockMvc = MockMvcBuilders.standaloneSetup(servlet).build();
     }
 
     @Test
-    public void testInsertUser() {
+    public void testEmailCheck() throws Exception {
 
-        DatiRegistrazione datiRegistrazione = new DatiRegistrazione();
-        datiRegistrazione.setNome("Mario");
-        datiRegistrazione.setCognome("Rossi");
-        datiRegistrazione.setCellulare("3497276241");
-        datiRegistrazione.setEmail("secondaryasdasd@gmail.com");
-        datiRegistrazione.setCf("BNNLCU01MN24D086X");
-        datiRegistrazione.setDataNascita("24-08-2001");
-        datiRegistrazione.setSesso("maschio");
-        datiRegistrazione.setComuneNas("Cusenza");
-        datiRegistrazione.setProvNas("CS");
-        datiRegistrazione.setCittadinanza("Italiana");
-        datiRegistrazione.setTipoStradaRes("via");
-        datiRegistrazione.setNomeStradaRes("Giuseppe");
-        datiRegistrazione.setNumCivicoRes("45");
-        datiRegistrazione.setCittaRes("Rende");
-        datiRegistrazione.setCapRes("87058");
-        datiRegistrazione.setProvinciaRes("CS");
-        datiRegistrazione.setRegioneRes("Calabria");
-        datiRegistrazione.setTipoDoc("Passaporto");
-        datiRegistrazione.setIdDoc("1");
-        datiRegistrazione.setComuneAutorita("Comune");
-        datiRegistrazione.setNazionalita("Italiana");
-        datiRegistrazione.setNomeDocumento("Mario");
-        datiRegistrazione.setCognomeDocumento("Rossi");
-        datiRegistrazione.setDataNascitaDocumento("24-08-2001");
-        datiRegistrazione.setDataEmissione("23-03-2000");
-        datiRegistrazione.setDataScadenza("25-05-2025");
-        datiRegistrazione.setComuneNascitaDoc("Cusenza");
-        datiRegistrazione.setProvNascitaDoc("CS");
-        datiRegistrazione.setSessoDoc("Maschio");
-        datiRegistrazione.setOccupazione("Studente");
-        datiRegistrazione.setReddito(12345);
-        datiRegistrazione.setPassword("CiaoCiao5_");
-        // Mock MagnusDAO
-        MagnusDAO mockMagnusDAO = mock(MagnusDAO.class);
+        //Impostazione comportamento del Mock
+        when(utenteDAO.doRetriveByKey(any(String.class),eq(IdentificativiUtente.EMAIL))).thenReturn(null);
+        when(utenteDAO.doRetriveByKey(any(String.class),eq(IdentificativiUtente.CF))).thenReturn(null);
+        when(magnus.getUtenteDAO()).thenReturn(utenteDAO);
+        when(magnus.getUtenteDAO()).thenReturn(utenteDAO);
 
 
+        //Dati da passare alla chimata Http
+        DatiControlloUtente dati= new DatiControlloUtente();
+        dati.setEmail("paperonezio53@gmail.com");
+        dati.setCf("asdfgh03d38d086b");
 
-        // Create instance of servlet
-        RegistrazioneServlet servlet = new RegistrazioneServlet();
+        String jsonChiamata= new ObjectMapper().writeValueAsString(dati);
 
-        // Test
-        boolean result = servlet.insertUser(mockRequest, mockResponse, "sessionId123", datiRegistrazione);
 
-        // Verify
-        assertEquals(true, result); // Expected result based on mock data
+        //Chiamata Http
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/emailCheck").content(jsonChiamata)
+                        .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
+
+        //Risposta della chiamata Http
+        String rispostaChiamata= result.getResponse().getContentAsString();
+        int rispostaEndPoint= Integer.parseInt(rispostaChiamata);
+
+        String headerRisposta= result.getResponse().getHeader("Session-ID");
+
+        assertEquals(2, rispostaEndPoint);
+        assertNotNull(headerRisposta);
     }
-
-    // You can add more tests for insertUser method with different scenarios
 }
