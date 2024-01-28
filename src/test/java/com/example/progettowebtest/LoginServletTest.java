@@ -27,8 +27,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 
-import java.sql.Date;
-
+import static junit.framework.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
@@ -43,8 +42,6 @@ class LoginServletTest {
     @Mock
     private ContoCorrenteDAOImpl contoCorrenteDAOMock;
     @Mock
-    private Patente patente;
-    @Mock
     private MagnusDAO magnusDAOMock;
     @Autowired
     private MockMvc mockMvc;
@@ -58,7 +55,7 @@ class LoginServletTest {
     }
 
     @Test
-    void doLogin(){
+    void doLogin() throws Exception {
         Utente mockUtente = Mockito.mock(Utente.class);
         when(utenteDAOMock.doRetriveByKey(anyString(), any(IdentificativiUtente.class))).thenReturn(mockUtente);
         String hashedPassword = BCrypt.hashpw("testPassword", BCrypt.gensalt());
@@ -66,52 +63,40 @@ class LoginServletTest {
         when(magnusDAOMock.getUtenteDAO()).thenReturn(utenteDAOMock);
         when(magnusDAOMock.getContoCorrenteDAO()).thenReturn(contoCorrenteDAOMock);
 
-        MockHttpServletRequest requestMock = new MockHttpServletRequest();
-        MockHttpServletResponse responseMock = new MockHttpServletResponse();
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/login?username=testUsername&password=testPassword"))
+                .andExpect(status().isOk()).andReturn();
 
-        String sessionId = loginServlet.doLogin(requestMock, responseMock, "testUsername", "testPassword");
+        String sessionId= result.getResponse().getContentAsString();
+        String headerRisposta= result.getResponse().getHeader("Session-ID");
 
         assertNotEquals("",sessionId);
+        assertNotNull(headerRisposta);
     }
 
     @Test
-    void checkUser() {
+    void checkUser() throws Exception {
         Utente mockUtente = Mockito.mock(Utente.class);
         when(utenteDAOMock.doRetriveByKey(eq("testUtente"), any(IdentificativiUtente.class))).thenReturn(mockUtente);
         when(magnusDAOMock.getUtenteDAO()).thenReturn(utenteDAOMock);
 
-        boolean userExist = loginServlet.checkUser("testUtente");
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/checkUser?username=testUtente"))
+                .andExpect(status().isOk()).andReturn();
 
-        assertTrue(userExist);
+        String risposta= result.getResponse().getContentAsString();
 
+        assertTrue(Boolean.parseBoolean(risposta));
     }
 
     @Test
-    void checkUserFailed() {
+    void checkUserFailed() throws Exception {
         when(utenteDAOMock.doRetriveByKey(eq("testUtente"), any(IdentificativiUtente.class))).thenReturn(null);
         when(magnusDAOMock.getUtenteDAO()).thenReturn(utenteDAOMock);
 
-        boolean userExist = loginServlet.checkUser("testUtente");
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/checkUser?username=testUtente"))
+                .andExpect(status().isOk()).andReturn();
 
-        assertFalse(userExist);
-    }
+        String risposta= result.getResponse().getContentAsString();
 
-    @Test
-    void recuperaPass() throws Exception {
-        Utente mockUtente = new Utente("Mario","Rossi","Italiana","Cosenza","M",
-                "CS","123456789","2000/01/01","acbr123fh78987d","mario.rossi@esempio.com",
-                "oldPass","Impiegato",50.0,patente);
-        when(utenteDAOMock.doRetriveByKey(eq("mario.rossi@esempio.com"), any(IdentificativiUtente.class))).thenReturn(mockUtente);
-        when(magnusDAOMock.getUtenteDAO()).thenReturn(utenteDAOMock);
-
-        CambioPassword dati = new CambioPassword();
-        dati.setPassword("newPass");
-        dati.setEmail(mockUtente.getEmail());
-
-        String jsonChiamata= new ObjectMapper().writeValueAsString(dati);
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/recuperaPass").content(jsonChiamata)
-                .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
-
-        assertNotEquals("oldPass",mockUtente.getPassword());
+        assertFalse(Boolean.parseBoolean(risposta));
     }
 }

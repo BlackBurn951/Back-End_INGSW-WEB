@@ -22,12 +22,12 @@ public class LoginServlet {
 
     @GetMapping("/login")
     public String doLogin(HttpServletRequest request, HttpServletResponse response, @RequestParam("username") String username, @RequestParam("password") String password) {
-        Utente ut = MagnusDAO.getInstance().getUtenteDAO().doRetriveByKey(username, IdentificativiUtente.EMAIL);
+        Utente ut = magnus.getUtenteDAO().doRetriveByKey(username, IdentificativiUtente.EMAIL);
 
         if (ut != null && BCrypt.checkpw(password, ut.getPassword())) {
             HttpSession session= request.getSession(true);
             session.setAttribute("Utente", ut);
-            session.setAttribute("Conto", MagnusDAO.getInstance().getContoCorrenteDAO().doRetriveByAttribute(ut.getCodiceFiscale()));
+            session.setAttribute("Conto", magnus.getContoCorrenteDAO().doRetriveByAttribute(ut.getCodiceFiscale()));
 
             request.getServletContext().setAttribute(session.getId(), session);
 
@@ -41,7 +41,7 @@ public class LoginServlet {
     public boolean checkUser(@RequestParam("username") String username) {
         boolean result= false;
 
-        Utente ut= MagnusDAO.getInstance().getUtenteDAO().doRetriveByKey(username, IdentificativiUtente.EMAIL);
+        Utente ut= magnus.getUtenteDAO().doRetriveByKey(username, IdentificativiUtente.EMAIL);
         if(ut!=null)
             result= true;
 
@@ -50,7 +50,7 @@ public class LoginServlet {
 
     @PostMapping("/recuperaPass")
     public void recuperaPass(@RequestBody CambioPassword cambio) {
-        Utente ut= MagnusDAO.getInstance().getUtenteDAO().doRetriveByKey(cambio.getEmail(), IdentificativiUtente.EMAIL);
+        Utente ut= magnus.getUtenteDAO().doRetriveByKey(cambio.getEmail(), IdentificativiUtente.EMAIL);
         ut.setPassword(cambio.getPassword());
         MagnusDAO.getInstance().getUtenteDAO().saveOrUpdate(ut);
     }
