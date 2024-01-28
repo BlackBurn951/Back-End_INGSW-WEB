@@ -65,7 +65,6 @@ public class RegistrazioneServletTest {
 
         String jsonChiamata= new ObjectMapper().writeValueAsString(dati);
 
-
         //Chiamata Http
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/emailCheck").content(jsonChiamata)
                         .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
