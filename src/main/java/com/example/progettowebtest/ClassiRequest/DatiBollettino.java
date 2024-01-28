@@ -22,4 +22,21 @@ public class DatiBollettino {
     public String getCausale() {
         return causale;
     }
+
+
+    public void setTipologiaBollettino(String tipologiaBollettino) {
+        this.tipologiaBollettino = tipologiaBollettino;
+    }
+
+    public void setNumCCDest(String numCCDest) {
+        this.numCCDest = numCCDest;
+    }
+
+    public void setImporto(double importo) {
+        this.importo = importo;
+    }
+
+    public void setCausale(String causale) {
+        this.causale = causale;
+    }
 }
