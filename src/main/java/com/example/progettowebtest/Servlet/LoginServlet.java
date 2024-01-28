@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin(origins = "http://localhost:4200", exposedHeaders = "Session-ID")
 public class LoginServlet {
+    private MagnusDAO magnus;
+
+    public LoginServlet(MagnusDAO magnus) {
+        this.magnus = magnus;
+    }
 
     @GetMapping("/login")
     public String doLogin(HttpServletRequest request, HttpServletResponse response, @RequestParam("username") String username, @RequestParam("password") String password) {

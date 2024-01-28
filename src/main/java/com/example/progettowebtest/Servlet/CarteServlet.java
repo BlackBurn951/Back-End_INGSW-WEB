@@ -26,6 +26,8 @@ import static com.example.progettowebtest.EmailSender.OTPGenerator.generateOTP;
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 public class CarteServlet {
+    public CarteServlet() {
+    }
 
     @GetMapping("/creaCarta")
     public List<String> creaCarta(HttpServletRequest request, @RequestParam("IDSession") String idSession, @RequestParam("tipoCarta") boolean tipoCarta) {
