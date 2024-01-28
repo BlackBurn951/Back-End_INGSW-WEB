@@ -8,7 +8,11 @@ import com.example.progettowebtest.DAO.ContoCorrente_StatoConto.*;
 import com.example.progettowebtest.DAO.Indirizzo.*;
 import com.example.progettowebtest.DAO.Transazioni.*;
 import com.example.progettowebtest.DAO.Utente_Documenti.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Service;
 
+@Service
 public class MagnusDAO {
     private static MagnusDAO instance= new MagnusDAO();
     private UtenteDAO utenteDAO;
