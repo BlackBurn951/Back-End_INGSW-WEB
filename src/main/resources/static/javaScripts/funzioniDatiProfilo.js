@@ -1,10 +1,10 @@
 document.addEventListener("DOMContentLoaded", function() {
 
-    var urlParams = new URLSearchParams(window.location.search);
-    var idSession = urlParams.get("IDSession");
+    const urlParams = new URLSearchParams(window.location.search);
+    const idSession = urlParams.get("IDSession");
 
-    var linkElement = document.querySelector("#buttonGoBack");
-    var linkHref = linkElement.getAttribute("href");
+    const linkElement = document.querySelector("#buttonGoBack");
+    const linkHref = linkElement.getAttribute("href");
     linkElement.setAttribute("href", linkHref + '?IDSession='+idSession);
 
 });
@@ -18,11 +18,11 @@ function openPassPopup() {
 }
 
 function openSosPopup(id, action) {
-    var popup = document.getElementById('popupSospensione');
-    var label = document.querySelector('#popupSospensione .labelPop');
+    const popup = document.getElementById('popupSospensione');
+    const label = document.querySelector('#popupSospensione .labelPop');
 
     if (id === 1) {
-        label.textContent = "Sei sicuro di voler sospendere il conto?";
+        label.textContent = "Sei sicuro di voler sospendere/attivare il conto?";
     } else if (id === 2) {
         label.textContent = "Sei sicuro di voler chiudere il conto?";
     }
@@ -38,14 +38,14 @@ function closePopupFunction() {
     document.getElementById('popupPasword').style.display ='none';
     document.getElementById('popupSospensione').style.display = 'none';
 
-    var emailInput = document.getElementById('nuovaEmail');
-    var nuovPassInput = document.getElementById('confPass');
-    var confPassInput = document.getElementById('nuovaPass');
-    var errorMessage = document.getElementById('errorEmailMessage');
-    var errorPass = document.getElementById('errorPassword');
-    var passSops = document.getElementById('passwordSosp');
-    var nuovaPassError = document.getElementById("nuovaPassError");
-    var confPassError = document.getElementById("confPassError");
+    const emailInput = document.getElementById('nuovaEmail');
+    const nuovPassInput = document.getElementById('confPass');
+    const confPassInput = document.getElementById('nuovaPass');
+    const errorMessage = document.getElementById('errorEmailMessage');
+    const errorPass = document.getElementById('errorPassword');
+    const passSops = document.getElementById('passwordSosp');
+    const nuovaPassError = document.getElementById("nuovaPassError");
+    const confPassError = document.getElementById("confPassError");
 
     emailInput.value = '';
     nuovPassInput.value = '';
@@ -62,12 +62,12 @@ function closePopupFunction() {
 
 
 function validatePassword() {
-    var nuovaPass = document.getElementById("nuovaPass").value;
-    var confPass = document.getElementById("confPass").value;
-    var nuovaPassError = document.getElementById("nuovaPassError");
-    var confPassError = document.getElementById("confPassError");
+    const nuovaPass = document.getElementById("nuovaPass").value;
+    const confPass = document.getElementById("confPass").value;
+    const nuovaPassError = document.getElementById("nuovaPassError");
+    const confPassError = document.getElementById("confPassError");
 
-    var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
+    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
 
     nuovaPassError.innerHTML = "";
     confPassError.innerHTML = "";
@@ -97,7 +97,7 @@ function validatePassword() {
 function cambiaEmailPass(stringa) {
     const urlParams = new URLSearchParams(window.location.search);
     const idSession = urlParams.get("IDSession");
-    url = `/cambiaPass?IDSession=${idSession}&password=${stringa}`;
+    let url = `/cambiaPass?IDSession=${idSession}&password=${stringa}`;
 
     fetch(url, {
         method: 'POST',
@@ -107,7 +107,7 @@ function cambiaEmailPass(stringa) {
     })
         .then(response => response.json())
         .then(data => {
-            messaggioConferma = data ? "Password modificata con successo." : "Errore nel cambio della password.";
+            let messaggioConferma = data ? "Password modificata con successo." : "Errore nel cambio della password.";
             showPopup(messaggioConferma);
         })
         .catch(() => {
@@ -116,11 +116,10 @@ function cambiaEmailPass(stringa) {
 }
 
 function validateEmail() {
-    var errorMessage = document.getElementById('errorEmailMessage');
-    var emailInput = document.getElementById("nuovaEmail").value;
-    console.log("Valore dell'email:", emailInput);
+    const errorMessage = document.getElementById('errorEmailMessage');
+    const emailInput = document.getElementById("nuovaEmail").value;
 
-    var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 
     if (emailRegex.test(emailInput)) {
@@ -138,7 +137,7 @@ function validateEmail() {
 function cambiaEmail(stringaEmail){
     const urlParams = new URLSearchParams(window.location.search);
     const idSession = urlParams.get("IDSession");
-    url = `/changeEmail?IDSession=${idSession}`;
+    let url = `/changeEmail?IDSession=${idSession}`;
 
     const CambioEmail ={
         email: stringaEmail
@@ -153,7 +152,7 @@ function cambiaEmail(stringaEmail){
     })
         .then(response => response.json())
         .then(data => {
-            messaggioConferma = data ? "Email modificata con successo." : "Errore nel cambio dell'email.";
+            let messaggioConferma = data ? "Email modificata con successo." : "Errore nel cambio dell'email.";
             showPopup(messaggioConferma);
         })
         .catch(() => {
@@ -162,32 +161,18 @@ function cambiaEmail(stringaEmail){
 
 }
 
-function sospendiChiudi() {
-    var popup = document.getElementById('popupSospensione');
-    var action = popup.getAttribute('data-action');
-    var passwordInput = document.getElementById("passwordSosp").value;
 
-    var errorPasswordMessage = document.getElementById('errorPassword');
+function controllaPassword() {
+    const passwordInput = document.getElementById("passwordSosp").value;
 
-    var isPasswordValid = controllaPassword(passwordInput);
+    const popup = document.getElementById('popupSospensione');
+    const action = popup.getAttribute('data-action');
 
-    if (!isPasswordValid) {
-        errorPasswordMessage.style.display = 'block';
-    } else {
-        errorPasswordMessage.style.display = 'none';
-        if (action === 'sospendi') {
-            cambiaStato(1)
-        } else if (action === 'chiudi') {
-            cambiaStato(2)
-        }
-        popup.style.display = 'none';
-    }
-}
+    const errorPasswordMessage = document.getElementById('errorPassword');
 
-function controllaPassword(password) {
     const urlParams = new URLSearchParams(window.location.search);
     const idSession = urlParams.get("IDSession");
-    url = `/checkPass?IDSession=${idSession}&password=${password}`;
+    let url = `/checkPass?IDSession=${idSession}&password=${passwordInput}`;
 
     return fetch(url, {
         method: 'GET',
@@ -197,7 +182,18 @@ function controllaPassword(password) {
     })
         .then(response => response.json())
         .then(data => {
-            return data;
+            if(data) {
+                errorPasswordMessage.style.display = 'none';
+                if (action === 'sospendi') {
+                    cambiaStato(1);
+                } else if (action === 'chiudi') {
+                    cambiaStato(2);
+                }
+                popup.style.display = 'none';
+            } else {
+                errorPasswordMessage.style.display = 'block';
+
+            }
         })
         .catch(() => {
             throw new Error("Errore durante l'operazione.");
@@ -208,7 +204,7 @@ function controllaPassword(password) {
 function cambiaStato(valore) {
     const urlParams = new URLSearchParams(window.location.search);
     const idSession = urlParams.get("IDSession");
-    url = `/cambiaStatoConto?IDSession=${idSession}&stato=${valore}`;
+    let url = `/cambiaStatoConto?IDSession=${idSession}&stato=${valore}`;
 
     fetch(url, {
         method: 'POST',
@@ -218,11 +214,12 @@ function cambiaStato(valore) {
     })
         .then(response => response.json())
         .then(data => {
+            let messaggioConferma;
             if (data === false) {
                 messaggioConferma = "Stato del conto cambiato con successo.";
             } else {
                 messaggioConferma = "Conto chiuso con successo.";
-                setTimeout(function() {
+                setTimeout(function () {
                     window.location.href = "http://localhost:4200";
                 }, 2000);
             }
@@ -233,32 +230,10 @@ function cambiaStato(valore) {
         });
 }
 
-function tornaHomepage() {
-    fetch('/redirect/tornaHomepage', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => {
-        if (response.ok) {
-        } else {
-            console.error('Errore nella richiesta per tornare alla homepage');
-        }
-    })
-    .catch(error => {
-        console.error('Errore durante la richiesta per tornare alla homepage:', error);
-    });
-}
-
-
-
-
-
 
 function toggleNuovaPass() {
-    var nuovaPassInput = document.getElementById("nuovaPass");
-    var nuovaPassIcon = document.getElementById("nuovaPassIcon");
+    const nuovaPassInput = document.getElementById("nuovaPass");
+    const nuovaPassIcon = document.getElementById("nuovaPassIcon");
 
     if (nuovaPassInput.type === "password") {
         nuovaPassInput.type = "text";
@@ -270,8 +245,8 @@ function toggleNuovaPass() {
 }
 
 function confermaToggleNuovaPass() {
-    var nuovaPassInput = document.getElementById("passwordSosp");
-    var nuovaPassIcon = document.getElementById("confermaPassIcon");
+    const nuovaPassInput = document.getElementById("passwordSosp");
+    const nuovaPassIcon = document.getElementById("confermaPassIcon");
 
     if (nuovaPassInput.type === "password") {
         nuovaPassInput.type = "text";
@@ -283,15 +258,15 @@ function confermaToggleNuovaPass() {
 }
 
 function toggleConfPass() {
-    var confPassInput = document.getElementById("confPass");
-    var confPassIcon = document.getElementById("confPassIcon");
+    const confPassInput = document.getElementById("confPass");
+    const confPassIcon = document.getElementById("confPassIcon");
 
     if (confPassInput.type === "password") {
         confPassInput.type = "text";
-        confPassIcon.src = "/images/view.png"; // Sostituisci con l'immagine dell'icona visibile
+        confPassIcon.src = "/images/view.png";
     } else {
         confPassInput.type = "password";
-        confPassIcon.src = "/images/hide.png"; // Sostituisci con l'immagine dell'icona nascosta
+        confPassIcon.src = "/images/hide.png";
     }
 }
 
@@ -301,6 +276,9 @@ function showPopup(message) {
 }
 
 function closePopup() {
+    const passwordInput = document.getElementById("passwordSosp");
+    passwordInput.value = ''
+
     document.getElementById('popupConferma').style.display = 'none';
 }
 

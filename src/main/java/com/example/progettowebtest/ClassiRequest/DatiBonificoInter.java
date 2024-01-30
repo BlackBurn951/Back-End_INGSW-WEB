@@ -37,4 +37,32 @@ public class DatiBonificoInter{
     public String getPaeseDest() {
         return paeseDest;
     }
+
+    public void setNomeBeneficiarioI(String nomeBeneficiarioI) {
+        this.nomeBeneficiarioI = nomeBeneficiarioI;
+    }
+
+    public void setCognomeBeneficiarioI(String cognomeBeneficiarioI) {
+        this.cognomeBeneficiarioI = cognomeBeneficiarioI;
+    }
+
+    public void setImportoI(double importoI) {
+        this.importoI = importoI;
+    }
+
+    public void setCausaleI(String causaleI) {
+        this.causaleI = causaleI;
+    }
+
+    public void setIbanDestinatarioI(String ibanDestinatarioI) {
+        this.ibanDestinatarioI = ibanDestinatarioI;
+    }
+
+    public void setValuta(String valuta) {
+        this.valuta = valuta;
+    }
+
+    public void setPaeseDest(String paeseDest) {
+        this.paeseDest = paeseDest;
+    }
 }

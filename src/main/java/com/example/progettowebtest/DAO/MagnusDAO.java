@@ -4,14 +4,15 @@ import com.example.progettowebtest.DAO.Carte.CarteDAO;
 import com.example.progettowebtest.DAO.Carte.CarteDAOImpl;
 import com.example.progettowebtest.DAO.Carte.RelStatoCarteDAO;
 import com.example.progettowebtest.DAO.Carte.RelStatoCarteDAOImpl;
-import com.example.progettowebtest.DAO.ContoCorrente_StatoConto.ContoCorrenteDAO;
-import com.example.progettowebtest.DAO.ContoCorrente_StatoConto.ContoCorrenteDAOImpl;
-import com.example.progettowebtest.DAO.ContoCorrente_StatoConto.RelStatoContoDAO;
-import com.example.progettowebtest.DAO.ContoCorrente_StatoConto.RelStatoContoDAOImpl;
+import com.example.progettowebtest.DAO.ContoCorrente_StatoConto.*;
 import com.example.progettowebtest.DAO.Indirizzo.*;
 import com.example.progettowebtest.DAO.Transazioni.*;
 import com.example.progettowebtest.DAO.Utente_Documenti.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Service;
 
+@Service
 public class MagnusDAO {
     private static MagnusDAO instance= new MagnusDAO();
     private UtenteDAO utenteDAO;
@@ -33,6 +34,7 @@ public class MagnusDAO {
     private MezzoDAO mezzoDAO;
     private CarteDAO carteDAO;
     private RelStatoCarteDAO relStatoCarteDAO;
+    private NotificheDAO notificheDAO;
 
     public MagnusDAO() {
         utenteDAO= new UtenteDAOImpl();
@@ -54,6 +56,7 @@ public class MagnusDAO {
         mezzoDAO= new MezzoDAOImpl();
         carteDAO= new CarteDAOImpl();
         relStatoCarteDAO= new RelStatoCarteDAOImpl();
+        notificheDAO= new NotificheDAOImpl();
     }
 
     public static MagnusDAO getInstance() {
@@ -79,4 +82,7 @@ public class MagnusDAO {
     public MezzoDAO getMezzoDAO() {return mezzoDAO;}
     public CarteDAO getCarteDAO() {return carteDAO;}
     public RelStatoCarteDAO getRelStatoCarteDAO() {return relStatoCarteDAO;}
+    public NotificheDAO getNotificheDAO() {
+        return notificheDAO;
+    }
 }

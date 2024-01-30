@@ -6,7 +6,6 @@ import com.example.progettowebtest.Model.Proxy.TipoTransazione;
 import com.example.progettowebtest.Model.Proxy.Transazione;
 import com.example.progettowebtest.Model.Proxy.TransazioneProxy;
 import com.example.progettowebtest.Model.Transazioni.Bollettino;
-import org.hibernate.annotations.processing.SQL;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -62,26 +61,29 @@ public class BollettinoDAOImpl implements BollettinoDAO{
     @Override
     public Transazione doRetriveByKey(int id, boolean proxy) {
         Transazione bol= null;
+
         String query;
         if(proxy)
-            query= "select * from bollettino as b, rel_cc_bollettino as r where b.id_bollettino= r.id_bollettino";
+            query= "select * from bollettino as b, rel_cc_bollettino as r where b.id_bollettino= ? and b.id_bollettino= r.id_bollettino";
         else
-            query= "select b.id_bollettino, r.data_transizione, b.importo, r.esito, b.causale from bollettino as b, rel_cc_bollettino as r where b.id_bollettino= r.id_bollettino";
+            query= "select b.id_bollettino, r.data_transizione, b.importo, r.esito, b.causale from bollettino as b, rel_cc_bollettino as r where b.id_bollettino= ? and b.id_bollettino= r.id_bollettino";
 
         try{
             PreparedStatement statement= DbConn.getConnection().prepareStatement(query);
+            statement.setInt(1,id);
+
             ResultSet queryResult= statement.executeQuery();
 
             if(proxy && queryResult.next()) {
-                bol= new Bollettino(queryResult.getDate("data_transizione").toString(), queryResult.getDouble("costo_commissione"),
+                bol = new Bollettino(queryResult.getDate("data_transizione").toString(), queryResult.getDouble("costo_commissione"),
                         queryResult.getBoolean("esito"), queryResult.getDouble("importo"), queryResult.getString("causale"),
                         queryResult.getString("num_cc_destinazione"), MagnusDAO.getInstance().getTipologiaBollettinoDAO().doRetriveByKey(queryResult.getInt("id_tipologia_bollettino")));
                 bol.setId(queryResult.getInt("id_bollettino"));
             }
             else{
                 if(queryResult.next())
-                   bol= new TransazioneProxy(queryResult.getInt("id_bollettino"), queryResult.getDate("data_transizione").toString(), queryResult.getDouble("importo"),
-                           queryResult.getString("causale"), queryResult.getBoolean("esito"), TipoTransazione.BOLLETTINO);
+                    bol = new TransazioneProxy(queryResult.getInt("id_bollettino"), queryResult.getDate("data_transizione").toString(), queryResult.getDouble("importo"),
+                            queryResult.getString("causale"), queryResult.getBoolean("esito"), TipoTransazione.BOLLETTINO);
             }
 
 
@@ -107,21 +109,15 @@ public class BollettinoDAOImpl implements BollettinoDAO{
             statement.setString(3, bol.getNumCcDest());
             statement.setInt(4, bol.getTipoBol().getIdTipoBol());
 
-            int i= statement.executeUpdate();
-
-            if(i>0) {
+            if(statement.executeUpdate()>0) {
                 int id= retriveLastId();
-                if(id!=0)
+                if(id!=0) {
                     bol.setId(id);
-                else
-                    return false;
-                if(inserisciRelazione(bol, numCC))
-                    return true;
+                    return inserisciRelazione(bol, numCC);
+                }
                 else
                     return false;
             }
-
-
 
         }catch (SQLException e) {
             e.printStackTrace();
@@ -163,7 +159,6 @@ public class BollettinoDAOImpl implements BollettinoDAO{
             statement.setString(5, numCC);
 
             if(statement.executeUpdate()>0) {
-                System.out.println("Relazione inserita");
                 return true;
             }
 

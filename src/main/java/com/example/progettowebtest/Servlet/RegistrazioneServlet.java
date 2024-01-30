@@ -5,9 +5,6 @@ import com.example.progettowebtest.ClassiRequest.DatiControlloUtente;
 import com.example.progettowebtest.ClassiRequest.DatiRegistrazione;
 import com.example.progettowebtest.DAO.MagnusDAO;
 import com.example.progettowebtest.ClassiRequest.IdentificativiUtente;
-import com.example.progettowebtest.EmailSender.CreaPDFConfermaConto;
-import com.example.progettowebtest.EmailSender.EmailService;
-import com.example.progettowebtest.EmailSender.EmailTemplateLoader;
 import com.example.progettowebtest.EmailSender.SenderEmail;
 import com.example.progettowebtest.Model.ContoCorrente.ContoCorrente;
 import com.example.progettowebtest.Model.Indirizzo.ColonneDatiComune;
@@ -15,37 +12,29 @@ import com.example.progettowebtest.Model.Indirizzo.DatiComune;
 import com.example.progettowebtest.Model.Indirizzo.Indirizzo;
 import com.example.progettowebtest.Model.Indirizzo.TipoVia;
 import com.example.progettowebtest.Model.Utente_Documenti.*;
-import com.google.api.services.gmail.model.Message;
-import jakarta.mail.MessagingException;
-import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.*;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.thymeleaf.model.IModel;
-
-import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.time.LocalDate;
 import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 
-import static com.example.progettowebtest.EmailSender.EmailService.getService;
-import static com.example.progettowebtest.EmailSender.EmailService.sendMessage;
 
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200", exposedHeaders = "Session-ID")
 public class RegistrazioneServlet extends HttpServlet {
+    private final MagnusDAO magnus;
+    public RegistrazioneServlet(MagnusDAO magnus) {
+        this.magnus = magnus;
+    }
 
-    //RICORDARSI DI CAPIRE COME FARE IL LOGIN IN AUTOMATICO
     @PostMapping("/emailCheck")
     public int emailCheck(HttpServletRequest request, HttpServletResponse response, @RequestBody DatiControlloUtente dati) {
         int result= 2;
 
-        if(MagnusDAO.getInstance().getUtenteDAO().doRetriveByKey(dati.getEmail(), IdentificativiUtente.EMAIL)!=null)
+        if(magnus.getUtenteDAO().doRetriveByKey(dati.getEmail(), IdentificativiUtente.EMAIL)!=null)
             result= 0;
-        else if(MagnusDAO.getInstance().getUtenteDAO().doRetriveByKey(dati.getCf(), IdentificativiUtente.CF)!=null)
+        else if(magnus.getUtenteDAO().doRetriveByKey(dati.getCf(), IdentificativiUtente.CF)!=null)
             result= 1;
         else {
             HttpSession session= request.getSession(false);
@@ -64,25 +53,20 @@ public class RegistrazioneServlet extends HttpServlet {
     public String checkOTP(HttpServletRequest request, @RequestParam("otpSend") String otpSend, @RequestParam("IDSession") String idSess) {
         String response;
 
-        System.out.println("Id sessione inviato: "+ idSess);
         HttpSession session= (HttpSession) request.getServletContext().getAttribute(idSess);
-        System.out.println("id sessione presa dal context: "+ session.getId());
         long minutiAttuali= TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis());
 
         if(session!=null && ((minutiAttuali - (long) session.getAttribute("TempoInvioOTP")) <= 10)) {
             if(session.getAttribute("control").equals(otpSend)) {
                 response = "OTP corretto";
-                System.out.println(response);
             }
             else {
                 response = "OTP errato";
-                System.out.println(response);
             }
         }
         else if(session!=null && ((minutiAttuali - (long) session.getAttribute("TempoInvioOTP")) > 10))
             response= "Sessione scaduta";
         else {
-            System.out.println("Server: sessione non trovata!!!");
             response= "Sessione non esistente!!!";
         }
 

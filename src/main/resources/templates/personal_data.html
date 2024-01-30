@@ -109,7 +109,7 @@
           <div class="bottoni">
             <button onclick="openPopup()" type="button">Modifica email</button>
             <button onclick="openPassPopup()" type="button">Modifica password</button>
-            <button onclick="openSosPopup(1, 'sospendi')" type="button">Sospendi conto</button>
+            <button onclick="openSosPopup(1, 'sospendi')" type="button">Sospendi/Attiva conto</button>
             <button onclick="openSosPopup(2, 'chiudi')" type="button">Chiudi conto</button>
 
           </div>
@@ -128,18 +128,15 @@
 </div>
 
 
-
-
-
 <div id="popupSospensione" class="popup">
   <div id="sosPopup-content">
     <label class="labelPop" for="passwordSosp"></label>
     <input class="inputPasPopUp" id="passwordSosp" type="password" placeholder="Inserisci la password">
     <img id="confermaPassIcon" class="show-password2" src="/images/hide.png" alt="" onclick="confermaToggleNuovaPass()">
     <div class="error-message" id="errorPassword" style="color: red; display: none;">Password errata</div>
-    <div class="contBott">
+    <div class="contBottS">
       <button class="bottonePopUp" onclick="closePopupFunction()">Annulla</button>
-      <button class="bottonePopUp" onclick="sospendiChiudi()">Conferma</button>
+      <button class="bottonePopUp" onclick="controllaPassword()">Conferma</button>
     </div>
   </div>
 </div>
@@ -157,7 +154,7 @@
     <img id="confPassIcon" class="show-password" src="/images/hide.png" alt="" onclick="toggleConfPass()">
     <span id="confPassError" class="error"></span>
 
-    <div class="contBott">
+    <div class="contBottS">
       <button class="bottonePopUp" onclick="closePopupFunction()">Annulla</button>
       <button class="bottonePopUp" onclick="validatePassword()" >Conferma</button>
     </div>

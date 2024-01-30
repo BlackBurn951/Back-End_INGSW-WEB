@@ -1,6 +1,5 @@
 package com.example.progettowebtest.Model.ContoCorrente;
 
-import com.example.progettowebtest.DAO.ContoCorrente_StatoConto.ContoCorrenteDAO;
 
 public class Salvadanaio {
     private int idSalvadanaio;

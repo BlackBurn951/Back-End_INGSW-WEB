@@ -66,12 +66,11 @@ public class CartaProxy implements Carte{
     public ContoCorrente getContoRiferimento() {
         if(tipo==TipiCarte.DEBITO) {
             cartaReale = MagnusDAO.getInstance().getCarteDAO().doRetriveByKey(numCarta, TipiCarte.DEBITO, true);
-            return cartaReale.getContoRiferimento();
         }
         else{
             cartaReale = MagnusDAO.getInstance().getCarteDAO().doRetriveByKey(numCarta, TipiCarte.CREDITO, true);
-            return cartaReale.getContoRiferimento();
         }
+        return cartaReale.getContoRiferimento();
     }
 
     @Override
@@ -80,6 +79,11 @@ public class CartaProxy implements Carte{
     @Override
     public void setStatoCarta(Stato stato) {
         statoCarta= stato;
+    }
+
+    @Override
+    public void setFido(double fido) {
+        this.fido= fido;
     }
 
     @Override

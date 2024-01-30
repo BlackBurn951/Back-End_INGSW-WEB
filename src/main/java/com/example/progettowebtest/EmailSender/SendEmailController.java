@@ -1,19 +1,9 @@
 package com.example.progettowebtest.EmailSender;
 import com.example.progettowebtest.ClassiEmail.InvioOTP;
-import com.google.api.services.gmail.model.Message;
-import java.io.*;
-import java.security.GeneralSecurityException;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
-
-import jakarta.mail.MessagingException;
 import jakarta.servlet.http.*;
-
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
-
-import static com.example.progettowebtest.EmailSender.EmailService.*;
 import static com.example.progettowebtest.EmailSender.OTPGenerator.generateOTP;
 
 

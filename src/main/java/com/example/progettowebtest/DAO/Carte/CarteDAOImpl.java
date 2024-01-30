@@ -26,6 +26,21 @@ public class CarteDAOImpl implements CarteDAO{
     }
 
     @Override
+    public Vector<Carte> doRetriveAllCreditForCC(String numCC) {
+        Vector<Carte> result= new Vector<>();
+
+        prendiCarteCredito(result, numCC);
+        return result;
+    }
+
+    @Override
+    public Vector<Carte> doRetriveAllDebitForCC(String numCC) {
+        Vector<Carte> result= new Vector<>();
+
+        prendiCarteDebito(result, numCC);
+        return result;
+    }
+    @Override
     public Carte doRetriveByKey(String numCarta, TipiCarte tipo, boolean proxy) {
         Carte carta= null;
         String query= "";
@@ -67,7 +82,7 @@ public class CarteDAOImpl implements CarteDAO{
                     else
                         carta= new CartaProxy(queryResult.getString("num_carta_debito"), queryResult.getBoolean("stato_pagamento_online"), queryResult.getDate("data_creazione").toString(),
                                 queryResult.getDate("data_scadenza").toString(), queryResult.getString("cvv"), queryResult.getBoolean("carta_fisica"),
-                                queryResult.getDouble("canone_mensile"), queryResult.getString("pin"), 0.0,
+                                queryResult.getDouble("canone_mensile"), queryResult.getString("pin"), 3000.0,
                                 MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualState(queryResult.getString("num_carta_debito"), TipiCarte.DEBITO), TipiCarte.DEBITO);
                 }
             }
@@ -75,12 +90,13 @@ public class CarteDAOImpl implements CarteDAO{
         }catch (SQLException e) {
             e.printStackTrace();
         }
+
         return carta;
     }
 
     @Override
     public boolean saveOrUpdate(Carte carta, TipiCarte tipo) {
-        String query= "";
+        String query;
 
         if(tipo==TipiCarte.CREDITO)
             query= "insert into carta_di_credito(num_carta_credito, stato_pagamento_online, data_creazione, data_scadenza, cvv, carta_fisica, canone_mensile, num_cc, pin, fido) " +
@@ -177,7 +193,7 @@ public class CarteDAOImpl implements CarteDAO{
             while(queryResult.next()) {
                 result.add(new CartaProxy(queryResult.getString("num_carta_debito"), queryResult.getBoolean("stato_pagamento_online"), queryResult.getDate("data_creazione").toString(),
                         queryResult.getDate("data_scadenza").toString(), queryResult.getString("cvv"), queryResult.getBoolean("carta_fisica"), queryResult.getDouble("canone_mensile"),
-                        queryResult.getString("pin"), 0.0, MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualState(queryResult.getString("num_carta_debito"), TipiCarte.DEBITO), TipiCarte.DEBITO));
+                        queryResult.getString("pin"), 3000.0, MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualState(queryResult.getString("num_carta_debito"), TipiCarte.DEBITO), TipiCarte.DEBITO));
             }
 
         }catch (SQLException e) {

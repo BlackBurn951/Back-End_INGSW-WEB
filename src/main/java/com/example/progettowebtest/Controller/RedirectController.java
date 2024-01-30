@@ -1,6 +1,5 @@
 package com.example.progettowebtest.Controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,12 +34,19 @@ public class RedirectController {
         return "redirect:http://localhost:4200";
     }
 
+
+
     @GetMapping("/vaiLogged")
     public String redirectToHomepageLogged(@RequestParam(name = "IDSession") String sessionId) {
 
         return "redirect:http://localhost:8080/homepage_logged?IDSession=" + sessionId;
     }
 
+    @GetMapping("/vaiFaq")
+    public String redirectToFaqPage(@RequestParam(name = "IDSession") String sessionId) {
+
+        return "redirect:http://localhost:4200/faq?IDSession=" + sessionId;
+    }
 
 
 }

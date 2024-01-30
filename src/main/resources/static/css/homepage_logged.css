@@ -9,16 +9,38 @@ header {
     max-height: 6vw;
 }
 
-.notificaImage {
-    display: none; /*PER ADESSO NASCOSTA PRIMA DELL'IMPLEMENTAZIONE*/
+.esciImage:hover{
+    background-color: black;
+    border-radius: 40%;
+
+}
+
+.questionImage{
+    margin-top: 0.5em;
     max-width: 4vw;
     max-height: 4vw;
 }
 
+.questionImage:hover{
+    background-color: black;
+    border-radius: 40%;
+}
+
+.notificaImage {
+    cursor: pointer;
+    max-width: 4vw;
+    max-height: 4vw;
+}
+
+.notificaImage:hover{
+    background-color: black;
+    border-radius: 40%;
+
+}
 .iconeNE {
     position: relative;
     display: flex;
-    gap: 20vw;
+    gap: 8vw;
     align-items: center;
     margin-left: 33vw;
 }
@@ -39,16 +61,15 @@ header {
     white-space: nowrap;
 }
 
-/* Aggiunta di una media query per adattare il layout a schermi più piccoli */
 @media screen and (max-width: 768px) {
     .containerHeader {
-        flex-direction: column; /* Cambiato il layout a colonna su schermi più piccoli */
+        flex-direction: column;
         align-items: center;
     }
 
     .iconeNE {
-        margin-top: 10px; /* Aggiunto margine superiore per separare le icone dall'alto */
-        gap: 1vw; /* Ridotto lo spazio tra le icone con vw */
+        margin-top: 10px; /
+        gap: 1vw;
     }
 }
 
@@ -79,6 +100,10 @@ nav:hover {
         align-items: center;
         margin-left: 20px;
         margin-bottom: 10px;
+    }
+    .imageButton:hover{
+        background-color: #ffffff;
+        border-radius: 40%;
     }
 }
 
@@ -123,6 +148,9 @@ body {
     margin: 0;
     min-height: 100vh;
     font-family: Arial, sans-serif;
+    background-attachment: fixed;
+
+
 }
 
 
@@ -151,6 +179,7 @@ body {
     flex-direction: column;
     width: 50%;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
 }
 
 
@@ -163,11 +192,17 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    max-width: 100%;
+
 }
 
-#titleTrans {
-    margin-bottom: 10px;
+
+@media screen and (max-width: 768px) {
+    .containerDatiConto, .bloccoTransazioni {
+        width: 90%;
+    }
 }
+
 
 .containerDatiTransazioni {
     width: 100%;
@@ -185,12 +220,7 @@ body {
     scrollbar-color: #3498db #f2f2f2;
 }
 
-@media screen and (min-width: 1600px) {
-    .bloccoTransazioni {
-        margin-top: -5%;
-        width: 90%;
-    }
-}
+
 
 .containerDatiTransazioni::-webkit-scrollbar {
     width: 12px;
@@ -207,14 +237,18 @@ body {
 
 
 
-.scrollable-list {
-    margin-top: -20%;
-    max-height: 150px;
+@media screen and (min-width: 1600px) {
+    .bloccoTransazioni {
+        margin-top: -5%;
+        width: 90%;
+    }
 }
 
 
+
 button {
-    width: 70%;
+    height: auto;
+    width: 65%;
     background-color: #3498db;
     color: #ffffff;
     padding: 0.1vw 0.1vw;
@@ -233,7 +267,6 @@ button:hover {
 
 
 .informazioniConto{
-
     align-items: center;
     padding: 180px;
     display: flex;
@@ -241,7 +274,6 @@ button:hover {
     gap:5vh;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-/*-----------------*/
 
 
 
@@ -261,6 +293,8 @@ th {
     background-color: #f2f2f2;
 }
 
+
+
 .popup {
     display: none;
     position: fixed;
@@ -268,7 +302,7 @@ th {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 20%;
-    height: 77%;
+    height: auto;
     background: rgb(217, 217, 217);
     border-radius: 2vh;
     border: 2px solid #08090B;
@@ -280,6 +314,7 @@ th {
     align-items: center;
     display: flex;
     flex-direction: column;
+
 }
 
 
@@ -303,11 +338,14 @@ th {
 
 
 .centroNotifiche {
+    align-items: center;
+    text-align: center;
+    align-content: center;
     position: relative;
-    cursor: pointer;
 }
 
 .badge {
+    cursor: pointer;
     position: absolute;
     top: 1px;
     right: 1px;
@@ -317,24 +355,115 @@ th {
     padding: 6px 8px;
     font-size: 12px;
     display: inline-block;
+
 }
 
 .notificheMenu {
-    display: none;
+    opacity: 0; /* Parti con l'opacità a 0 */
+    visibility: hidden; /* Nascondi il contenuto */
+    transition: opacity 0.3s ease, visibility 0s linear 0.3s; /* Transizione per opacità */
     position: absolute;
-    background-color: #f9f9f9;
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    padding: 10px;
+    border: 2px solid #08090B;
+    border-radius: 1vh;
+    white-space: nowrap;
+    background: rgb(217, 217, 217);
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    height: auto;
+    width: 800%;
     z-index: 1;
-    right: 0; /* Posiziona il menu a destra dell'icona */
+    left: -100%;
+    scrollbar-width: thin;
+    scrollbar-color: #3498db #f2f2f2;
+    max-height: 300%;
+    overflow: auto;
 }
 
-.notificheMenu.show {
-    display: block;
+
+
+.notificheMenu::-webkit-scrollbar {
+    width: 12px;
+}
+
+.notificheMenu::-webkit-scrollbar-thumb {
+    background-color: #3498db;
+    border-radius: 6px;
+}
+
+.notificheMenu::-webkit-scrollbar-track {
+    background-color: #f2f2f2;
+}
+
+#noticheLI{
+    margin-top: 1vh;
 }
 
 .notificheMenu li {
-    list-style: none;
-    padding: 8px;
-    border-bottom: 1px solid #ddd;
+    font-weight: bold;
+    font-size: 17px;
+    border-radius: 1vh;
+    background-color: white;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    line-height: 200%;
+    align-items: center;
+}
+
+
+
+
+.notificheMenu.show {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
+}
+
+.eliminaNotifica{
+    margin-right: 2%;
+    white-space: nowrap;
+    cursor: pointer;
+    float: right;
+    color: #000000;
+    font-weight: bold;
+}
+
+
+
+
+
+
+
+#transazioniTable thead {
+    position: sticky;
+    top: 0;
+    background-color: #f2f2f2;
+    z-index: 1;
+}
+
+
+
+
+.boxRicerca {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap:5rem
+
+}
+
+#titleTrans {
+    white-space: nowrap;
+    text-align: center;
+    width: 100%;
+}
+
+#searchInput {
+    border-radius: 2vh;
+    width: 150%;
+    padding: 2%;
+}
+
+#filterSelect {
+    border-radius: 2vh;
+    width: 150%;
+    padding: 2%;
 }

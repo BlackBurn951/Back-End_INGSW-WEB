@@ -1,11 +1,7 @@
 package com.example.progettowebtest.DAO.Transazioni;
 
 import com.example.progettowebtest.Connection.DbConn;
-import com.example.progettowebtest.DAO.MagnusDAO;
-import com.example.progettowebtest.Model.Proxy.TipoTransazione;
-import com.example.progettowebtest.Model.Proxy.TransazioneProxy;
 import com.example.progettowebtest.Model.Transazioni.BonificoInter;
-import com.example.progettowebtest.Model.Transazioni.Deposito;
 import com.example.progettowebtest.Model.Transazioni.Mezzo;
 
 import java.sql.PreparedStatement;

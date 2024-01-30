@@ -1,13 +1,13 @@
 package com.example.progettowebtest.Servlet;
 
 import com.example.progettowebtest.ClassiRequest.CambioEmail;
-import com.example.progettowebtest.ClassiRequest.CambioPassword;
 import com.example.progettowebtest.ClassiRequest.IdentificativiUtente;
 import com.example.progettowebtest.DAO.MagnusDAO;
 import com.example.progettowebtest.Model.Carte.Carte;
-import com.example.progettowebtest.Model.Carte.RelStatoCarta;
 import com.example.progettowebtest.Model.Carte.TipiCarte;
 import com.example.progettowebtest.Model.ContoCorrente.ContoCorrente;
+import com.example.progettowebtest.Model.ContoCorrente.Notifiche;
+import com.example.progettowebtest.Model.ContoCorrente.PresetNotifiche;
 import com.example.progettowebtest.Model.ContoCorrente.RelStatoConto;
 import com.example.progettowebtest.Model.Proxy.Transazione;
 import com.example.progettowebtest.Model.Stato;
@@ -28,14 +28,19 @@ public class GestioneContoServlet {
     @PostMapping("/changeEmail")
     public boolean cambiaEmail(HttpServletRequest request, @RequestParam("IDSession") String idSession, @RequestBody CambioEmail dati) {
         HttpSession session= (HttpSession)request.getServletContext().getAttribute(idSession);
+        ContoCorrente cc= (ContoCorrente)session.getAttribute("Conto");
+        Notifiche not;
 
         Utente ut= (Utente)session.getAttribute("Utente");
         Utente contr= MagnusDAO.getInstance().getUtenteDAO().doRetriveByKey(dati.getEmail(), IdentificativiUtente.EMAIL);
 
         if(contr==null) {
             ut.setEmail(dati.getEmail());
-            if(MagnusDAO.getInstance().getUtenteDAO().saveOrUpdate(ut))
-                return true;
+            not= new Notifiche(PresetNotifiche.NOTIFICA_CAMBIO_EMAIL+LocalDate.now(), false);
+            MagnusDAO.getInstance().getNotificheDAO().saveOrUpdate(not, cc.getNumCC());
+            cc.addNotifica(not);
+
+            return MagnusDAO.getInstance().getUtenteDAO().saveOrUpdate(ut);
         }
         return false;
     }
@@ -43,14 +48,19 @@ public class GestioneContoServlet {
     @PostMapping("/cambiaPass")
     public boolean cambiaPass(HttpServletRequest request, @RequestParam("IDSession") String idSession, @RequestParam("password") String cambio) {
         HttpSession session= (HttpSession)request.getServletContext().getAttribute(idSession);
+        ContoCorrente cc= (ContoCorrente)session.getAttribute("Conto");
+        Notifiche not;
 
         Utente ut= (Utente)session.getAttribute("Utente");
         ut.setPassword(cambio);
+        not= new Notifiche(PresetNotifiche.NOTIFICA_CAMBIO_PASSWORD+LocalDate.now(), false);
+        MagnusDAO.getInstance().getNotificheDAO().saveOrUpdate(not, cc.getNumCC());
+        cc.addNotifica(not);
         return MagnusDAO.getInstance().getUtenteDAO().saveOrUpdate(ut);
     }
 
     @GetMapping("checkPass")
-    public boolean checkPsw(HttpServletRequest request, @RequestParam("IDSession") String idSession, @RequestParam("psw") String psw) {
+    public boolean checkPsw(HttpServletRequest request, @RequestParam("IDSession") String idSession, @RequestParam("password") String psw) {
         HttpSession session= (HttpSession)request.getServletContext().getAttribute(idSession);
 
         Utente ut= (Utente)session.getAttribute("Utente");
@@ -59,12 +69,13 @@ public class GestioneContoServlet {
 
     @PostMapping("/cambiaStatoConto")
     public boolean cambiaStatoConto(HttpServletRequest request, @RequestParam("IDSession") String idSession, @RequestParam("stato") int stato){
-        boolean result;  //True -> eliminato  False -> attivata/disattivata
+        boolean result;
 
         HttpSession session= (HttpSession)request.getServletContext().getAttribute(idSession);
 
         ContoCorrente cc= (ContoCorrente)session.getAttribute("Conto");
         Stato statoConto= cc.getStatoConto();
+        Notifiche not;
 
         if (stato == 1) {
             RelStatoConto rel= MagnusDAO.getInstance().getRelStatoContoDAO().doRetriveActualRel(cc.getNumCC());
@@ -73,24 +84,21 @@ public class GestioneContoServlet {
             MagnusDAO.getInstance().getRelStatoContoDAO().saveOrUpdate(rel);
             if (statoConto.getValoreStato().equals("attivo")) {
                 statoConto= MagnusDAO.getInstance().getStatoDAO().doRetriveByAttribute(ValoriStato.SOSPESO);
-                rel= new RelStatoConto(LocalDate.now().toString(), statoConto, cc);
-
-                MagnusDAO.getInstance().getRelStatoContoDAO().saveOrUpdate(rel);
-
-                cc.setStatoConto(statoConto);
-
-                result = false;
+                not= new Notifiche(PresetNotifiche.NOTIFICA_SOSPENSIONE_CONTO+LocalDate.now(), false);
             }else{
                 statoConto= MagnusDAO.getInstance().getStatoDAO().doRetriveByAttribute(ValoriStato.ATTIVO);
-                rel= new RelStatoConto(LocalDate.now().toString(), statoConto, cc);
-
-                MagnusDAO.getInstance().getRelStatoContoDAO().saveOrUpdate(rel);
-
-                cc.setStatoConto(statoConto);
-
-                result = false;
+                not= new Notifiche(PresetNotifiche.NOTIFICA_ATTIVAZIONE_CONTO+LocalDate.now(), false);
             }
+            rel= new RelStatoConto(LocalDate.now().toString(), statoConto, cc);
 
+            MagnusDAO.getInstance().getRelStatoContoDAO().saveOrUpdate(rel);
+
+            MagnusDAO.getInstance().getNotificheDAO().saveOrUpdate(not, cc.getNumCC());
+            cc.addNotifica(not);
+
+            cc.setStatoConto(statoConto);
+
+            result= false;
         }else {
             MagnusDAO.getInstance().getRelStatoContoDAO().delete(cc.getNumCC());
 
@@ -140,6 +148,5 @@ public class GestioneContoServlet {
         }
         return result;
     }
-
 
 }

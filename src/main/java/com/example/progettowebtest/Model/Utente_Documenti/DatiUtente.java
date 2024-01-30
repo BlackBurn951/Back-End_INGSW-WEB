@@ -34,4 +34,5 @@ public abstract class DatiUtente {
     public String getProvNascita() {return provNascita;}
 
     public Date getDataNascita() {return dataNascita;}
+
 }

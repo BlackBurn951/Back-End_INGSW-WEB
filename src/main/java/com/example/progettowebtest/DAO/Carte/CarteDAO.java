@@ -7,14 +7,10 @@ import java.util.Vector;
 
 public interface CarteDAO {
     Vector<Carte> doRetriveAll();
-
     Vector<Carte> doRetriveAllForCC(String numCC);
-
+    Vector<Carte> doRetriveAllCreditForCC(String numCC);
+    Vector<Carte> doRetriveAllDebitForCC(String numCC);
     Carte doRetriveByKey(String numCarta, TipiCarte tipo, boolean proxy);
-
     boolean saveOrUpdate(Carte carta, TipiCarte tipo);
-
     boolean delete(Carte carta, TipiCarte tipo);
-
-
 }

@@ -10,10 +10,7 @@ h2{
     border: 1px solid #007BFF;
 }
 
-.edit-icon {
-    cursor: pointer;
-    margin-left: 5px;
-}
+
 
 label{
     margin-top: 3vh;
@@ -36,12 +33,6 @@ body {
 }
 
 
-
-.titolo {
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-}
 
 .formDati {
     display: flex;
@@ -166,6 +157,14 @@ label{
 
  }
 
+
+.contBottS{
+    margin-top: 2vh;
+    display: flex;
+    justify-content: space-between;
+    gap:7vh;
+}
+
  .contBott{
      display: flex;
      justify-content: space-between;
@@ -197,8 +196,8 @@ label{
 }
 
 .show-password2{
-    margin-top: -12%;
-    margin-left: 50%;
+    margin-top: -14%;
+    margin-left: 63%;
     width: 24px;
     height: 24px;
 }
@@ -211,7 +210,7 @@ label{
 
 .popup-content {
     gap:2vh;
-    height: 30%;
+    height: auto;
     width: 20%;
     align-items: center;
     background: rgb(217, 217, 217);
@@ -229,7 +228,7 @@ label{
 
 #passPopup-content {
     gap:2vh;
-    height: 70%;
+    height: auto;
     width: 20%;
     align-items: center;
     background: rgb(217, 217, 217);
@@ -246,8 +245,8 @@ label{
 
 #sosPopup-content{
     gap:2vh;
-    height: 30%;
-    width: 30%;
+    height: auto;
+    width: auto;
     align-items: center;
     background: rgb(217, 217, 217);
     border: 2px solid #08090B;
@@ -268,8 +267,8 @@ label{
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 25%;
-    height: 15%;
+    width: 23%;
+    height: 17%;
     background: rgb(217, 217, 217);
     border-radius: 2vh;
     border: 2px solid #08090B;
@@ -311,7 +310,7 @@ label{
 
 .inputPasPopUp{
     align-content: center;
-    width: 60%;
+    width: 80%;
     padding: 8px;
     margin-bottom: 10px;
     box-sizing: border-box;

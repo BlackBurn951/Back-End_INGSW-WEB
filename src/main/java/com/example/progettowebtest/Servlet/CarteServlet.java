@@ -7,13 +7,13 @@ import com.example.progettowebtest.DAO.MagnusDAO;
 import com.example.progettowebtest.EmailSender.SenderEmail;
 import com.example.progettowebtest.Model.Carte.*;
 import com.example.progettowebtest.Model.ContoCorrente.ContoCorrente;
+import com.example.progettowebtest.Model.ContoCorrente.Notifiche;
+import com.example.progettowebtest.Model.ContoCorrente.PresetNotifiche;
 import com.example.progettowebtest.Model.Stato;
 import com.example.progettowebtest.Model.Utente_Documenti.Utente;
 import com.example.progettowebtest.Model.ValoriStato;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.cglib.core.Local;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -39,6 +39,7 @@ public class CarteServlet {
         String numCartaProposto = generaNumeroCarta();
         String cvvProposto = generaCVV();
         String dataCreazione= dataAttuale.toString();
+
         String dataScadenza= dataArrivo.toString();
         String pinProposto = generateOTP();
 
@@ -69,7 +70,7 @@ public class CarteServlet {
         ContoCorrente cc= (ContoCorrente)session.getAttribute("Conto");
         Vector<String> dati= (Vector<String>)session.getAttribute("Dati carta");
 
-        Carte carta= null;
+        Carte carta;
 
         if(tipo) {
             carta = new CartaCredito(dati.get(0), true, dati.get(4), dati.get(1), dati.get(3), false, 10.0, dati.get(5),
@@ -81,6 +82,11 @@ public class CarteServlet {
 
                 session.removeAttribute("Dati carta");
                 session.removeAttribute("Tipo carta");
+
+                Notifiche not= new Notifiche(PresetNotifiche.NOTIFICA_CREAZIONE_CARTA_PT_I+"credito"+PresetNotifiche.NOTIFICA_CREAZIONE_CARTA_PT_II+LocalDate.now(), false);
+                MagnusDAO.getInstance().getNotificheDAO().saveOrUpdate(not, cc.getNumCC());
+                cc.addNotifica(not);
+
                 result= true;
             }
         }
@@ -93,6 +99,11 @@ public class CarteServlet {
 
                 session.removeAttribute("Dati carta");
                 session.removeAttribute("Tipo carta");
+
+                Notifiche not= new Notifiche(PresetNotifiche.NOTIFICA_CREAZIONE_CARTA_PT_I+"debito"+PresetNotifiche.NOTIFICA_CREAZIONE_CARTA_PT_II+LocalDate.now(), false);
+                MagnusDAO.getInstance().getNotificheDAO().saveOrUpdate(not, cc.getNumCC());
+                cc.addNotifica(not);
+
                 result= true;
             }
         }
@@ -103,45 +114,43 @@ public class CarteServlet {
     public boolean cambiaStatoCarta(HttpServletRequest request, @RequestParam("IDSession") String idSession, @RequestBody CambioStatoCarta dati){
         boolean result;  //True -> eliminato  False -> attivata/disattivata
 
+        HttpSession session= (HttpSession)request.getServletContext().getAttribute(idSession);
 
+        ContoCorrente cc= (ContoCorrente)session.getAttribute("Conto");
         Carte carta;
         Stato statoCarta;
+        Notifiche not;
 
         if(dati.isTipoCarta()) {
             carta = MagnusDAO.getInstance().getCarteDAO().doRetriveByKey(dati.getNumCarta(), TipiCarte.CREDITO, true);
             if (dati.getStato() == 1) {
                 statoCarta = MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualState(dati.getNumCarta(), TipiCarte.CREDITO);
 
+                RelStatoCarta rel= MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualRel(dati.getNumCarta(), TipiCarte.CREDITO);
+                rel.setDataFineStato(LocalDate.now().toString());
+
+                MagnusDAO.getInstance().getRelStatoCarteDAO().saveOrUpdate(rel, TipiCarte.CREDITO);
                 if (statoCarta.getValoreStato().equals("attivo")) {
-                    RelStatoCarta rel= MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualRel(dati.getNumCarta(), TipiCarte.CREDITO);
-                    rel.setDataFineStato(LocalDate.now().toString());
-
-                    MagnusDAO.getInstance().getRelStatoCarteDAO().saveOrUpdate(rel, TipiCarte.CREDITO);
-
-                    statoCarta= MagnusDAO.getInstance().getStatoDAO().doRetriveByAttribute(ValoriStato.SOSPESO);
-                    rel= new RelStatoCarta(LocalDate.now().toString(), statoCarta, carta);
-
-                    MagnusDAO.getInstance().getRelStatoCarteDAO().saveOrUpdate(rel, TipiCarte.CREDITO);
-
-                    result = false;
-                }else{
-                    RelStatoCarta rel= MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualRel(dati.getNumCarta(), TipiCarte.CREDITO);
-                    rel.setDataFineStato(LocalDate.now().toString());
-
-                    MagnusDAO.getInstance().getRelStatoCarteDAO().saveOrUpdate(rel, TipiCarte.CREDITO);
-
-                    statoCarta= MagnusDAO.getInstance().getStatoDAO().doRetriveByAttribute(ValoriStato.ATTIVO);
-                    rel= new RelStatoCarta(LocalDate.now().toString(), statoCarta, carta);
-
-                    MagnusDAO.getInstance().getRelStatoCarteDAO().saveOrUpdate(rel, TipiCarte.CREDITO);
-
-                    result = false;
+                    statoCarta = MagnusDAO.getInstance().getStatoDAO().doRetriveByAttribute(ValoriStato.SOSPESO);
+                    not= new Notifiche(PresetNotifiche.NOTIFICA_SOSPENSIONE_CARTA_PT_I+"credito"+PresetNotifiche.NOTIFICA_SOSPENSIONE_CARTA_PT_II+LocalDate.now(), false);
+                }else {
+                    statoCarta = MagnusDAO.getInstance().getStatoDAO().doRetriveByAttribute(ValoriStato.ATTIVO);
+                    not= new Notifiche(PresetNotifiche.NOTIFICA_ATTIVAZIONE_CARTA_PT_I+"credito"+PresetNotifiche.NOTIFICA_ATTIVAZIONE_CARTA_PT_II+LocalDate.now(), false);
                 }
+                rel= new RelStatoCarta(LocalDate.now().toString(), statoCarta, carta);
+                MagnusDAO.getInstance().getRelStatoCarteDAO().saveOrUpdate(rel, TipiCarte.CREDITO);
 
+                MagnusDAO.getInstance().getNotificheDAO().saveOrUpdate(not, cc.getNumCC());
+                cc.addNotifica(not);
+
+                result = false;
             }else {
                 MagnusDAO.getInstance().getRelStatoCarteDAO().delete(carta.getNumCarta(), TipiCarte.CREDITO);
                 MagnusDAO.getInstance().getCarteDAO().delete(carta, TipiCarte.CREDITO);
 
+                not= new Notifiche(PresetNotifiche.NOTIFICA_CANCELLAZIONE_CARTA_PT_I+"credito"+PresetNotifiche.NOTIFICA_CANCELLAZIONE_CARTA_PT_II+LocalDate.now(), false);
+                MagnusDAO.getInstance().getNotificheDAO().saveOrUpdate(not, cc.getNumCC());
+                cc.addNotifica(not);
                 result= true;
             }
 
@@ -152,35 +161,31 @@ public class CarteServlet {
             if (dati.getStato() == 1) {
                 statoCarta = MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualState(dati.getNumCarta(), TipiCarte.DEBITO);
 
+                RelStatoCarta rel= MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualRel(dati.getNumCarta(), TipiCarte.DEBITO);
+                rel.setDataFineStato(LocalDate.now().toString());
+
+                MagnusDAO.getInstance().getRelStatoCarteDAO().saveOrUpdate(rel, TipiCarte.DEBITO);
                 if (statoCarta.getValoreStato().equals("attivo")) {
-                    RelStatoCarta rel= MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualRel(dati.getNumCarta(), TipiCarte.DEBITO);
-                    rel.setDataFineStato(LocalDate.now().toString());
-
-                    MagnusDAO.getInstance().getRelStatoCarteDAO().saveOrUpdate(rel, TipiCarte.DEBITO);
-
                     statoCarta= MagnusDAO.getInstance().getStatoDAO().doRetriveByAttribute(ValoriStato.SOSPESO);
-                    rel= new RelStatoCarta(LocalDate.now().toString(), statoCarta, carta);
-
-                    MagnusDAO.getInstance().getRelStatoCarteDAO().saveOrUpdate(rel, TipiCarte.DEBITO);
-
-                    result= false;
+                    not= new Notifiche(PresetNotifiche.NOTIFICA_SOSPENSIONE_CARTA_PT_I+"debito"+PresetNotifiche.NOTIFICA_SOSPENSIONE_CARTA_PT_II+LocalDate.now(), false);
                 }else{
-                    RelStatoCarta rel= MagnusDAO.getInstance().getRelStatoCarteDAO().doRetriveActualRel(dati.getNumCarta(), TipiCarte.DEBITO);
-                    rel.setDataFineStato(LocalDate.now().toString());
-
-                    MagnusDAO.getInstance().getRelStatoCarteDAO().saveOrUpdate(rel, TipiCarte.DEBITO);
-
                     statoCarta= MagnusDAO.getInstance().getStatoDAO().doRetriveByAttribute(ValoriStato.ATTIVO);
-                    rel= new RelStatoCarta(LocalDate.now().toString(), statoCarta, carta);
-
-                    MagnusDAO.getInstance().getRelStatoCarteDAO().saveOrUpdate(rel, TipiCarte.DEBITO);
-
-                    result= false;
+                    not= new Notifiche(PresetNotifiche.NOTIFICA_ATTIVAZIONE_CARTA_PT_I+"debito"+PresetNotifiche.NOTIFICA_ATTIVAZIONE_CARTA_PT_II+LocalDate.now(), false);
                 }
+                rel= new RelStatoCarta(LocalDate.now().toString(), statoCarta, carta);
+                MagnusDAO.getInstance().getRelStatoCarteDAO().saveOrUpdate(rel, TipiCarte.DEBITO);
+
+                MagnusDAO.getInstance().getNotificheDAO().saveOrUpdate(not, cc.getNumCC());
+                cc.addNotifica(not);
+
+                result= false;
             } else {
                 MagnusDAO.getInstance().getRelStatoCarteDAO().delete(carta.getNumCarta(), TipiCarte.DEBITO);
                 MagnusDAO.getInstance().getCarteDAO().delete(carta, TipiCarte.DEBITO);
 
+                not= new Notifiche(PresetNotifiche.NOTIFICA_CANCELLAZIONE_CARTA_PT_I+"debito"+PresetNotifiche.NOTIFICA_CANCELLAZIONE_CARTA_PT_II+LocalDate.now(), false);
+                MagnusDAO.getInstance().getNotificheDAO().saveOrUpdate(not, cc.getNumCC());
+                cc.addNotifica(not);
                 result = true;
             }
         }
@@ -203,6 +208,23 @@ public class CarteServlet {
         return result;
     }
 
+    @GetMapping("/prendiNumeroCarte")
+    public int[] prendiNumeroCarte(HttpServletRequest request, @RequestParam("IDSession") String idSession) {
+        int[] numeroCarte= new int[2];
+
+        HttpSession session = (HttpSession) request.getServletContext().getAttribute(idSession);
+        ContoCorrente cc= (ContoCorrente)session.getAttribute("Conto");
+
+        Vector<Carte> carteCredito= MagnusDAO.getInstance().getCarteDAO().doRetriveAllCreditForCC(cc.getNumCC());
+        Vector<Carte> carteDebito= MagnusDAO.getInstance().getCarteDAO().doRetriveAllDebitForCC(cc.getNumCC());
+
+        if(carteCredito!=null)
+            numeroCarte[0]= carteCredito.size();
+        if(carteDebito!=null)
+            numeroCarte[1]= carteDebito.size();
+
+        return numeroCarte;
+    }
 
     private String generaNumeroCarta() {
         Random random = new Random();

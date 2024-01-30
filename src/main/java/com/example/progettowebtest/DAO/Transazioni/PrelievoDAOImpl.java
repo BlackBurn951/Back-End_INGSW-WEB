@@ -2,7 +2,6 @@ package com.example.progettowebtest.DAO.Transazioni;
 
 import com.example.progettowebtest.Connection.DbConn;
 import com.example.progettowebtest.DAO.MagnusDAO;
-import com.example.progettowebtest.Model.Carte.Carta;
 import com.example.progettowebtest.Model.Carte.Carte;
 import com.example.progettowebtest.Model.Carte.TipiCarte;
 import com.example.progettowebtest.Model.Proxy.TipoTransazione;
@@ -121,10 +120,7 @@ public class PrelievoDAOImpl implements PrelievoDAO {
                     prel.setId(id);
                 else
                     return false;
-                if(inserisciRelazione(prel, numCC))
-                    return true;
-                else
-                    return false;
+                return inserisciRelazione(prel, numCC);
 
             }
 

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
-public class HomePageController {
+public class HomePageController{
 
     @GetMapping({"/homepage_logged"})
     public String caricaDati(HttpServletRequest request, @RequestParam("IDSession") String idSession, Model model) {
@@ -29,6 +29,4 @@ public class HomePageController {
 
         return "/personal_data";
     }
-
-
 }

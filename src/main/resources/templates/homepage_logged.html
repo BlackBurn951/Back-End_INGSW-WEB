@@ -2,7 +2,6 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <link rel="stylesheet" href="/css/homepage_logged.css">
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/images/logoBanca.ico" type="image/x-icon">
@@ -21,14 +20,19 @@
         <div class="iconeNE">
             <div class="centroNotifiche">
                 <img class="notificaImage" src="/images/notification.png" alt="" onclick="toggleNotifiche()">
-                <span th:if="${countNotificheNonLette > 0}" class="badge" th:text="${countNotificheNonLette}" onclick="toggleNotifiche()"></span>
-                <li th:each="notifica : ${listaNotifiche}">
-                    <span th:text="${notifica.testo}"></span>
-                    <a href="#" class="eliminaNotifica" th:attr="data-notificaId=${notifica.id}" onclick="eliminaNotifica(this)">x</a>
-                </li>
+                <span th:if="${conto.getUnreadNotify() > 0}" class="badge" th:text="${conto.getUnreadNotify()}" onclick="toggleNotifiche()"></span>
+                <ul class="notificheMenu" >
+                    <div id="noticheLI">
+                        <li th:each="i : ${#numbers.sequence(conto.getNotifiche().size() - 1, 0, -1)}"  th:with="n=${conto.getNotifiche()[i]}">
+                            <span th:text="${n.getTesto()}"></span>
+                            <span class="eliminaNotifica" th:attr="data-notifica-id=${n.getId()}" onclick="eliminaNotifica(this)">X</span>
 
+                        </li>
+                    </div>
+                </ul>
 
             </div>
+            <a id="redirect4" href="/redirect/vaiFaq" class="logout"><img class="questionImage" src="/images/question-mark.png" alt=""></a>
             <a href="/redirect/tornaHomepage" class="logout"><img class="esciImage" src="/images/iconaEsci.png" alt=""></a>
         </div>
     </div>
@@ -48,16 +52,27 @@
     <div class="containerDatiConto">
         <h2>Benvenuto <span th:text="${utente.getNome()+'  '+utente.getCognome()}"></span></h2>
         <h3>Numero conto: <span th:text="${conto.getNumCC()}"></span></h3>
-        <h3>Saldo: <span th:text="${conto.getSaldo()}"></span></h3>
+        <h3>Saldo: <span th:text="${conto.getSaldo()}+ ' €'"></span></h3>
         <h3>Stato: <span th:text="${conto.getStatoConto().getValoreStato()}" th:style="${conto.getStatoConto().getValoreStato() eq 'attivo' ? 'color: green;' : 'color: darkred;'}"></span></h3>
     </div>
 
       <div class="bloccoTransazioni">
-          <h2 id="titleTrans">Ultime transazioni</h2>
+          <div class="boxRicerca">
+              <h2 id="titleTrans">Ultime transazioni</h2>
+              <input type="text" id="searchInput" onkeyup="searchTransactions()" placeholder="Cerca transazioni...">
+              <select id="filterSelect" onchange="filterTransactions()">
+                  <option value="all">Tutte le transazioni</option>
+                  <option value="bollettino">Bollettino</option>
+                  <option value="Bonifico SEPA">Bonifico SEPA</option>
+                  <option value="Bonifico Internazionale">Bonifico Internazionale</option>
+              </select>
+          </div>
+
           <div class="containerDatiTransazioni">
               <table id="transazioniTable">
                   <thead>
                       <tr>
+                          <th>Tipologia</th>
                           <th>Data</th>
                           <th>Importo</th>
                           <th>Causale</th>
@@ -66,15 +81,18 @@
                       </tr>
                   </thead>
                   <tbody>
-                      <tr class="item" th:each="item, iterStat : ${conto.getMovimenti()}">
+                  <tr class="item" th:each="i : ${#numbers.sequence(conto.getMovimenti().size() - 1, 0, -1)}"  th:with="item=${conto.getMovimenti()[i]}">
+                          <td>
+                              <span th:if="${item.getTipoTrans() == 'Bollettino'}">Bollettino</span>
+                              <span th:if="${item.getTipoTrans() == 'BonificoSepa'}">Bonifico SEPA</span>
+                              <span th:if="${item.getTipoTrans() == 'BonificoInter'}">Bonifico Internazionale</span>
+                              <span th:unless="${item.getTipoTrans() == 'Bollettino' || item.getTipoTrans() == 'BonificoSepa' || item.getTipoTrans() == 'BonificoInter'}" th:text="${item.getTipoTrans()}"></span>
+                          </td>
                           <td th:text="${item.getDataTransazione()}"></td>
-                          <td th:text="${item.getImporto()}"></td>
+                          <td th:text="${item.getImporto()} + ' €'"></td>
                           <td th:text="${item.getCausale()}"></td>
                           <td th:if="${item.getEsito()}" th:text="Eseguita" style="color: green;"></td>
-                          <td th:unless="${item.getEsito()}" th:text="Rifiutata" style="color: red;"></td>
-
-                          <!--<td><button th:attr="data-costo=${item.getCostoTransazione()}, data-nome-beneficiario=${item.getNomeBeneficiario()}" onclick="openPopup(this)">+</button></td>-->
-
+                          <td th:unless="${item.getEsito()}" th:text="Rifiutata" style="color: darkred;"></td>
 
                           <td><button th:attr="data-transaction-id=${item.getId()}, data-transaction-tipo=${item.getTipoTrans()}" onclick="openPopup(this)">+</button></td>
 
@@ -86,24 +104,11 @@
       </div>
 
       <div class="popup" id="popup">
-        <div class="contenutoPopup">
-            <button class="popup-btn" onclick="closePopupTrans()">X</button>
-            <p class="tipoBollettino"></p>
-            <p class="labelCCDest"></p>
-            <p class="numCcDest"></p>
-            <p class="importo"></p>
-            <p class="causale"></p>
-            <p class="costoTransazione"></p>
-            <p class="data"></p>
-            <p class="nomeBeneficiario"></p>
-            <p class="cognomeBeneficiario"></p>
-            <p class="labelIban"></p>
-            <p class="ibanDest"></p>
-            <p class="valuta"></p>
-            <p class="paeseDest"></p>
+          <div class="contenutoPopup">
 
-        </div>
+          </div>
       </div>
+
 
 
   </div>
