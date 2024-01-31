@@ -24,7 +24,6 @@ import java.util.concurrent.TimeUnit;
 @CrossOrigin(origins = "http://localhost:4200", exposedHeaders = "Session-ID")
 public class RegistrazioneServlet extends HttpServlet {
     private final MagnusDAO magnus;
-
     public RegistrazioneServlet(MagnusDAO magnus) {
         this.magnus = magnus;
     }
